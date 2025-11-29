@@ -1,0 +1,200 @@
+import 'package:flutter/material.dart';
+import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/screens/register_screen.dart';
+import 'package:quickpalo/widgets/custom_button.dart';
+import 'package:quickpalo/widgets/custom_button2.dart';
+import 'package:quickpalo/widgets/custom_text_field.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final _formKey1 = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              LightBlueColor,
+              LightBlueColor2,
+              LightPurpleColor,
+              LightPurpleColor2,
+              LightPurpleColor3,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 0.13, 0.5, 0.78, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 30),
+                  Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: ClipRRect(
+                        borderRadius: BorderRadiusGeometry.only(
+                          topRight: Radius.circular(25),
+                          bottomLeft: Radius.circular(25),
+                        ),
+                        child: Image.asset("assets/images/quickpalo_logo.png"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: Form(
+                      key: _formKey1,
+                      child: Column(
+                        children: [
+                          Text(
+                            "Login",
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          SizedBox(height: 15),
+                          CustomTextField(
+                            controller: emailController,
+                            hintText: "Enter email",
+                            labelText: "Email",
+                            errortext: "Please enter a valid email",
+                            keyboardType: TextInputType.number,
+                          ),
+                          SizedBox(height: 25),
+                          CustomTextField(
+                            controller: passwordController,
+                            hintText: "Enter password",
+                            labelText: "Password",
+                            errortext: "Please enter a password",
+                          ),
+                          SizedBox(height: 15),
+                          SizedBox(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Forgot Password?",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: textColorBlue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          CustomButton(onPressed: () {}, text: "Login"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Don't have an account?",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: textColorGrey,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Sign up",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: textColorBlue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: const [
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 1,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: Text("Or"),
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 10),
+                          CustomButton2(
+                            onPressed: () {},
+                            text: "Continue with Google",
+                            imagePath: "assets/images/google.png",
+                          ),
+                          SizedBox(height: 15),
+                          CustomButton2(
+                            onPressed: () {},
+                            text: "Continue with Facebook",
+                            imagePath: 'assets/images/facebook.png',
+                          ),
+                          SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  // Add login button here
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
