@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:quickpalo/constant/colors.dart';
 import 'package:quickpalo/screens/login_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_button2.dart';
+import 'package:quickpalo/widgets/custom_label.dart';
+import 'package:quickpalo/widgets/custom_text_button.dart';
 import 'package:quickpalo/widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -86,35 +89,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
 
-                          SizedBox(height: 15),
+                          SizedBox(height: 5),
+                          CustomLabel(text: "Full Name"),
                           CustomTextField(
                             controller: fullNameController,
-                            hintText: "Enter full name",
-                            labelText: "Full name",
+                            hintText: "Hem Raj Shrestha",
                             errortext: "Please enter a valid full name",
                             keyboardType: TextInputType.number,
                           ),
-                          SizedBox(height: 15),
+                          SizedBox(height: 5),
+                          CustomLabel(text: "Email"),
                           CustomTextField(
                             controller: emailController,
-                            hintText: "Enter email",
-                            labelText: "Email",
+                            hintText: "hemraj@mail.com",
                             errortext: "Please enter a valid email",
                             keyboardType: TextInputType.number,
                           ),
-                          SizedBox(height: 15),
-                          CustomTextField(
+                          SizedBox(height: 5),
+                          CustomLabel(text: "Phone Number"),
+                          const SizedBox(height: 5),
+                          IntlPhoneField(
                             controller: phoneController,
-                            hintText: "Enter phone number",
-                            labelText: "Phone Number",
-                            errortext: "Please enter a valid phone number",
-                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              hintText: "9812345678",
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 14,
+                                horizontal: 12,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Colors.purple,
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                            initialCountryCode: "NP",
+                            onChanged: (phone) {},
+                            onCountryChanged: (country) {},
                           ),
-                          SizedBox(height: 15),
+                          SizedBox(height: 5),
+                          CustomLabel(text: "Password"),
                           CustomTextField(
                             controller: passwordController,
-                            hintText: "Enter password",
-                            labelText: "Password",
+                            hintText: "********",
                             errortext: "Please enter a password",
                           ),
                           SizedBox(height: 20),
@@ -126,11 +150,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 "Already have an account?",
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500,
                                   color: textColorGrey,
                                 ),
                               ),
-                              TextButton(
+                              CustomTextButton(
+                                text: "Login",
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -139,14 +163,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   );
                                 },
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: textColorBlue,
-                                  ),
-                                ),
                               ),
                             ],
                           ),
@@ -160,7 +176,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Text("Or"),
+                                child: Text(
+                                  "Or",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: textColorGrey,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: Divider(

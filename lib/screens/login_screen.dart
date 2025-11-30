@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/screens/dashboard_screen.dart';
 import 'package:quickpalo/screens/register_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_button2.dart';
+import 'package:quickpalo/widgets/custom_label.dart';
+import 'package:quickpalo/widgets/custom_text_button.dart';
 import 'package:quickpalo/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -85,38 +88,41 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
 
                           SizedBox(height: 15),
+                          CustomLabel(text: "Email", fontSize: 16),
+                          SizedBox(height: 5),
                           CustomTextField(
                             controller: emailController,
-                            hintText: "Enter email",
-                            labelText: "Email",
+                            hintText: "hemraj@mail.com",
                             errortext: "Please enter a valid email",
                             keyboardType: TextInputType.number,
                           ),
                           SizedBox(height: 25),
+                          CustomLabel(text: "Password", fontSize: 16),
+                          SizedBox(height: 5),
                           CustomTextField(
                             controller: passwordController,
-                            hintText: "Enter password",
-                            labelText: "Password",
+                            hintText: "********",
                             errortext: "Please enter a password",
                           ),
                           SizedBox(height: 15),
-                          SizedBox(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Forgot Password?",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: textColorBlue,
-                                  ),
-                                ),
-                              ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: CustomTextButton(
+                              text: "Forgot Password?",
+                              onPressed: () {},
                             ),
                           ),
-                          CustomButton(onPressed: () {}, text: "Login"),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DashboardScreen(),
+                                ),
+                              );
+                            },
+                            text: "Login",
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -124,11 +130,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 "Don't have an account?",
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500,
                                   color: textColorGrey,
                                 ),
                               ),
-                              TextButton(
+                              CustomTextButton(
+                                text: "Sign Up",
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -138,14 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   );
                                 },
-                                child: Text(
-                                  "Sign up",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: textColorBlue,
-                                  ),
-                                ),
                               ),
                             ],
                           ),
