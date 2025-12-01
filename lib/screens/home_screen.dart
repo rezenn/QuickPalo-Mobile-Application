@@ -93,11 +93,6 @@ class HomeScreen extends StatelessWidget {
                         imagePath:
                             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiIGm_Z3u8IHIIqMsPBpwU8qwiYyelbFvHw&s",
                       ),
-                      CustomSmallCard(
-                        title: "Hospital 3",
-                        imagePath:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiIGm_Z3u8IHIIqMsPBpwU8qwiYyelbFvHw&s",
-                      ),
                     ],
                   ),
                 ),
@@ -133,24 +128,6 @@ class HomeScreen extends StatelessWidget {
                       time: "8:00 - 20:00",
                       description:
                           "A non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
-                    ),
-                    CustomBigCard(
-                      imagePath:
-                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
-                      title: "GSK University",
-                      location: "Kainali, Kainali",
-                      time: "8:00 - 16:00",
-                      description:
-                          "Top ranked elite medical university with global faculty.",
-                    ),
-                    CustomBigCard(
-                      imagePath:
-                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
-                      title: "GSK University",
-                      location: "Kainali, Kainali",
-                      time: "8:00 - 16:00",
-                      description:
-                          "Top ranked elite medical university with global faculty.",
                     ),
                     CustomBigCard(
                       imagePath:
