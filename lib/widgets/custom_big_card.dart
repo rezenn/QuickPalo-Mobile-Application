@@ -44,8 +44,11 @@ class CustomBigCard extends StatelessWidget {
                 child: Image.network(imagePath, fit: BoxFit.cover),
               ),
             ),
+            SizedBox(height: 5),
             Text(
               title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 14,
@@ -59,24 +62,28 @@ class CustomBigCard extends StatelessWidget {
                 SizedBox(width: 5),
                 Text(
                   location,
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w300),
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
             Row(
               children: [
-                Icon(Icons.punch_clock_rounded, color: Colors.grey, size: 12),
+                Icon(
+                  Icons.access_time,
+                  color: const Color.fromARGB(255, 65, 65, 65),
+                  size: 12,
+                ),
                 SizedBox(width: 5),
                 Text(
                   time,
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w300),
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
-            Divider(),
+            Divider(height: 10, color: const Color.fromARGB(255, 79, 78, 78)),
             Text(
               description,
-              maxLines: 3,
+              maxLines: 4,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 10,
