@@ -113,10 +113,12 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 GridView.count(
-                  crossAxisCount: 2,
+                  crossAxisCount: MediaQuery.of(context).size.width > 600
+                      ? 4
+                      : 2,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
-                  childAspectRatio: 175 / 250,
+                  childAspectRatio: 0.7,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
@@ -127,7 +129,25 @@ class HomeScreen extends StatelessWidget {
                       location: "Kantipath, Kathmandu",
                       time: "8:00 - 20:00",
                       description:
-                          "A non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
+                          "A non-profit institution prioritizing community health, maternal care andA non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
+                    ),
+                    CustomBigCard(
+                      imagePath:
+                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
+                      title: "GSK University",
+                      location: "Kainali, Kainali",
+                      time: "8:00 - 16:00",
+                      description:
+                          "Top ranked elite medical university with global faculty.",
+                    ),
+                    CustomBigCard(
+                      imagePath:
+                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
+                      title: "GSK University",
+                      location: "Kainali, Kainali",
+                      time: "8:00 - 16:00",
+                      description:
+                          "Top ranked elite medical university with global faculty.",
                     ),
                     CustomBigCard(
                       imagePath:

@@ -34,7 +34,7 @@ class CustomNavBar extends StatelessWidget {
           label: 'Calendar',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.access_time_filled_outlined),
+          icon: Icon(Icons.access_time_outlined),
           activeIcon: Icon(Icons.access_time_filled),
           label: 'History',
         ),
