@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/screens/organization_detail_screen.dart';
 import 'package:quickpalo/widgets/custom_big_card.dart';
 import 'package:quickpalo/widgets/custom_search_bar.dart';
 import 'package:quickpalo/widgets/custom_small_card.dart';
@@ -122,14 +123,25 @@ class HomeScreen extends StatelessWidget {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    CustomBigCard(
-                      imagePath:
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiIGm_Z3u8IHIIqMsPBpwU8qwiYyelbFvHw&s",
-                      title: "RKM Hospital",
-                      location: "Kantipath, Kathmandu",
-                      time: "8:00 - 20:00",
-                      description:
-                          "A non-profit institution prioritizing community health, maternal care andA non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const OrganizationDetailScreen(),
+                          ),
+                        );
+                      },
+                      child: CustomBigCard(
+                        imagePath:
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiIGm_Z3u8IHIIqMsPBpwU8qwiYyelbFvHw&s",
+                        title: "RKM Hospital",
+                        location: "Kantipath, Kathmandu",
+                        time: "8:00 - 20:00",
+                        description:
+                            "A non-profit institution prioritizing community health, maternal care andA non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
+                      ),
                     ),
                     CustomBigCard(
                       imagePath:
