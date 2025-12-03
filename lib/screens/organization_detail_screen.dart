@@ -1,10 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:quickpalo/common/date_selector.dart';
+import 'package:quickpalo/common/department_selector.dart';
+import 'package:quickpalo/common/time_selector.dart';
 import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/screens/calendar_screen.dart';
+import 'package:quickpalo/screens/history_screen.dart';
+import 'package:quickpalo/screens/profile_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_detail_action.dart';
+import 'package:quickpalo/widgets/custom_nav_bar.dart';
 
-class OrganizationDetailScreen extends StatelessWidget {
+class OrganizationDetailScreen extends StatefulWidget {
   const OrganizationDetailScreen({super.key});
+
+  @override
+  State<OrganizationDetailScreen> createState() =>
+      _OrganizationDetailScreenState();
+}
+
+class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
+  // int _navIndex = 0;
+  // void _onNavTap(int index) {
+  //   setState(() => _navIndex = index);
+
+  //   switch (index) {
+  //     case 0:
+  //       Navigator.pop(context);
+  //       break;
+  //     case 1:
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => const CalendarScreen()),
+  //       );
+  //       break;
+  //     case 2:
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => const HistoryScreen()),
+  //       );
+  //       break;
+  //     case 3:
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => const ProfileScreen()),
+  //       );
+  //       break;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -123,20 +165,20 @@ class OrganizationDetailScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Divider(),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 10),
+                  padding: const EdgeInsets.fromLTRB(10.0, 0, 0, 0),
                   child: Text(
                     "About",
                     style: TextStyle(
-                      fontSize: isTablet ? 30 : 24,
+                      fontSize: isTablet ? 30 : 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     "RKM Hospital is a modern healthcare center offering emergency "
                     "services, OPD, diagnostics, and specialized medical care. "
@@ -150,9 +192,26 @@ class OrganizationDetailScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                  child: Text(
+                    "Department",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DepartmentSelector(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
+                  child: Text(
+                    "Slots",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DateSelector(),
 
-                /// ---------- APPOINTMENT BUTTON ----------
+                TimeSelector(),
+                SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: CustomButton(
@@ -161,10 +220,14 @@ class OrganizationDetailScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
               ],
             ),
           ),
+          // bottomNavigationBar: CustomNavBar(
+          //   currentIndex: _navIndex,
+          //   onTap: _onNavTap,
+          // ),
         );
       },
     );
