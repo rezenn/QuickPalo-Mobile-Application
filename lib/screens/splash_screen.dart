@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/login_screen.dart';
 import 'dart:async';
+import 'package:quickpalo/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
       );
     });
   }
@@ -75,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           Shadow(
                             offset: Offset(2, 2),
                             blurRadius: 6,
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withAlpha(80),
                           ),
                         ],
                       ),
