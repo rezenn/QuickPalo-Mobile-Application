@@ -24,46 +24,39 @@ class CustomBigCard extends StatelessWidget {
 
         // Make responsive sizes
         final double cardWidth = maxW * 0.45;
-        final double cardHeight = cardWidth * 1;
+        final double cardHeight = cardWidth * 1.2;
 
-        return Container(
-          width: cardWidth,
-          height: cardHeight,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade600),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
+        return Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
           ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+          child: Container(
+            width: cardWidth,
+            height: cardHeight,
+            padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: SizedBox(
-                    width: cardWidth * 2,
-                    height: cardHeight * 1.6,
+                    width: double.infinity,
+                    height: cardHeight * 1.1,
                     child: Image.network(imagePath, fit: BoxFit.cover),
                   ),
                 ),
-
                 const SizedBox(height: 8),
-
                 Text(
                   title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     const Icon(Icons.location_pin, color: Colors.red, size: 13),
@@ -76,13 +69,13 @@ class CustomBigCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(200, 0, 0, 0),
+                          color: Colors.black54,
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 4),
                 Row(
                   children: [
                     const Icon(Icons.access_time, color: Colors.grey, size: 13),
@@ -95,17 +88,20 @@ class CustomBigCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(200, 0, 0, 0),
+                          color: Colors.black54,
                         ),
                       ),
                     ),
                   ],
                 ),
-                Divider(height: 10, thickness: 1),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  child: Divider(height: 1, thickness: 1),
+                ),
                 Expanded(
                   child: Text(
                     description,
-                    maxLines: 4,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 12),
                   ),

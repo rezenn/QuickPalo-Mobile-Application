@@ -3,15 +3,14 @@ import 'package:quickpalo/common/date_selector.dart';
 import 'package:quickpalo/common/department_selector.dart';
 import 'package:quickpalo/common/time_selector.dart';
 import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/calendar_screen.dart';
-import 'package:quickpalo/screens/history_screen.dart';
-import 'package:quickpalo/screens/profile_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_detail_action.dart';
-import 'package:quickpalo/widgets/custom_nav_bar.dart';
+import 'package:quickpalo/models/organization_model.dart';
 
 class OrganizationDetailScreen extends StatefulWidget {
-  const OrganizationDetailScreen({super.key});
+  final OrganizationModel organization;
+
+  const OrganizationDetailScreen({super.key, required this.organization});
 
   @override
   State<OrganizationDetailScreen> createState() =>
@@ -74,7 +73,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     width: double.infinity,
                     height: isTablet ? 450 : 250,
                     child: Image.network(
-                      "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
+                      widget.organization.image,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -93,7 +92,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "RKM Hospital",
+                            widget.organization.title,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: isTablet ? 34 : 22,
@@ -109,7 +108,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                "Naya Sadak, Kathmandu",
+                                widget.organization.location,
                                 style: TextStyle(
                                   fontSize: isTablet ? 22 : 14,
                                   color: Colors.grey.shade700,
@@ -126,7 +125,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                "8:00 - 17:00",
+                                widget.organization.time,
                                 style: TextStyle(
                                   fontSize: isTablet ? 22 : 14,
                                   color: Colors.grey.shade700,
@@ -180,10 +179,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    "RKM Hospital is a modern healthcare center offering emergency "
-                    "services, OPD, diagnostics, and specialized medical care. "
-                    "We provide affordable and reliable treatment with a commitment "
-                    "to patient care.",
+                    widget.organization.description,
                     style: TextStyle(
                       fontSize: isTablet ? 20 : 16,
                       height: 1.5,

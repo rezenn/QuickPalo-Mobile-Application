@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/data/organization_data.dart';
 import 'package:quickpalo/screens/organization_detail_screen.dart';
 import 'package:quickpalo/widgets/custom_big_card.dart';
 import 'package:quickpalo/widgets/custom_search_bar.dart';
@@ -74,29 +75,25 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    spacing: 10,
-                    children: [
-                      CustomSmallCard(
-                        title: "Hospital 1",
-                        imagePath:
-                            "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
-                      ),
-                      CustomSmallCard(
-                        title: "Hospital 2",
-                        imagePath:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaKkwpCkwk9DcZ4gzuHnX_9-ET8I7aGKs2Dg&s",
-                      ),
-                      CustomSmallCard(
-                        title: "Hospital 3",
-                        imagePath:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiIGm_Z3u8IHIIqMsPBpwU8qwiYyelbFvHw&s",
-                      ),
-                    ],
+                SizedBox(
+                  height: 150,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: organizations.length > 10
+                        ? 10
+                        : organizations.length,
+                    separatorBuilder: (_, __) => SizedBox(width: 12),
+                    itemBuilder: (context, index) {
+                      final org = organizations[index];
+
+                      return CustomSmallCard(
+                        title: org.title,
+                        imagePath: org.image,
+                      );
+                    },
                   ),
                 ),
+
                 SizedBox(height: 5),
                 Divider(),
                 SingleChildScrollView(
@@ -122,64 +119,26 @@ class HomeScreen extends StatelessWidget {
                   childAspectRatio: 0.7,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    GestureDetector(
+                  children: organizations.map((org) {
+                    return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const OrganizationDetailScreen(),
+                            builder: (_) =>
+                                OrganizationDetailScreen(organization: org),
                           ),
                         );
                       },
                       child: CustomBigCard(
-                        imagePath:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiIGm_Z3u8IHIIqMsPBpwU8qwiYyelbFvHw&s",
-                        title: "RKM Hospital",
-                        location: "Kantipath, Kathmandu",
-                        time: "8:00 - 20:00",
-                        description:
-                            "A non-profit institution prioritizing community health, maternal care andA non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
+                        imagePath: org.image,
+                        title: org.title,
+                        location: org.location,
+                        time: org.time,
+                        description: org.description,
                       ),
-                    ),
-                    CustomBigCard(
-                      imagePath:
-                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
-                      title: "GSK University",
-                      location: "Kainali, Kainali",
-                      time: "8:00 - 16:00",
-                      description:
-                          "Top ranked elite medical university with global faculty.",
-                    ),
-                    CustomBigCard(
-                      imagePath:
-                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
-                      title: "GSK University",
-                      location: "Kainali, Kainali",
-                      time: "8:00 - 16:00",
-                      description:
-                          "Top ranked elite medical university with global faculty.",
-                    ),
-                    CustomBigCard(
-                      imagePath:
-                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
-                      title: "GSK University",
-                      location: "Kainali, Kainali",
-                      time: "8:00 - 16:00",
-                      description:
-                          "Top ranked elite medical university with global faculty.",
-                    ),
-                    CustomBigCard(
-                      imagePath:
-                          "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
-                      title: "GSK University",
-                      location: "Kainali, Kainali",
-                      time: "8:00 - 16:00",
-                      description:
-                          "Top ranked elite medical university with global faculty.",
-                    ),
-                  ],
+                    );
+                  }).toList(),
                 ),
               ],
             ),

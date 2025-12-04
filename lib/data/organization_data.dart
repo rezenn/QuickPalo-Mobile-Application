@@ -1,0 +1,84 @@
+import 'package:quickpalo/models/organization_model.dart';
+
+final List<OrganizationModel> organizations = [
+  OrganizationModel(
+    title: "RKM Hospital",
+    image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiIGm_Z3u8IHIIqMsPBpwU8qwiYyelbFvHw&s",
+    location: "Kantipath, Kathmandu",
+    time: "8:00 - 20:00",
+    description:
+        "A non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
+  ),
+  OrganizationModel(
+    title: "GSK Hospital",
+    image:
+        "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
+    location: "Kainali, Kainali",
+    time: "8:00 - 16:00",
+    description: "Top ranked elite medical university with global faculty.",
+  ),
+  OrganizationModel(
+    title: "City Health Center",
+    image:
+        "https://www.brockport.edu/live/image/gid/154/width/990/height/552/crop/1/src_region/0,147,3200,1931/11625_health_center_exterior19-2.jpg",
+    location: "Thamel, Kathmandu",
+    time: "7:00 - 19:00",
+    description:
+        "Primary care center offering outpatient services and emergency care.",
+  ),
+  OrganizationModel(
+    title: "Everest College",
+    image:
+        "https://itcollegenepal.com/wp-content/uploads/2018/09/Everest-College.jpg.webp",
+    location: "Patan, Lalitpur",
+    time: "9:00 - 17:00",
+    description:
+        "Leading educational institution offering undergraduate and postgraduate courses.",
+  ),
+  OrganizationModel(
+    title: "Nepal Government Office",
+    image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSATjnnZVre_SaYbVXf-8-KSP-L2_NouAhAYA&s",
+    location: "Singha Durbar, Kathmandu",
+    time: "10:00 - 16:00",
+    description:
+        "Government office providing public services and administrative support.",
+  ),
+  OrganizationModel(
+    title: "Global Medical Center",
+    image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYxXnrIIYDkxjUkQagL5VGX4uCboVHg2YA98GqM4P3YkCs1AhYsdpn2PeIiXrnlqOFh6k&usqp=CAU",
+    location: "Jhamsikhel, Lalitpur",
+    time: "8:00 - 22:00",
+    description:
+        "State-of-the-art facility offering specialized treatments and surgeries.",
+  ),
+  OrganizationModel(
+    title: "Kathmandu University",
+    image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwzCyPVDKe6S4Lh-J5LTAe0_WC2ZyFxBGneeCt8NL8lzG0flevqE222SewFeFpWc9x9As&usqp=CAU",
+    location: "Dhulikhel, Kavrepalanchok",
+    time: "8:30 - 16:30",
+    description:
+        "Prestigious university offering programs in engineering, medicine, and arts.",
+  ),
+  OrganizationModel(
+    title: "Shanti Nursing Home",
+    image:
+        "https://media.istockphoto.com/id/157677909/photo/nurse-or-doctor-pushing-a-wheelchair-outdoors.jpg?s=612x612&w=0&k=20&c=t2H7lO8cuQ1pCeFJYk-on-G2J6AVujKnhF72yK_t0zM=",
+    location: "Kuleshwor, Kathmandu",
+    time: "24 hours",
+    description:
+        "Well-known private nursing home with general and maternity wards.",
+  ),
+  OrganizationModel(
+    title: "National College of Science",
+    image:
+        "https://cdn.sanity.io/images/p2ba9zey/production/21bf7be80600541954415f5365f583df79d8b7be-3346x1530.jpg",
+    location: "Jawalakhel, Lalitpur",
+    time: "9:00 - 18:00",
+    description:
+        "Specializes in science and technology programs for undergraduate students.",
+  ),
+];

@@ -1,15 +1,13 @@
-class ServicesModel {
-  final String id;
-  final String image;
+class OrganizationModel {
   final String title;
+  final String image;
   final String location;
   final String time;
   final String description;
 
-  ServicesModel({
-    required this.id,
-    required this.image,
+  OrganizationModel({
     required this.title,
+    required this.image,
     required this.location,
     required this.time,
     required this.description,

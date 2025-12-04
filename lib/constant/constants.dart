@@ -1,8 +1,7 @@
-import 'package:quickpalo/models/services_model.dart';
+import 'package:quickpalo/models/organization_model.dart';
 
-final List<ServicesModel> ServiceCards = [
-  ServicesModel(
-    id: "H1",
+final List<OrganizationModel> serviceCards = [
+  OrganizationModel(
     image:
         "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
     title: "Gobal Hospital",
@@ -11,8 +10,7 @@ final List<ServicesModel> ServiceCards = [
     description:
         "A non-profit institution prioritizing community health, maternal care and chronic illness prevention. It operates with a patient-first philosophy, ensuring that even low-income families have access to essential medical services without financial barriers. The institution also invests in research related to maternal mortality, child malnutrition, and chronic conditions such as diabetes and hypertension within low-resource areas.",
   ),
-  ServicesModel(
-    id: "U1",
+  OrganizationModel(
     image:
         "https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg",
     title: "GSK University",
