@@ -21,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey1 = GlobalKey<FormState>();
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 hintText: "Hem Raj Shrestha",
                                 errortext: "Please enter a valid full name",
                                 keyboardType: TextInputType.number,
+                                obscureText: false,
                               ),
                               SizedBox(height: 5),
                               CustomLabel(text: "Email"),
@@ -110,6 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 hintText: "hemraj@mail.com",
                                 errortext: "Please enter a valid email",
                                 keyboardType: TextInputType.number,
+                                obscureText: false,
                               ),
                               SizedBox(height: 5),
                               CustomLabel(text: "Phone Number"),
@@ -146,6 +149,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 controller: passwordController,
                                 hintText: "********",
                                 errortext: "Please enter a password",
+                                obscureText: _obscurePassword,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
+                                ),
                               ),
                               SizedBox(height: 20),
                               CustomButton(onPressed: () {}, text: "Sign up"),

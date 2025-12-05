@@ -7,17 +7,24 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     required this.errortext,
     this.keyboardType = TextInputType.emailAddress,
+    required this.obscureText,
+    this.suffixIcon,
   });
   final TextEditingController controller;
   final String hintText;
   final String errortext;
   final TextInputType keyboardType;
+  final bool obscureText;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hintText,
+        suffixIcon: suffixIcon,
+
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: Colors.black),

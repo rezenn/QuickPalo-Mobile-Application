@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey1 = GlobalKey<FormState>();
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +101,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 controller: emailController,
                                 hintText: "hemraj@mail.com",
                                 errortext: "Please enter a valid email",
-                                keyboardType: TextInputType.number,
+                                // keyboardType: TextInputType.,
+                                obscureText: false,
                               ),
                               SizedBox(height: 25),
                               CustomLabel(text: "Password", fontSize: 16),
@@ -109,6 +111,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 controller: passwordController,
                                 hintText: "********",
                                 errortext: "Please enter a password",
+                                obscureText: _obscurePassword,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
+                                ),
                               ),
                               SizedBox(height: 15),
                               Align(
