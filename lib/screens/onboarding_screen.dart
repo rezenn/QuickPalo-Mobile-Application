@@ -95,6 +95,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
+                        fontFamily: "Inter Italic",
                         height: 1.5,
                         color: Colors.black.withAlpha(150),
                         fontWeight: FontWeight.w400,
@@ -145,6 +146,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
+                        fontFamily: "Inter Italic",
                         height: 1.5,
                         color: Colors.black.withAlpha(150),
                         fontWeight: FontWeight.w400,
@@ -195,6 +197,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
+                        fontFamily: "Inter Italic",
                         height: 1.5,
                         color: Colors.black.withAlpha(150),
                         fontWeight: FontWeight.w400,

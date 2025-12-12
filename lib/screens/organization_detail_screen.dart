@@ -66,7 +66,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// ---------- IMAGE BANNER ----------
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: SizedBox(
@@ -81,13 +80,11 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
 
                 const SizedBox(height: 16),
 
-                /// ---------- HEADER + ACTION BUTTONS ----------
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      /// LEFT: Name + Address
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -136,7 +133,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         ],
                       ),
 
-                      /// RIGHT: Action Icons
                       Container(
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 216, 216, 216),

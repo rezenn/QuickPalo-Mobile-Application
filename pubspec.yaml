@@ -84,9 +84,6 @@ flutter:
     - family: Inter Bold 18
       fonts:
         - asset: assets/fonts/Inter_18pt-Bold.ttf
-    - family: Inter Black
-      fonts:
-        - asset: assets/fonts/Inter_18pt-Black.ttf
     - family: Inter Italic
       fonts:
         - asset: assets/fonts/Inter_18pt-Italic.ttf
