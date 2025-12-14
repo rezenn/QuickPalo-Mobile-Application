@@ -53,7 +53,7 @@ class CustomBigCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: "Inter Bold 24",
                   ),
                 ),
                 const SizedBox(height: 4),

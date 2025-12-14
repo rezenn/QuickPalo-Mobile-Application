@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(
                             color: blackColor,
                             fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            fontFamily: "Inter Bold 18",
                           ),
                         ),
                       ],
@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Recently Viewed",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontFamily: "Inter Bold 18"),
                   ),
                 ),
                 SizedBox(

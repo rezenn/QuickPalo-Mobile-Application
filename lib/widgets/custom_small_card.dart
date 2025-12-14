@@ -34,7 +34,8 @@ class CustomSmallCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontWeight: FontWeight.bold,
+                fontFamily: "Inter Bold 24",
+
                 fontSize: 15,
                 color: Color.fromARGB(183, 0, 0, 0),
               ),

@@ -92,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 "Register",
                                 style: TextStyle(
                                   fontSize: 40,
-                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Inter Bold 24",
                                 ),
                               ),
 
