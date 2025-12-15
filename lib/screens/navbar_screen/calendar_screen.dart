@@ -5,6 +5,26 @@ class CalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(child: Text("data")));
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Center(
+                child: Text(
+                  "Calendar",
+                  style: const TextStyle(
+                    fontFamily: "Inter",
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

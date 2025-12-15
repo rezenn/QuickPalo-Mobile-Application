@@ -7,11 +7,13 @@ class CustomChipSelection extends StatelessWidget {
     required this.label,
     required this.isSelected,
     required this.onTap,
+    // this.hasBorder = false,
   });
 
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
+  // final bool hasBorder;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -23,14 +25,16 @@ class CustomChipSelection extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected ? darkSelectClipColor : lightSelectClipColor,
           borderRadius: BorderRadius.circular(12),
+          // border: hasBorder ? Border.all(color: boderColor) : null,
+          border: Border.all(color: borderColor),
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: isSelected ? Colors.white : lightSelectClipTextColor,
+            fontFamily: "Inter Bold 24",
+            color: isSelected ? Colors.white : darkSelectClipColor,
           ),
         ),
       ),

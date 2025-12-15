@@ -24,6 +24,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
 
   @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -102,8 +111,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 controller: fullNameController,
                                 hintText: "Hem Raj Shrestha",
                                 errortext: "Please enter a valid full name",
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 obscureText: false,
+                                fieldType: FieldType.text,
                               ),
                               SizedBox(height: 5),
                               CustomLabel(text: "Email"),
@@ -111,38 +121,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 controller: emailController,
                                 hintText: "hemraj@mail.com",
                                 errortext: "Please enter a valid email",
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.emailAddress,
                                 obscureText: false,
+                                fieldType: FieldType.email,
                               ),
                               SizedBox(height: 5),
                               CustomLabel(text: "Phone Number"),
                               const SizedBox(height: 5),
                               IntlPhoneField(
                                 controller: phoneController,
+                                initialCountryCode: 'NP',
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 decoration: InputDecoration(
                                   hintText: "9812345678",
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 14,
-                                    horizontal: 12,
-                                  ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Colors.black),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
+                                  errorBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      color: Colors.purple,
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
                                       width: 1.5,
                                     ),
                                   ),
                                 ),
-                                initialCountryCode: "NP",
-                                onChanged: (phone) {},
-                                onCountryChanged: (country) {},
+                                validator: (phone) {
+                                  if (phone == null || phone.number.isEmpty) {
+                                    return 'Phone number is required';
+                                  }
+                                  if (!phone.isValidNumber()) {
+                                    return 'Enter a valid phone number';
+                                  }
+                                  if (phone.number.length < 10) {
+                                    return 'Enter a valid phone number';
+                                  }
+                                  return null;
+                                },
                               ),
+
                               SizedBox(height: 5),
                               CustomLabel(text: "Password"),
                               CustomTextField(
@@ -162,9 +185,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     });
                                   },
                                 ),
+                                keyboardType: TextInputType.text,
+                                fieldType: FieldType.password,
                               ),
                               SizedBox(height: 20),
-                              CustomButton(onPressed: () {}, text: "Sign up"),
+                              CustomButton(
+                                onPressed: () {
+                                  if (_formKey1.currentState!.validate()) {}
+                                },
+                                text: "Sign up",
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

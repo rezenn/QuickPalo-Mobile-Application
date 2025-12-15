@@ -8,11 +8,12 @@ const LightPurpleColor3 = Color(0xFFB61BE1); // fixed hex
 
 const textColorBlue = Color(0xFF4D81E7);
 const textColorGrey = Color(0xFF6C7278);
-// fixed hex
 const buttonColor1 = Color(0xFFAE25D4);
 const buttonColor2 = Color(0xFF7F8A8E);
 
-const lightSelectClipColor = Color(0xFFCFC9D0);
+const borderColor = Color.fromARGB(255, 159, 160, 161);
+
+const lightSelectClipColor = Color.fromARGB(255, 236, 233, 239);
 const darkSelectClipColor = Color(0xFF111827);
 const lightSelectClipTextColor = Color(0xFF4F4F52);
 // fixed hex

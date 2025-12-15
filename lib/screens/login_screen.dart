@@ -103,6 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 errortext: "Please enter a valid email",
                                 // keyboardType: TextInputType.,
                                 obscureText: false,
+                                keyboardType: TextInputType.emailAddress,
+                                fieldType: FieldType.email,
                               ),
                               SizedBox(height: 25),
                               CustomLabel(text: "Password", fontSize: 16),
@@ -124,6 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     });
                                   },
                                 ),
+                                keyboardType: TextInputType.text,
+                                fieldType: FieldType.password,
                               ),
                               SizedBox(height: 15),
                               Align(
@@ -135,13 +139,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               CustomButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DashboardScreen(),
-                                    ),
-                                  );
+                                  if (_formKey1.currentState!.validate()) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DashboardScreen(),
+                                      ),
+                                    );
+                                  }
                                 },
                                 text: "Login",
                               ),

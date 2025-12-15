@@ -58,7 +58,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
             centerTitle: true,
             title: const Text(
               "Book Appointment",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontFamily: "Inter Bold 24"),
             ),
           ),
 
@@ -91,7 +91,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                           Text(
                             widget.organization.title,
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontFamily: "Inter Bold 18",
                               fontSize: isTablet ? 34 : 22,
                             ),
                           ),
@@ -135,9 +135,9 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
 
                       Container(
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 216, 216, 216),
+                          color: const Color.fromARGB(255, 246, 244, 244),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: buttonColor2),
+                          border: Border.all(color: borderColor),
                         ),
                         child: Row(
                           children: [
@@ -168,7 +168,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     "About",
                     style: TextStyle(
                       fontSize: isTablet ? 30 : 20,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: "Inter Bold 24",
                     ),
                   ),
                 ),
@@ -189,7 +189,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                   padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                   child: Text(
                     "Department",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 22, fontFamily: "Inter Bold 24"),
                   ),
                 ),
                 DepartmentSelector(),
@@ -197,7 +197,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                   padding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
                   child: Text(
                     "Slots",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontFamily: "Inter Bold 24"),
                   ),
                 ),
                 DateSelector(),

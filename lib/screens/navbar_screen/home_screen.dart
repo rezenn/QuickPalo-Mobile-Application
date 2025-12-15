@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickpalo/common/organization_filter.dart';
 import 'package:quickpalo/constant/colors.dart';
 import 'package:quickpalo/data/organization_data.dart';
 import 'package:quickpalo/screens/organization_detail_screen.dart';
@@ -96,19 +97,7 @@ class HomeScreen extends StatelessWidget {
 
                 SizedBox(height: 5),
                 Divider(),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Wrap(
-                    spacing: 10,
-                    children: [
-                      Chip(label: Text("All")),
-                      Chip(label: Text("Hospital")),
-                      Chip(label: Text("University")),
-                      Chip(label: Text("College")),
-                      Chip(label: Text("Government Office")),
-                    ],
-                  ),
-                ),
+                OrganizationFilter(),
                 SizedBox(height: 10),
                 GridView.count(
                   crossAxisCount: MediaQuery.of(context).size.width > 600
