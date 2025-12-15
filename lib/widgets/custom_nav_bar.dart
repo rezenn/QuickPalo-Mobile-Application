@@ -17,8 +17,6 @@ class CustomNavBar extends StatelessWidget {
       currentIndex: currentIndex,
       onTap: onTap,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: LightPurpleColor,
-      unselectedItemColor: textColorGrey,
       selectedFontSize: 12,
       unselectedFontSize: 12,
       elevation: 8,

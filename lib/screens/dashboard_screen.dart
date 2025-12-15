@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/screens/calendar_screen.dart';
-import 'package:quickpalo/screens/history_screen.dart';
-import 'package:quickpalo/screens/home_screen.dart';
-import 'package:quickpalo/screens/profile_screen.dart';
+import 'package:quickpalo/screens/navbar_screen/calendar_screen.dart';
+import 'package:quickpalo/screens/navbar_screen/history_screen.dart';
+import 'package:quickpalo/screens/navbar_screen/home_screen.dart';
+import 'package:quickpalo/screens/navbar_screen/profile_screen.dart';
 import 'package:quickpalo/widgets/custom_nav_bar.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = const [
+  final List<Widget> screenList = const [
     HomeScreen(),
     CalendarScreen(),
     HistoryScreen(),
@@ -31,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: screenList[_selectedIndex],
       bottomNavigationBar: CustomNavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
