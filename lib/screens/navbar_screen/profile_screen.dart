@@ -5,6 +5,26 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(child: Text("3")));
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Center(
+                child: Text(
+                  "Profile",
+                  style: const TextStyle(
+                    fontFamily: "Inter Bold 24",
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    ;
   }
 }

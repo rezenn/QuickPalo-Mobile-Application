@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
 import 'package:quickpalo/screens/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -241,7 +240,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   TextButton(
                     onPressed: () => controller.jumpToPage(2),
-                    child: Text("Skip"),
+                    child: Text(
+                      "Skip",
+                      style: TextStyle(fontFamily: "Inter Bold 24"),
+                    ),
                   ),
                   Center(
                     child: SmoothPageIndicator(
@@ -264,7 +266,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                     ),
-                    child: Text("Next"),
+                    child: Text(
+                      "Next",
+                      style: TextStyle(fontFamily: "Inter Bold 24"),
+                    ),
                   ),
                 ],
               ),

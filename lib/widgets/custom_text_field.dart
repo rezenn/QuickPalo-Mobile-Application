@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
     required this.keyboardType,
     required this.fieldType,
     this.suffixIcon,
+    this.validator,
   });
   final TextEditingController controller;
   final String hintText;
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final FieldType fieldType;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +43,24 @@ class CustomTextField extends StatelessWidget {
 
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return errortext;
-        }
+      validator:
+          validator ??
+          (value) {
+            if (value == null || value.trim().isEmpty) {
+              return errortext;
+            }
 
-        if (fieldType == FieldType.email &&
-            !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-          return "Enter a valid email address";
-        }
+            if (fieldType == FieldType.email &&
+                !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+              return "Enter a valid email address";
+            }
 
-        if (fieldType == FieldType.password && value.length < 8) {
-          return "Password must be at least 8 characters";
-        }
+            if (fieldType == FieldType.password && value.length < 8) {
+              return "Password must be at least 8 characters";
+            }
 
-        return null;
-      },
+            return null;
+          },
     );
   }
 }

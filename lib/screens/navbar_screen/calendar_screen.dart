@@ -15,9 +15,8 @@ class CalendarScreen extends StatelessWidget {
                 child: Text(
                   "Calendar",
                   style: const TextStyle(
-                    fontFamily: "Inter",
+                    fontFamily: "Inter Bold 24",
                     fontSize: 24,
-                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),

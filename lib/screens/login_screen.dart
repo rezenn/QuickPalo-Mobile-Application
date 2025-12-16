@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/screens/change_password_screen.dart';
 import 'package:quickpalo/screens/dashboard_screen.dart';
+import 'package:quickpalo/screens/forgot_password_screen.dart';
 import 'package:quickpalo/screens/register_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_button2.dart';
@@ -20,6 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey1 = GlobalKey<FormState>();
   bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +143,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 alignment: Alignment.bottomRight,
                                 child: CustomTextButton(
                                   text: "Forgot Password?",
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgotPasswordScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                               CustomButton(
