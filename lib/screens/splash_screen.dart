@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
 import 'dart:async';
 import 'package:quickpalo/screens/onboarding_screen.dart';
+import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -130,8 +132,17 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 60),
-            const CircularProgressIndicator(),
+            // SizedBox(height: 30),
+            // const CircularProgressIndicator(),
+            SizedBox(
+              child: Center(
+                child: Lottie.asset(
+                  "assets/lottie/loading.json",
+                  width: 400,
+                  repeat: true,
+                ),
+              ),
+            ),
           ],
         ),
       ),
