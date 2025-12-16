@@ -60,6 +60,10 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
               "Book Appointment",
               style: TextStyle(fontFamily: "Inter Bold 24"),
             ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1),
+              child: Container(color: Colors.black54, height: 1),
+            ),
           ),
 
           body: SingleChildScrollView(
@@ -85,52 +89,57 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.organization.title,
-                            style: TextStyle(
-                              fontFamily: "Inter Bold 18",
-                              fontSize: isTablet ? 34 : 22,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: Text(
+                                widget.organization.title,
+                                style: TextStyle(
+                                  fontFamily: "Inter Bold 18",
+                                  fontSize: isTablet ? 34 : 22,
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.location_pin,
-                                color: Colors.red,
-                                size: 13,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                widget.organization.location,
-                                style: TextStyle(
-                                  fontSize: isTablet ? 22 : 14,
-                                  color: Colors.grey.shade700,
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_pin,
+                                  color: Colors.red,
+                                  size: 13,
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.access_time,
-                                color: Colors.grey,
-                                size: 13,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                widget.organization.time,
-                                style: TextStyle(
-                                  fontSize: isTablet ? 22 : 14,
-                                  color: Colors.grey.shade700,
+                                const SizedBox(width: 5),
+                                Text(
+                                  widget.organization.location,
+                                  style: TextStyle(
+                                    fontSize: isTablet ? 22 : 14,
+                                    color: Colors.grey.shade700,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.access_time,
+                                  color: Colors.grey,
+                                  size: 13,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  widget.organization.time,
+                                  style: TextStyle(
+                                    fontSize: isTablet ? 22 : 14,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
 
                       Container(
@@ -192,7 +201,9 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     style: TextStyle(fontSize: 22, fontFamily: "Inter Bold 24"),
                   ),
                 ),
-                DepartmentSelector(),
+                DepartmentSelector(
+                  departments: widget.organization.departments,
+                ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
                   child: Text(
@@ -202,7 +213,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                 ),
                 DateSelector(),
 
-                TimeSelector(),
+                TimeSelector(timeSlots: widget.organization.timeSlots),
                 SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

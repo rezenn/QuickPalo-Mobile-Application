@@ -4,6 +4,8 @@ class OrganizationModel {
   final String location;
   final String time;
   final String description;
+  final List<String> departments;
+  final List<String> timeSlots;
 
   OrganizationModel({
     required this.title,
@@ -11,5 +13,7 @@ class OrganizationModel {
     required this.location,
     required this.time,
     required this.description,
+    required this.departments,
+    required this.timeSlots,
   });
 }

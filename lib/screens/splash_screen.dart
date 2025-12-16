@@ -3,7 +3,6 @@ import 'package:quickpalo/constant/colors.dart';
 import 'dart:async';
 import 'package:quickpalo/screens/onboarding_screen.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

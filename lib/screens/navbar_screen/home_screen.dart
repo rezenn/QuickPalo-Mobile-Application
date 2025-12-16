@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickpalo/common/organization_filter.dart';
 import 'package:quickpalo/constant/colors.dart';
 import 'package:quickpalo/data/organization_data.dart';
+import 'package:quickpalo/screens/navbar_screen/profile_screen.dart';
 import 'package:quickpalo/screens/organization_detail_screen.dart';
 import 'package:quickpalo/widgets/custom_big_card.dart';
 import 'package:quickpalo/widgets/custom_search_bar.dart';
@@ -55,10 +56,20 @@ class HomeScreen extends StatelessWidget {
                           size: 30,
                         ),
                         SizedBox(width: 5),
-                        CircleAvatar(
-                          radius: 26,
-                          backgroundImage: AssetImage(
-                            "assets/images/profile.png",
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ProfileScreen(),
+                              ),
+                            );
+                          },
+                          child: CircleAvatar(
+                            radius: 26,
+                            backgroundImage: AssetImage(
+                              "assets/images/profile.png",
+                            ),
                           ),
                         ),
                       ],

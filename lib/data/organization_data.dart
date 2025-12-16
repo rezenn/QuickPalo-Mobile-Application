@@ -9,6 +9,20 @@ final List<OrganizationModel> organizations = [
     time: "8:00 - 20:00",
     description:
         "A non-profit institution prioritizing community health, maternal care and chronic illness prevention.",
+    departments: [
+      "Gynecology",
+      "Orthopedics",
+      "Pediatrics",
+      "Cardiology",
+      "Pathology",
+      "Radiology",
+    ],
+    timeSlots: [
+      "8:00 - 9:00",
+      "9:00 - 10:00",
+      "10:00 - 11:00",
+      "11:00 - 12:00",
+    ],
   ),
   OrganizationModel(
     title: "GSK Hospital",
@@ -17,6 +31,15 @@ final List<OrganizationModel> organizations = [
     location: "Kainali, Kainali",
     time: "8:00 - 16:00",
     description: "Top ranked elite medical university with global faculty.",
+    departments: [
+      "Pharmacy",
+      "Oncology",
+      "Psychiatry",
+      "Administrative",
+      "Maternity",
+      "Neurology",
+    ],
+    timeSlots: ["8:00-9:00", "9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
   OrganizationModel(
     title: "City Health Center",
@@ -26,6 +49,14 @@ final List<OrganizationModel> organizations = [
     time: "7:00 - 19:00",
     description:
         "Primary care center offering outpatient services and emergency care.",
+    departments: [
+      "Dermatology",
+      "ENT ",
+      "Gastroenterology",
+      "Rehab",
+      "Pathology",
+    ],
+    timeSlots: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
   OrganizationModel(
     title: "Everest College",
@@ -35,15 +66,34 @@ final List<OrganizationModel> organizations = [
     time: "9:00 - 17:00",
     description:
         "Leading educational institution offering undergraduate and postgraduate courses.",
+    departments: [
+      "faculty Office",
+      "Architecture",
+      "Engineering",
+      "Arts",
+      "BCA",
+      "BBA",
+      "Medicine",
+    ],
+    timeSlots: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
   OrganizationModel(
-    title: "Nepal Government Office",
+    title: "Government Office",
     image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSATjnnZVre_SaYbVXf-8-KSP-L2_NouAhAYA&s",
     location: "Singha Durbar, Kathmandu",
     time: "10:00 - 16:00",
     description:
         "Government office providing public services and administrative support.",
+    departments: [
+      "Tax Consultation",
+      "Public Records",
+      "Business Registration",
+      "Civil Registration",
+      "Social Welfare",
+      "Property Registration",
+    ],
+    timeSlots: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
   OrganizationModel(
     title: "Global Medical Center",
@@ -53,6 +103,8 @@ final List<OrganizationModel> organizations = [
     time: "8:00 - 22:00",
     description:
         "State-of-the-art facility offering specialized treatments and surgeries.",
+    departments: ["Radiology", "Pediatrics", "Dermatology", "Psychiatry"],
+    timeSlots: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
   OrganizationModel(
     title: "Kathmandu University",
@@ -62,15 +114,27 @@ final List<OrganizationModel> organizations = [
     time: "8:30 - 16:30",
     description:
         "Prestigious university offering programs in engineering, medicine, and arts.",
+    departments: [
+      "Admissions",
+      "Architecture",
+      "Medicine",
+      "Arts",
+      "Business",
+      "Engineering",
+    ],
+
+    timeSlots: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
   OrganizationModel(
-    title: "Shanti Nursing Home",
+    title: "Shanti Health Center",
     image:
         "https://media.istockphoto.com/id/157677909/photo/nurse-or-doctor-pushing-a-wheelchair-outdoors.jpg?s=612x612&w=0&k=20&c=t2H7lO8cuQ1pCeFJYk-on-G2J6AVujKnhF72yK_t0zM=",
     location: "Kuleshwor, Kathmandu",
     time: "24 hours",
     description:
         "Well-known private nursing home with general and maternity wards.",
+    departments: ["Pathology", "ENT", "Pediatrics"],
+    timeSlots: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
   OrganizationModel(
     title: "National College of Science",
@@ -80,5 +144,14 @@ final List<OrganizationModel> organizations = [
     time: "9:00 - 18:00",
     description:
         "Specializes in science and technology programs for undergraduate students.",
+    departments: [
+      "Computer Science",
+      "Architecture",
+      "Civil",
+      "Software Engineering",
+      "MBBS",
+      "Bsc Biology",
+    ],
+    timeSlots: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
   ),
 ];
