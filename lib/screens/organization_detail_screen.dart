@@ -67,26 +67,28 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
           ),
 
           body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: isTablet ? 450 : 250,
-                    child: Image.network(
-                      widget.organization.image,
-                      fit: BoxFit.cover,
+            child: Padding(
+              padding: isTablet
+                  ? EdgeInsets.symmetric(horizontal: 25)
+                  : EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: isTablet ? 500 : 250,
+                      child: Image.network(
+                        widget.organization.image,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
 
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
@@ -106,10 +108,10 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                             const SizedBox(height: 4),
                             Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.location_pin,
                                   color: Colors.red,
-                                  size: 13,
+                                  size: isTablet ? 20 : 13,
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
@@ -123,12 +125,12 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                             ),
                             Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.access_time,
                                   color: Colors.grey,
-                                  size: 13,
+                                  size: isTablet ? 20 : 13,
                                 ),
-                                const SizedBox(width: 5),
+                                const SizedBox(width: 10),
                                 Text(
                                   widget.organization.time,
                                   style: TextStyle(
@@ -167,64 +169,67 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                       ),
                     ],
                   ),
-                ),
 
-                const SizedBox(height: 10),
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 0, 0, 0),
-                  child: Text(
+                  const SizedBox(height: 10),
+                  Divider(),
+                  Text(
                     "About",
                     style: TextStyle(
                       fontSize: isTablet ? 30 : 20,
                       fontFamily: "Inter Bold 24",
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    widget.organization.description,
-                    style: TextStyle(
-                      fontSize: isTablet ? 20 : 16,
-                      height: 1.5,
-                      color: Colors.grey.shade800,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      widget.organization.description,
+                      style: TextStyle(
+                        fontSize: isTablet ? 20 : 16,
+                        height: 1.5,
+                        color: Colors.grey.shade800,
+                      ),
                     ),
                   ),
-                ),
 
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                  child: Text(
-                    "Department",
-                    style: TextStyle(fontSize: 22, fontFamily: "Inter Bold 24"),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    child: Text(
+                      "Department",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontFamily: "Inter Bold 24",
+                      ),
+                    ),
                   ),
-                ),
-                DepartmentSelector(
-                  departments: widget.organization.departments,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
-                  child: Text(
-                    "Slots",
-                    style: TextStyle(fontSize: 20, fontFamily: "Inter Bold 24"),
+                  DepartmentSelector(
+                    departments: widget.organization.departments,
                   ),
-                ),
-                DateSelector(),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
+                    child: Text(
+                      "Slots",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: "Inter Bold 24",
+                      ),
+                    ),
+                  ),
+                  DateSelector(),
 
-                TimeSelector(timeSlots: widget.organization.timeSlots),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: CustomButton(
-                    text: "Book Appointment",
-                    onPressed: () {},
+                  TimeSelector(timeSlots: widget.organization.timeSlots),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CustomButton(
+                      text: "Book Appointment",
+                      onPressed: () {},
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 20),
-              ],
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
           // bottomNavigationBar: CustomNavBar(

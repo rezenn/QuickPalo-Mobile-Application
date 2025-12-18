@@ -98,9 +98,20 @@ class HomeScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final org = organizations[index];
 
-                      return CustomSmallCard(
-                        title: org.title,
-                        imagePath: org.image,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  OrganizationDetailScreen(organization: org),
+                            ),
+                          );
+                        },
+                        child: CustomSmallCard(
+                          title: org.title,
+                          imagePath: org.image,
+                        ),
                       );
                     },
                   ),
