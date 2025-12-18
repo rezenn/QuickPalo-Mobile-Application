@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Image.asset("assets/images/quickpalo_logo.png"),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Text(
                       "Welcome to ",
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
                         shadows: [
@@ -84,8 +84,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     Text(
                       "QuickPalo",
                       style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 35,
+                        fontFamily: "Inter Bold 18",
                         fontStyle: FontStyle.italic,
                         color: LightPurpleColor3,
                         shadows: [
@@ -102,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Text(
                   "Where Booking ",
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
                     shadows: [
@@ -117,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Text(
                   "Meets Efficiency.",
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
                     shadows: [
@@ -131,8 +131,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ],
             ),
-            // SizedBox(height: 30),
-            // const CircularProgressIndicator(),
             SizedBox(
               child: Center(
                 child: Lottie.asset(
