@@ -61,7 +61,7 @@ final List<OrganizationModel> organizations = [
   OrganizationModel(
     title: "Everest College",
     image:
-        "https://itcollegenepal.com/wp-content/uploads/2018/09/Everest-College.jpg.webp",
+        "https://media.edusanjal.com/__sized__/cover_photo/eebs-building-thumbnail-1400x280-70.jpg",
     location: "Patan, Lalitpur",
     time: "9:00 - 17:00",
     description:
