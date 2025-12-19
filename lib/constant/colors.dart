@@ -10,6 +10,7 @@ const textColorBlue = Color(0xFF4D81E7);
 const textColorGrey = Color(0xFF6C7278);
 const buttonColor1 = Color(0xFFAE25D4);
 const buttonColor2 = Color(0xFF7F8A8E);
+const buttonColor3 = Color(0xFF9A7FFF);
 
 const borderColor = Color.fromARGB(255, 159, 160, 161);
 

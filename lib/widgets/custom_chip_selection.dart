@@ -21,7 +21,9 @@ class CustomChipSelection extends StatelessWidget {
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-        margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        margin: isSelected
+            ? EdgeInsets.symmetric(horizontal: 8, vertical: 8)
+            : EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         decoration: BoxDecoration(
           color: isSelected ? darkSelectClipColor : lightSelectClipColor,
           borderRadius: BorderRadius.circular(12),

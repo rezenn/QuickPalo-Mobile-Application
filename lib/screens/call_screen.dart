@@ -16,7 +16,7 @@ class CallScreen extends StatelessWidget {
             children: [
               SizedBox(height: 60),
               Text(
-                "Call",
+                "Organization Name",
                 style: TextStyle(fontFamily: "Inter Bold 24", fontSize: 35),
               ),
               SizedBox(height: 40),

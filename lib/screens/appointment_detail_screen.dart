@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/models/organization_model.dart';
+import 'package:quickpalo/screens/appointment_confirm_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 
 class AppointmentDetailScreen extends StatelessWidget {
@@ -12,27 +13,16 @@ class AppointmentDetailScreen extends StatelessWidget {
         final isTablet = constraints.maxWidth > 600;
 
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              "Appointment Details",
-              style: TextStyle(
-                fontFamily: "Inter",
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-            ),
-          ),
+          appBar: AppBar(title: Text("Appointment Details")),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Divider(),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 Text(
                   "Organization Name",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  style: TextStyle(fontFamily: "Inter Bold 24", fontSize: 24),
                 ),
                 SizedBox(height: 5),
                 Row(
@@ -86,7 +76,6 @@ class AppointmentDetailScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
 
-                // Payment Method Section
                 Text(
                   "Payment method:",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -98,12 +87,12 @@ class AppointmentDetailScreen extends StatelessWidget {
                   children: [
                     ChoiceChip(
                       label: Text("Online", style: TextStyle(fontSize: 16)),
-                      selected: true, // update dynamically if needed
+                      selected: true,
                       onSelected: (_) {},
                     ),
                     ChoiceChip(
                       label: Text("Physical", style: TextStyle(fontSize: 16)),
-                      selected: false, // update dynamically if needed
+                      selected: false,
                       onSelected: (_) {},
                     ),
                   ],
@@ -111,7 +100,14 @@ class AppointmentDetailScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 SizedBox(
                   child: CustomButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AppointmentConfirmScreen(),
+                        ),
+                      );
+                    },
                     text: "Confirm Appointment",
                   ),
                 ),

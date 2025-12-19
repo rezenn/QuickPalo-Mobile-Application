@@ -3,6 +3,7 @@ import 'package:quickpalo/common/organization_filter.dart';
 import 'package:quickpalo/constant/colors.dart';
 import 'package:quickpalo/data/organization_data.dart';
 import 'package:quickpalo/screens/navbar_screen/profile_screen.dart';
+import 'package:quickpalo/screens/notification_screen.dart';
 import 'package:quickpalo/screens/organization_detail_screen.dart';
 import 'package:quickpalo/widgets/custom_big_card.dart';
 import 'package:quickpalo/widgets/custom_search_bar.dart';
@@ -50,10 +51,21 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.notifications_rounded,
-                          color: textColorGrey,
-                          size: 30,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const NotificationScreen(),
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.notifications_rounded,
+                            color: textColorGrey,
+                            size: 30,
+                          ),
                         ),
                         SizedBox(width: 5),
                         GestureDetector(

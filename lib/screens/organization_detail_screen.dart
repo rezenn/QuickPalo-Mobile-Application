@@ -5,6 +5,7 @@ import 'package:quickpalo/common/time_selector.dart';
 import 'package:quickpalo/constant/colors.dart';
 import 'package:quickpalo/screens/appointment_detail_screen.dart';
 import 'package:quickpalo/screens/call_screen.dart';
+import 'package:quickpalo/screens/message_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_detail_action.dart';
 import 'package:quickpalo/models/organization_model.dart';
@@ -56,17 +57,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
         final isTablet = constraints.maxWidth > 600;
 
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text(
-              "Book Appointment",
-              style: TextStyle(fontFamily: "Inter Bold 24"),
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(1),
-              child: Container(color: Colors.black54, height: 1),
-            ),
-          ),
+          appBar: AppBar(title: const Text("Book Appointment")),
 
           body: SingleChildScrollView(
             child: Padding(
@@ -171,7 +162,14 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                               icon: Icons.message,
                               label: "Message",
                               isTablet: isTablet,
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MessageScreen(),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
