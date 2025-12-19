@@ -20,6 +20,8 @@ class HistoryScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 20),
+              Text("History Screen"),
             ],
           ),
         ),

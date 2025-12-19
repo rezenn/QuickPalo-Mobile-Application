@@ -3,6 +3,7 @@ import 'package:quickpalo/common/date_selector.dart';
 import 'package:quickpalo/common/department_selector.dart';
 import 'package:quickpalo/common/time_selector.dart';
 import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/screens/appointment_detail_screen.dart';
 import 'package:quickpalo/screens/call_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_detail_action.dart';
@@ -231,7 +232,15 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CustomButton(
                       text: "Book Appointment",
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const AppointmentDetailScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ),
 

@@ -5,6 +5,7 @@ ThemeData getApplicationTheme() {
   return ThemeData(
     useMaterial3: true,
     fontFamily: "Inter Regular",
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: LightPurpleColor,
