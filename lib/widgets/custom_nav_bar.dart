@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
 
 class CustomNavBar extends StatelessWidget {
   final int currentIndex;

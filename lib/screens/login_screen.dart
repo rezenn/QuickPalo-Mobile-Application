@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/change_password_screen.dart';
 import 'package:quickpalo/screens/dashboard_screen.dart';
 import 'package:quickpalo/screens/forgot_password_screen.dart';
 import 'package:quickpalo/screens/register_screen.dart';

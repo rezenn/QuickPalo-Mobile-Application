@@ -3,6 +3,7 @@ import 'package:quickpalo/common/date_selector.dart';
 import 'package:quickpalo/common/department_selector.dart';
 import 'package:quickpalo/common/time_selector.dart';
 import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/screens/call_screen.dart';
 import 'package:quickpalo/widgets/custom_button.dart';
 import 'package:quickpalo/widgets/custom_detail_action.dart';
 import 'package:quickpalo/models/organization_model.dart';
@@ -70,7 +71,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
             child: Padding(
               padding: isTablet
                   ? EdgeInsets.symmetric(horizontal: 25)
-                  : EdgeInsets.symmetric(horizontal: 16.0),
+                  : EdgeInsets.symmetric(horizontal: 5.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -156,7 +157,14 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                               icon: Icons.call,
                               label: "Call",
                               isTablet: isTablet,
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const CallScreen(),
+                                  ),
+                                );
+                              },
                             ),
                             CustomDetailAction(
                               icon: Icons.message,
