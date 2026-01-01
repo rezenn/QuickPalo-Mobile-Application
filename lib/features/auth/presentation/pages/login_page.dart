@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/core/utils/snackbar_utils.dart';
+import 'package:quickpalo/features/auth/presentation/state/auth_state.dart';
+import 'package:quickpalo/features/auth/presentation/view_model/auth_viewmodel.dart';
 import 'package:quickpalo/features/dashboard/presentation/pages/dashboard_screen.dart';
 import 'package:quickpalo/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:quickpalo/features/auth/presentation/pages/register_page.dart';
@@ -9,28 +13,54 @@ import 'package:quickpalo/core/widgets/custom_label.dart';
 import 'package:quickpalo/core/widgets/custom_text_button.dart';
 import 'package:quickpalo/core/widgets/custom_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final _formKey1 = GlobalKey<FormState>();
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleLogin() async {
+    if (_formKey.currentState!.validate()) {
+      await ref.read(authViewmodelProvider.notifier).login(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authViewmodelProvider);
+
+    // Listen to auth changes
+    ref.listen<AuthState>(authViewmodelProvider, (previous, next) {
+      if (next.status == AuthStatus.authenticated) {
+        SnackbarUtils.showSuccess(context, "Login successful");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DashboardScreen(),
+          ),
+        );
+      } else if (next.status == AuthStatus.error && next.errorMessage != null) {
+        SnackbarUtils.showError(context, next.errorMessage!);
+      }
+    });
     return LayoutBuilder(
       builder: (context, constraints) {
         final isTablet = constraints.maxWidth > 600;
@@ -91,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                         child: Form(
-                          key: _formKey1,
+                          key: _formKey,
                           child: Column(
                             children: [
                               Text(
@@ -101,12 +131,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontFamily: "Inter Bold 24",
                                 ),
                               ),
-
                               SizedBox(height: 15),
                               CustomLabel(text: "Email", fontSize: 16),
                               SizedBox(height: 5),
                               CustomTextField(
-                                controller: emailController,
+                                controller: _emailController,
                                 hintText: "hemraj@mail.com",
                                 errortext: "Please enter a valid email",
                                 // keyboardType: TextInputType.,
@@ -118,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               CustomLabel(text: "Password", fontSize: 16),
                               SizedBox(height: 5),
                               CustomTextField(
-                                controller: passwordController,
+                                controller: _passwordController,
                                 hintText: "********",
                                 errortext: "Please enter a password",
                                 obscureText: _obscurePassword,
@@ -154,17 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               CustomButton(
-                                onPressed: () {
-                                  if (_formKey1.currentState!.validate()) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DashboardScreen(),
-                                      ),
-                                    );
-                                  }
-                                },
+                                onPressed: _isLoading ? null : _handleLogin,
                                 text: "Login",
                               ),
                               Row(
@@ -213,7 +232,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ],
                               ),
-
                               SizedBox(height: 10),
                               CustomButton2(
                                 onPressed: () {},

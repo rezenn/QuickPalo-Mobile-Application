@@ -21,3 +21,9 @@ const lightSelectClipTextColor = Color(0xFF4F4F52);
 const blackColor = Color(0xFF000000); // fixed hex
 const blackColorLight = Color.fromARGB(200, 0, 0, 0); // fixed hex
 const whiteColor = Color(0xFFFFFFFF); // fixed hex
+
+// Status Colors
+const Color successColor = Color(0xFF4CAF50);
+const Color warningColor = Color(0xFFFFA726);
+const Color errorColor = Color(0xFFEF4444);
+const Color infoColor = Color(0xFF3B82F6);
