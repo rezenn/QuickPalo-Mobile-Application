@@ -3,8 +3,8 @@ import 'package:quickpalo/common/organization_filter.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/data/organization_data.dart';
 import 'package:quickpalo/features/dashboard/presentation/pages/profile_screen.dart';
-import 'package:quickpalo/screens/notification_screen.dart';
-import 'package:quickpalo/screens/organization_detail_screen.dart';
+import 'package:quickpalo/features/notification/presentation/pages/notification_screen.dart';
+import 'package:quickpalo/features/organizations/presentation/pages/organization_detail_screen.dart';
 import 'package:quickpalo/core/widgets/custom_big_card.dart';
 import 'package:quickpalo/core/widgets/custom_search_bar.dart';
 import 'package:quickpalo/core/widgets/custom_small_card.dart';
@@ -103,9 +103,8 @@ class HomeScreen extends StatelessWidget {
                   height: 150,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemCount: organizations.length > 10
-                        ? 10
-                        : organizations.length,
+                    itemCount:
+                        organizations.length > 10 ? 10 : organizations.length,
                     separatorBuilder: (_, __) => SizedBox(width: 12),
                     itemBuilder: (context, index) {
                       final org = organizations[index];
@@ -128,15 +127,13 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                 ),
-
                 SizedBox(height: 5),
                 Divider(),
                 OrganizationFilter(),
                 SizedBox(height: 10),
                 GridView.count(
-                  crossAxisCount: MediaQuery.of(context).size.width > 600
-                      ? 4
-                      : 2,
+                  crossAxisCount:
+                      MediaQuery.of(context).size.width > 600 ? 4 : 2,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
                   childAspectRatio: 0.7,
