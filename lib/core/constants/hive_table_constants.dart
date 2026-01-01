@@ -12,3 +12,5 @@ class HiveTableConstant {
   static const int appointmentTypeId = 2;
   static const String appointmentTable = "appointment_table";
 }
+
+//
