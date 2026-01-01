@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/widgets/custom_chip_selection.dart';
+import 'package:quickpalo/core/widgets/custom_chip_selection.dart';
 
 class TimeSelector extends StatefulWidget {
   const TimeSelector({super.key, required this.timeSlots});

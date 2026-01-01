@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/features/dashboard/presentation/pages/dashboard_screen.dart';
-import 'package:quickpalo/screens/forgot_password_screen.dart';
-import 'package:quickpalo/screens/register_screen.dart';
-import 'package:quickpalo/widgets/custom_button.dart';
-import 'package:quickpalo/widgets/custom_button2.dart';
-import 'package:quickpalo/widgets/custom_label.dart';
-import 'package:quickpalo/widgets/custom_text_button.dart';
-import 'package:quickpalo/widgets/custom_text_field.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:quickpalo/core/widgets/custom_button2.dart';
+import 'package:quickpalo/core/widgets/custom_label.dart';
+import 'package:quickpalo/core/widgets/custom_text_button.dart';
+import 'package:quickpalo/core/widgets/custom_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey1 = GlobalKey<FormState>();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
+    fullNameController.dispose();
     emailController.dispose();
+    phoneController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -95,27 +98,76 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Column(
                             children: [
                               Text(
-                                "Login",
+                                "Register",
                                 style: TextStyle(
                                   fontSize: 40,
                                   fontFamily: "Inter Bold 24",
                                 ),
                               ),
-                              SizedBox(height: 15),
-                              CustomLabel(text: "Email", fontSize: 16),
+
                               SizedBox(height: 5),
+                              CustomLabel(text: "Full Name"),
+                              CustomTextField(
+                                controller: fullNameController,
+                                hintText: "Hem Raj Shrestha",
+                                errortext: "Please enter a valid full name",
+                                keyboardType: TextInputType.text,
+                                obscureText: false,
+                                fieldType: FieldType.text,
+                              ),
+                              SizedBox(height: 5),
+                              CustomLabel(text: "Email"),
                               CustomTextField(
                                 controller: emailController,
                                 hintText: "hemraj@mail.com",
                                 errortext: "Please enter a valid email",
-                                // keyboardType: TextInputType.,
-                                obscureText: false,
                                 keyboardType: TextInputType.emailAddress,
+                                obscureText: false,
                                 fieldType: FieldType.email,
                               ),
-                              SizedBox(height: 25),
-                              CustomLabel(text: "Password", fontSize: 16),
                               SizedBox(height: 5),
+                              CustomLabel(text: "Phone Number"),
+                              const SizedBox(height: 5),
+                              IntlPhoneField(
+                                controller: phoneController,
+                                initialCountryCode: 'NP',
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  hintText: "9812345678",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                ),
+                                validator: (phone) {
+                                  if (phone == null || phone.number.isEmpty) {
+                                    return 'Phone number is required';
+                                  }
+                                  if (!phone.isValidNumber()) {
+                                    return 'Enter a valid phone number';
+                                  }
+                                  if (phone.number.length < 10) {
+                                    return 'Enter a valid phone number';
+                                  }
+                                  return null;
+                                },
+                              ),
+
+                              SizedBox(height: 5),
+                              CustomLabel(text: "Password"),
                               CustomTextField(
                                 controller: passwordController,
                                 hintText: "********",
@@ -136,54 +188,31 @@ class _LoginScreenState extends State<LoginScreen> {
                                 keyboardType: TextInputType.text,
                                 fieldType: FieldType.password,
                               ),
-                              SizedBox(height: 15),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: CustomTextButton(
-                                  text: "Forgot Password?",
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ForgotPasswordScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                              SizedBox(height: 20),
                               CustomButton(
                                 onPressed: () {
-                                  if (_formKey1.currentState!.validate()) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DashboardScreen(),
-                                      ),
-                                    );
-                                  }
+                                  if (_formKey1.currentState!.validate()) {}
                                 },
-                                text: "Login",
+                                text: "Sign up",
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Don't have an account?",
+                                    "Already have an account?",
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: textColorGrey,
                                     ),
                                   ),
                                   CustomTextButton(
-                                    text: "Sign Up",
+                                    text: "Login",
                                     onPressed: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const RegisterScreen(),
+                                              const LoginScreen(),
                                         ),
                                       );
                                     },
@@ -202,7 +231,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 10,
                                     ),
-                                    child: Text("Or"),
+                                    child: Text(
+                                      "Or",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: textColorGrey,
+                                      ),
+                                    ),
                                   ),
                                   Expanded(
                                     child: Divider(
@@ -212,6 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ],
                               ),
+
                               SizedBox(height: 10),
                               CustomButton2(
                                 onPressed: () {},
