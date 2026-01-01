@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/dashboard_screen.dart';
-import 'package:quickpalo/screens/forgot_password_screen.dart';
-import 'package:quickpalo/screens/register_screen.dart';
-import 'package:quickpalo/widgets/custom_button.dart';
-import 'package:quickpalo/widgets/custom_button2.dart';
-import 'package:quickpalo/widgets/custom_label.dart';
-import 'package:quickpalo/widgets/custom_text_button.dart';
-import 'package:quickpalo/widgets/custom_text_field.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/features/dashboard/presentation/pages/dashboard_screen.dart';
+import 'package:quickpalo/features/auth/presentation/pages/forgot_password_page.dart';
+import 'package:quickpalo/features/auth/presentation/pages/register_page.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:quickpalo/core/widgets/custom_button2.dart';
+import 'package:quickpalo/core/widgets/custom_label.dart';
+import 'package:quickpalo/core/widgets/custom_text_button.dart';
+import 'package:quickpalo/core/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

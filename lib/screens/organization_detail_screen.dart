@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:quickpalo/common/date_selector.dart';
 import 'package:quickpalo/common/department_selector.dart';
 import 'package:quickpalo/common/time_selector.dart';
-import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/appointment_detail_screen.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/features/appointment/presentation/pages/appointment_detail_screen.dart';
 import 'package:quickpalo/screens/call_screen.dart';
 import 'package:quickpalo/screens/message_screen.dart';
-import 'package:quickpalo/widgets/custom_button.dart';
-import 'package:quickpalo/widgets/custom_detail_action.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:quickpalo/core/widgets/custom_detail_action.dart';
 import 'package:quickpalo/models/organization_model.dart';
 
 class OrganizationDetailScreen extends StatefulWidget {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/common/organization_filter.dart';
-import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/data/organization_data.dart';
-import 'package:quickpalo/screens/navbar_screen/profile_screen.dart';
+import 'package:quickpalo/features/dashboard/presentation/pages/profile_screen.dart';
 import 'package:quickpalo/screens/notification_screen.dart';
 import 'package:quickpalo/screens/organization_detail_screen.dart';
-import 'package:quickpalo/widgets/custom_big_card.dart';
-import 'package:quickpalo/widgets/custom_search_bar.dart';
-import 'package:quickpalo/widgets/custom_small_card.dart';
+import 'package:quickpalo/core/widgets/custom_big_card.dart';
+import 'package:quickpalo/core/widgets/custom_search_bar.dart';
+import 'package:quickpalo/core/widgets/custom_small_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

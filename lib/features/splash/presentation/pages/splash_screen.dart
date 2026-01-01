@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
 import 'dart:async';
-import 'package:quickpalo/screens/onboarding_screen.dart';
+import 'package:quickpalo/features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/login_screen.dart';
-import 'package:quickpalo/widgets/custom_button.dart';
-import 'package:quickpalo/widgets/custom_label.dart';
-import 'package:quickpalo/widgets/custom_text_field.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:quickpalo/core/widgets/custom_label.dart';
+import 'package:quickpalo/core/widgets/custom_text_field.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});

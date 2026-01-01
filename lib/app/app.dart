@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/screens/splash_screen.dart';
+import 'package:quickpalo/features/splash/presentation/pages/splash_screen.dart';
 import 'package:quickpalo/app/theme/theme_data.dart';
 
 class App extends StatelessWidget {

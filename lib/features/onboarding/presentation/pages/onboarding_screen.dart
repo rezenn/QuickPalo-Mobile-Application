@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/login_screen.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {

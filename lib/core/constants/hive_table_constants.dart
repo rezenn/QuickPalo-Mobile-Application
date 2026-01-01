@@ -1,5 +1,5 @@
-class HiveTableConstants {
-  HiveTableConstants._();
+class HiveTableConstant {
+  HiveTableConstant._();
 
   static const String dbName = "quickpalo_db";
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/screens/change_password_screen.dart';
-import 'package:quickpalo/widgets/custom_button.dart';
-import 'package:quickpalo/widgets/custom_label.dart';
-import 'package:quickpalo/widgets/custom_otp_input.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/features/auth/presentation/pages/change_password_page.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:quickpalo/core/widgets/custom_label.dart';
+import 'package:quickpalo/core/widgets/custom_otp_input.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});

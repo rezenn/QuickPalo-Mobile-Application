@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/models/organization_model.dart';
-import 'package:quickpalo/screens/appointment_confirm_screen.dart';
-import 'package:quickpalo/widgets/custom_button.dart';
+import 'package:quickpalo/features/appointment/presentation/pages/appointment_confirm_screen.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
 
 class AppointmentDetailScreen extends StatelessWidget {
   const AppointmentDetailScreen({super.key});

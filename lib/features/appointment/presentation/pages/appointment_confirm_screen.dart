@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
-import 'package:quickpalo/widgets/custom_button.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
 
 class AppointmentConfirmScreen extends StatelessWidget {
   const AppointmentConfirmScreen({super.key});

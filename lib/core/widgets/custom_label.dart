@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/constant/colors.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
 
 class CustomLabel extends StatelessWidget {
   const CustomLabel({
