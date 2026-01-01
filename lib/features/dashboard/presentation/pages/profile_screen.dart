@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -22,6 +24,16 @@ class ProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text("Profile Screen"),
+              CustomButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
+                  },
+                  text: "Logout"),
             ],
           ),
         ),

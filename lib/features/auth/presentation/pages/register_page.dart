@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/core/services/hive/hive_service.dart';
 import 'package:quickpalo/core/utils/snackbar_utils.dart';
 import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
 import 'package:quickpalo/core/widgets/custom_button.dart';
@@ -36,8 +37,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     super.dispose();
   }
 
-  void _handleSignup() {
+  void _handleSignup() async {
     if (!_formKey1.currentState!.validate()) return;
+
+    final email = _emailController.text.trim();
+    final hiveService = ref.read(hiveServiceProvider);
+
+    // Check if email already exists
+    if (hiveService.isEmailExist(email)) {
+      SnackbarUtils.showError(context, "Email already registered");
+      return;
+    }
 
     ref.read(authViewmodelProvider.notifier).register(
           fullName: _fullNameController.text.trim(),
