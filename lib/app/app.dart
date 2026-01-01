@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/screens/splash_screen.dart';
-import 'package:quickpalo/theme/theme_data.dart';
+import 'package:quickpalo/app/theme/theme_data.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -8,6 +8,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'QuickPalo',
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
       theme: getApplicationTheme(),
