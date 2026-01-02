@@ -43,7 +43,16 @@ class CustomBigCard extends StatelessWidget {
                   child: SizedBox(
                     width: double.infinity,
                     height: cardHeight * 1.1,
-                    child: Image.network(imagePath, fit: BoxFit.cover),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Icon(Icons.broken_image,
+                              size: 40, color: Colors.grey),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),

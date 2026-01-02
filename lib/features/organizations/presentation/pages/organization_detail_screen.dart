@@ -72,15 +72,19 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     child: SizedBox(
                       width: double.infinity,
                       height: isTablet ? 500 : 250,
-                      child: Image.network(
+                      child: Image.asset(
                         widget.organization.image,
                         fit: BoxFit.fill,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(Icons.broken_image,
+                                size: 40, color: Colors.grey),
+                          );
+                        },
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -136,7 +140,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                           ],
                         ),
                       ),
-
                       Container(
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 246, 244, 244),
@@ -176,7 +179,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 10),
                   Divider(),
                   Text(
@@ -197,7 +199,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
@@ -223,7 +224,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     ),
                   ),
                   DateSelector(),
-
                   TimeSelector(timeSlots: widget.organization.timeSlots),
                   SizedBox(height: 10),
                   Padding(
@@ -241,7 +241,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                       },
                     ),
                   ),
-
                   const SizedBox(height: 20),
                 ],
               ),

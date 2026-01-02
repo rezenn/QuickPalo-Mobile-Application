@@ -25,8 +25,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final _formKey1 = GlobalKey<FormState>();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+  bool _agreedToTerms = false;
 
   @override
   void dispose() {
@@ -34,14 +38,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     _emailController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   void _handleSignup() async {
+    if (!_agreedToTerms) {
+      SnackbarUtils.showError(
+        context,
+        'Please agree to the Terms & Conditions',
+      );
+      return;
+    }
     if (!_formKey1.currentState!.validate()) return;
 
     final email = _emailController.text.trim();
     final hiveService = ref.read(hiveServiceProvider);
+
+    // check if password is same or not
+    if (_passwordController.text != _confirmPasswordController.text) {
+      SnackbarUtils.showError(context, "Passwords do not match");
+      return;
+    }
 
     // Check if email already exists
     if (hiveService.isEmailExist(email)) {
@@ -223,6 +241,85 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             keyboardType: TextInputType.text,
                             fieldType: FieldType.password,
                           ),
+                          SizedBox(height: 5),
+                          CustomLabel(
+                            text: "Confirm Password",
+                            fontSize: 16,
+                          ),
+                          SizedBox(height: 5),
+                          CustomTextField(
+                            controller: _confirmPasswordController,
+                            hintText: "********",
+                            errortext: "Please enter a password",
+                            obscureText: _obscureConfirmPassword,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureConfirmPassword =
+                                      !_obscureConfirmPassword;
+                                });
+                              },
+                            ),
+                            keyboardType: TextInputType.text,
+                            fieldType: FieldType.password,
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Checkbox(
+                                value: _agreedToTerms,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _agreedToTerms = value ?? false;
+                                  });
+                                },
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _agreedToTerms = !_agreedToTerms;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 12),
+                                    child: Text.rich(
+                                      TextSpan(
+                                        text: 'I agree to the ',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: textColorGrey,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Terms & Conditions',
+                                            style: const TextStyle(
+                                              color: LightPurpleColor2,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const TextSpan(text: ' and '),
+                                          TextSpan(
+                                            text: 'Privacy Policy',
+                                            style: const TextStyle(
+                                              color: LightPurpleColor2,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 20),
                           CustomButton(
                             onPressed: _handleSignup,
@@ -285,11 +382,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             imagePath: "assets/images/google.png",
                           ),
                           const SizedBox(height: 15),
-                          CustomButton2(
-                            onPressed: () {},
-                            text: "Continue with Facebook",
-                            imagePath: "assets/images/facebook.png",
-                          ),
                         ],
                       ),
                     ),

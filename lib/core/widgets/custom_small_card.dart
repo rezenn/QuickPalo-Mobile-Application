@@ -22,12 +22,19 @@ class CustomSmallCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-            
               borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
-                
                 aspectRatio: 16 / 10, // responsive image
-                child: Image.network(imagePath, fit: BoxFit.cover),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Icon(Icons.broken_image,
+                          size: 40, color: Colors.grey),
+                    );
+                  },
+                ),
               ),
             ),
             SizedBox(height: 8),
@@ -37,7 +44,6 @@ class CustomSmallCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontFamily: "Inter Bold 24",
-
                 fontSize: 15,
                 color: Color.fromARGB(183, 0, 0, 0),
               ),
