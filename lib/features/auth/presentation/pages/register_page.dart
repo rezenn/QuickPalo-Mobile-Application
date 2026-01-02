@@ -296,6 +296,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                           fontSize: 14,
                                           color: textColorGrey,
                                         ),
+                                        //
                                         children: [
                                           TextSpan(
                                             text: 'Terms & Conditions',
