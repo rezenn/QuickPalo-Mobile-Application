@@ -25,14 +25,14 @@ class UserSessionService {
   Future<void> saveUserSession({
     required String userId,
     required String email,
-    required String fullName,
+    required String fullname,
     required String? phoneNumber,
     // String? profileImage,
   }) async {
     await _prefs.setBool(_keyIsLoggedIn, true);
     await _prefs.setString(_keyUserId, userId);
     await _prefs.setString(_keyUserEmail, email);
-    await _prefs.setString(_keyUserFullName, fullName);
+    await _prefs.setString(_keyUserFullName, fullname);
 
     if (phoneNumber != null) {
       await _prefs.setString(_keyUserPhoneNumber, phoneNumber);
