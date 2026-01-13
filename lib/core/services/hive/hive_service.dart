@@ -66,4 +66,13 @@ class HiveService {
     final users = _authBox.values.where((user) => user.email == email);
     return users.isNotEmpty;
   }
+
+  // Get user by email
+  AuthHiveModel? getUserByEmail(String email) {
+    try {
+      return _authBox.values.firstWhere((user) => user.email == email);
+    } catch (e) {
+      return null;
+    }
+  }
 }
