@@ -1,6 +1,6 @@
 import 'package:quickpalo/features/auth/domain/entities/auth_entity.dart';
 
-class AuthApiModel {
+class AuthRegisterApiModel {
   final String? id;
   final String fullname;
   final String email;
@@ -10,7 +10,7 @@ class AuthApiModel {
 
   // final String? profilePicture;
 
-  AuthApiModel(
+  AuthRegisterApiModel(
       {this.id,
       required this.fullname,
       required this.email,
@@ -31,12 +31,13 @@ class AuthApiModel {
   }
 
   // from json
-  factory AuthApiModel.fromJson(Map<String, dynamic> json) {
-    return AuthApiModel(
+  factory AuthRegisterApiModel.fromJson(Map<String, dynamic> json) {
+    return AuthRegisterApiModel(
       id: json['_id'] as String,
       fullname: json['fullname'] as String,
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
+      password: json['password'] as String?,
       // profilePicture: json['profilePicture'] as String?,
     );
   }
@@ -52,17 +53,18 @@ class AuthApiModel {
   }
 
   // from entity
-  factory AuthApiModel.fromEntity(AuthEntity entity) {
-    return AuthApiModel(
+  factory AuthRegisterApiModel.fromEntity(AuthEntity entity) {
+    return AuthRegisterApiModel(
       email: entity.email,
       phoneNumber: entity.phoneNumber,
-      password: entity.password, fullname: entity.fullName,
+      password: entity.password,
+      fullname: entity.fullName,
       confirmPassword: entity.confirmPassword,
       // profilePicture: entity.profilePicture,
     );
   }
   // to entity list
-  static List<AuthEntity> toEntityList(List<AuthApiModel> models) {
+  static List<AuthEntity> toEntityList(List<AuthRegisterApiModel> models) {
     return models.map((model) => model.toEntity()).toList();
   }
 }

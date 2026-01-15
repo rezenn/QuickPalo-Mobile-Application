@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
 import 'package:quickpalo/core/services/hive/hive_service.dart';
 import 'package:quickpalo/features/auth/data/datasources/auth_datasource.dart';
 import 'package:quickpalo/features/auth/data/model/auth_hive_model.dart';
@@ -42,12 +43,9 @@ class AuthLocalDatasource implements IAuthDataSource {
 
   @override
   Future<bool> logout() async {
-    try {
-      await _hiveService.logoutUser();
-      return Future.value(true);
-    } catch (e) {
-      return Future.value(false);
-    }
+    final box = await Hive.openBox<AuthHiveModel>('authBox');
+    await box.clear();
+    return true;
   }
 
   @override

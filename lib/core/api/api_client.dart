@@ -141,45 +141,6 @@ class _AuthInterceptor extends Interceptor {
   final _storage = const FlutterSecureStorage();
   static const String _tokenKey = 'auth_token';
 
-  // @override
-  // void onRequest(
-  //   RequestOptions options,
-  //   RequestInterceptorHandler handler,
-  // ) async {
-  //   // Skip auth for public endpoints
-  //   final publicEndpoints = [
-  //     ApiEndpoints.auth,
-  //     // ApiEndpoints.categories,
-  //     // ApiEndpoints.studentLogin,
-  //   ];
-
-  //   final isPublicGet = options.method == 'GET' &&
-  //       publicEndpoints.any((endpoint) => options.path.startsWith(endpoint));
-
-  //   final isAuthEndpoint = options.path == ApiEndpoints.login ||
-  //       options.path == ApiEndpoints.register;
-
-  //   if (!isPublicGet && !isAuthEndpoint) {
-  //     final token = await _storage.read(key: _tokenKey);
-  //     if (token != null) {
-  //       options.headers['Authorization'] = 'Bearer $token';
-  //     }
-  //   }
-
-  //   handler.next(options);
-  // }
-
-  // @override
-  // void onError(DioException err, ErrorInterceptorHandler handler) {
-  //   // Handle 401 Unauthorized - token expired
-  //   if (err.response?.statusCode == 401) {
-  //     // Clear token and redirect to login
-  //     _storage.delete(key: _tokenKey);
-  //     // You can add navigation logic here or use a callback
-  //   }
-  //   handler.next(err);
-  // }
-
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {

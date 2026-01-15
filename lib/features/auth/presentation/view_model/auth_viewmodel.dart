@@ -61,7 +61,9 @@ class AuthViewmodel extends Notifier<AuthState> {
     result.fold(
       (failure) {
         state = state.copyWith(
-            status: AuthStatus.error, errorMessage: failure.message);
+          status: AuthStatus.error,
+          errorMessage: failure.message,
+        );
       },
       (authEntity) {
         state = state.copyWith(
