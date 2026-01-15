@@ -32,11 +32,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  LightBlueColor,
-                  LightBlueColor2,
-                  LightPurpleColor,
-                  LightPurpleColor2,
-                  LightPurpleColor3,
+                  lightBlueColor,
+                  lightBlueColor2,
+                  lightPurpleColor,
+                  lightPurpleColor2,
+                  lightPurpleColor3,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -125,7 +125,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               SizedBox(height: 5),
                               CustomTextField(
                                 controller: confirmPasswordController,
-
                                 hintText: "********",
                                 errortext: "Please enter correct password",
                                 obscureText: _obscureConfirmPassword,
@@ -142,7 +141,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     });
                                   },
                                 ),
-
                                 keyboardType: TextInputType.text,
                                 fieldType: FieldType.password,
                                 validator: (value) {

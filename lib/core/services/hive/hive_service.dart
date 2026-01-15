@@ -62,10 +62,8 @@ class HiveService {
   }
 
   // email exists
-  bool isEmailExist(String email) {
-    final users = _authBox.values.where((user) => user.email == email);
-    return users.isNotEmpty;
-  }
+  bool isEmailExist(String email) =>
+      _authBox.values.any((user) => user.email == email);
 
   // Get user by email
   AuthHiveModel? getUserByEmail(String email) {

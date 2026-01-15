@@ -11,7 +11,7 @@ class CallScreen extends StatelessWidget {
         child: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(color: LightPurpleColor),
+          decoration: BoxDecoration(color: lightPurpleColor),
           child: Column(
             children: [
               SizedBox(height: 60),
@@ -61,7 +61,6 @@ class CallScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         SizedBox(width: 40),
                         SizedBox(
                           width: 60,
@@ -125,7 +124,6 @@ class CallScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         SizedBox(width: 40),
                         SizedBox(
                           width: 60,

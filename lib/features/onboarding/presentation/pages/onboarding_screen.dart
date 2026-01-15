@@ -57,11 +57,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      LightBlueColor,
-                      LightBlueColor2,
-                      LightPurpleColor,
-                      LightPurpleColor2,
-                      LightPurpleColor3,
+                      lightBlueColor,
+                      lightBlueColor2,
+                      lightPurpleColor,
+                      lightPurpleColor2,
+                      lightPurpleColor3,
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -88,7 +88,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
                     Text(
                       "Skip long queues and confusing phone calls. Schedule your visit anytime from anywhere instantly.",
                       textAlign: TextAlign.center,
@@ -107,11 +106,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      LightBlueColor,
-                      LightBlueColor2,
-                      LightPurpleColor,
-                      LightPurpleColor2,
-                      LightPurpleColor3,
+                      lightBlueColor,
+                      lightBlueColor2,
+                      lightPurpleColor,
+                      lightPurpleColor2,
+                      lightPurpleColor3,
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -139,7 +138,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
                     Text(
                       "Choose your institution, pick a time slot and confirm. Receive reminders and manage all your bookings in one place.",
                       textAlign: TextAlign.center,
@@ -158,11 +156,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      LightBlueColor,
-                      LightBlueColor2,
-                      LightPurpleColor,
-                      LightPurpleColor2,
-                      LightPurpleColor3,
+                      lightBlueColor,
+                      lightBlueColor2,
+                      lightPurpleColor,
+                      lightPurpleColor2,
+                      lightPurpleColor3,
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -190,7 +188,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
                     Text(
                       "Whether it’s a hospital, school or service center arrive prepared and right on schedule. Make every visit smoother.",
                       textAlign: TextAlign.center,
@@ -216,7 +213,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   borderRadius: BorderRadius.circular(0),
                 ),
                 foregroundColor: Colors.white,
-                backgroundColor: LightPurpleColor,
+                backgroundColor: lightPurpleColor,
                 minimumSize: const Size.fromHeight(80),
               ),
               onPressed: () async {
@@ -251,8 +248,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       count: 3,
                       effect: WormEffect(
                         spacing: 16,
-                        dotColor: LightBlueColor,
-                        activeDotColor: LightPurpleColor3,
+                        dotColor: lightBlueColor,
+                        activeDotColor: lightPurpleColor3,
                       ),
                       onDotClicked: (index) => controller.animateToPage(
                         index,

@@ -24,7 +24,7 @@ class SnackbarUtils {
     _showSnackBar(
       context,
       message,
-      backgroundColor: LightPurpleColor2,
+      backgroundColor: lightPurpleColor2,
       icon: Icons.info_outline_rounded,
     );
   }

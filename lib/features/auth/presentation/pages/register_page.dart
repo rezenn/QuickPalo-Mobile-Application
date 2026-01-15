@@ -68,11 +68,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     }
 
     ref.read(authViewmodelProvider.notifier).register(
-          fullName: _fullNameController.text.trim(),
-          email: _emailController.text.trim(),
-          phoneNumber: _phoneNumberController.text.trim(),
-          password: _passwordController.text,
-        );
+        fullName: _fullNameController.text.trim(),
+        email: _emailController.text.trim(),
+        phoneNumber: _phoneNumberController.text.trim(),
+        password: _passwordController.text,
+        confirmPassword: _confirmPasswordController.text);
   }
 
   @override
@@ -101,11 +101,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              LightBlueColor,
-              LightBlueColor2,
-              LightPurpleColor,
-              LightPurpleColor2,
-              LightPurpleColor3,
+              lightBlueColor,
+              lightBlueColor2,
+              lightPurpleColor,
+              lightPurpleColor2,
+              lightPurpleColor3,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -301,7 +301,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                           TextSpan(
                                             text: 'Terms & Conditions',
                                             style: const TextStyle(
-                                              color: LightPurpleColor2,
+                                              color: lightPurpleColor2,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -309,7 +309,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                           TextSpan(
                                             text: 'Privacy Policy',
                                             style: const TextStyle(
-                                              color: LightPurpleColor2,
+                                              color: lightPurpleColor2,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),

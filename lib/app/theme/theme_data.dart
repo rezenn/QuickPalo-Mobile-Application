@@ -7,7 +7,7 @@ ThemeData getApplicationTheme() {
     fontFamily: "Inter Regular",
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
-      selectedItemColor: LightPurpleColor,
+      selectedItemColor: lightPurpleColor,
       unselectedItemColor: textColorGrey,
       selectedLabelStyle: TextStyle(
         fontFamily: "Inter Bold 24",

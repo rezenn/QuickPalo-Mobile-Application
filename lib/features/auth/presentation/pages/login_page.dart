@@ -25,7 +25,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void dispose() {
@@ -71,11 +71,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  LightBlueColor,
-                  LightBlueColor2,
-                  LightPurpleColor,
-                  LightPurpleColor2,
-                  LightPurpleColor3,
+                  lightBlueColor,
+                  lightBlueColor2,
+                  lightPurpleColor,
+                  lightPurpleColor2,
+                  lightPurpleColor3,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

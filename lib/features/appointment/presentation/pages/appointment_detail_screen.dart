@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/models/organization_model.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_confirm_screen.dart';
 import 'package:quickpalo/core/widgets/custom_button.dart';
 
@@ -75,7 +74,6 @@ class AppointmentDetailScreen extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 SizedBox(height: 10),
-
                 Text(
                   "Payment method:",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

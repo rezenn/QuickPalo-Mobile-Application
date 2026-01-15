@@ -34,11 +34,11 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              LightBlueColor,
-              LightBlueColor2,
-              LightPurpleColor,
-              LightPurpleColor2,
-              LightPurpleColor3,
+              lightBlueColor,
+              lightBlueColor2,
+              lightPurpleColor,
+              lightPurpleColor2,
+              lightPurpleColor3,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -88,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         fontSize: 35,
                         fontFamily: "Inter Bold 18",
                         fontStyle: FontStyle.italic,
-                        color: LightPurpleColor3,
+                        color: lightPurpleColor3,
                         shadows: [
                           Shadow(
                             offset: Offset(2, 2),

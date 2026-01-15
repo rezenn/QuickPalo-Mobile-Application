@@ -45,11 +45,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  LightBlueColor,
-                  LightBlueColor2,
-                  LightPurpleColor,
-                  LightPurpleColor2,
-                  LightPurpleColor3,
+                  lightBlueColor,
+                  lightBlueColor2,
+                  lightPurpleColor,
+                  lightPurpleColor2,
+                  lightPurpleColor3,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -62,7 +62,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: 40),
-
                       Center(
                         child: SizedBox(
                           width: isTablet ? 250 : 200,
@@ -71,9 +70,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 30),
-
                       Container(
                         width: isTablet ? 400 : double.infinity,
                         padding: const EdgeInsets.fromLTRB(15, 70, 15, 20),
@@ -102,19 +99,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   ),
                                 ),
                               ),
-
                               const SizedBox(height: 15),
-
                               const Text(
                                 "We have sent a 6-digit verification code to your email address he*************m",
                                 textAlign: TextAlign.center,
                               ),
-
                               const SizedBox(height: 20),
-
                               const CustomLabel(text: "OTP Code"),
                               const SizedBox(height: 5),
-
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -134,15 +126,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   CustomOtpInput(controller: otp6),
                                 ],
                               ),
-
                               const SizedBox(height: 25),
-
                               CustomButton(
                                 text: "Verify OTP",
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    final otpCode =
-                                        otp1.text +
+                                    final otpCode = otp1.text +
                                         otp2.text +
                                         otp3.text +
                                         otp4.text +

@@ -79,17 +79,66 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
+  // @override
+  // Future<Either<Failure, bool>> register(AuthEntity user) async {
+  //   if (await _networkInfo.isConnected) {
+  //     try {
+  //       final apiModel = AuthApiModel.fromEntity(user);
+  //       await _authRemoteDataSource.register(apiModel);
+  //       return const Right(true);
+  //     } on DioException catch (e) {
+  //       return Left(
+  //         ApiFailure(
+  //           message: e.response?.data['message'] ?? "Registerion failed",
+  //           statusCode: e.response?.statusCode,
+  //         ),
+  //       );
+  //     } catch (e) {
+  //       return Left(ApiFailure(message: e.toString()));
+  //     }
+  //   } else {
+  //     try {
+  //       // Check if email already exists
+  //       final existingUser = await _authDataSource.getUserByEmail(user.email);
+  //       if (existingUser != null) {
+  //         return const Left(
+  //           LocalDatabaseFailure(message: "Email already registered"),
+  //         );
+  //       }
+
+  //       final authModel = AuthHiveModel(
+  //         fullName: user.fullName,
+  //         email: user.email,
+  //         phoneNumber: user.phoneNumber,
+  //         password: user.password,
+  //         profilePicture: user.profilePicture,
+  //       );
+  //       await _authDataSource.register(authModel);
+  //       return const Right(true);
+  //     } catch (e) {
+  //       return Left(LocalDatabaseFailure(message: e.toString()));
+  //     }
+  //   }
+  // }
+
   @override
   Future<Either<Failure, bool>> register(AuthEntity user) async {
     if (await _networkInfo.isConnected) {
       try {
         final apiModel = AuthApiModel.fromEntity(user);
-        await _authRemoteDataSource.register(apiModel);
+
+        // Capture returned user from API
+        final registeredUser = await _authRemoteDataSource.register(apiModel);
+
+        // Optionally store locally in Hive
+        final localModel = AuthHiveModel.fromEntity(registeredUser.toEntity());
+        await _authDataSource.register(localModel);
+
         return const Right(true);
       } on DioException catch (e) {
         return Left(
           ApiFailure(
-            message: e.response?.data['message'] ?? "Registerion failed",
+            message: e.response?.data['message'] ?? "Registration failed",
             statusCode: e.response?.statusCode,
           ),
         );
@@ -97,8 +146,8 @@ class AuthRepository implements IAuthRepository {
         return Left(ApiFailure(message: e.toString()));
       }
     } else {
+      // Offline registration
       try {
-        // Check if email already exists
         final existingUser = await _authDataSource.getUserByEmail(user.email);
         if (existingUser != null) {
           return const Left(
@@ -113,6 +162,7 @@ class AuthRepository implements IAuthRepository {
           password: user.password,
           profilePicture: user.profilePicture,
         );
+
         await _authDataSource.register(authModel);
         return const Right(true);
       } catch (e) {
