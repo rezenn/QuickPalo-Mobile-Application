@@ -1,4 +1,3 @@
-import 'package:quickpalo/features/auth/data/model/auth_login_api_model.dart';
 import 'package:quickpalo/features/auth/data/model/auth_register_api_model.dart';
 import 'package:quickpalo/features/auth/data/model/auth_hive_model.dart';
 

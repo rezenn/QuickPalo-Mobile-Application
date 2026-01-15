@@ -15,7 +15,7 @@ class CustomSearchBar extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.07),
+            color: Colors.black.withAlpha(20),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -25,7 +25,6 @@ class CustomSearchBar extends StatelessWidget {
         children: [
           Icon(Icons.search, color: textColorGrey, size: 26),
           const SizedBox(width: 10),
-
           Expanded(
             child: TextField(
               decoration: const InputDecoration(
