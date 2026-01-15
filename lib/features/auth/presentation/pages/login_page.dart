@@ -45,8 +45,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authViewmodelProvider);
-
     // Listen to auth changes
     ref.listen<AuthState>(authViewmodelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated) {
@@ -61,6 +59,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         SnackbarUtils.showError(context, next.errorMessage!);
       }
     });
+    final authState = ref.watch(authViewmodelProvider);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final isTablet = constraints.maxWidth > 600;
