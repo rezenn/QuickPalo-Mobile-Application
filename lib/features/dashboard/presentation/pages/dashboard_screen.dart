@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quickpalo/features/dashboard/presentation/pages/calendar_screen.dart';
 import 'package:quickpalo/features/dashboard/presentation/pages/history_screen.dart';
 import 'package:quickpalo/features/dashboard/presentation/pages/home_screen.dart';
-import 'package:quickpalo/features/dashboard/presentation/pages/profile_screen.dart';
 import 'package:quickpalo/core/widgets/custom_nav_bar.dart';
+import 'package:quickpalo/features/profile/presentation/pages/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

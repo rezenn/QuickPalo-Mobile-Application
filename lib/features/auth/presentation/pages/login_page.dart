@@ -36,7 +36,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      await ref.read(authViewmodelProvider.notifier).login(
+      await ref.read(authViewModelProvider.notifier).login(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
@@ -46,7 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     // Listen to auth changes
-    ref.listen<AuthState>(authViewmodelProvider, (previous, next) {
+    ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated) {
         SnackbarUtils.showSuccess(context, "Login successful");
         Navigator.pushReplacement(
@@ -59,7 +59,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         SnackbarUtils.showError(context, next.errorMessage!);
       }
     });
-    final authState = ref.watch(authViewmodelProvider);
+    final authState = ref.watch(authViewModelProvider);
 
     return LayoutBuilder(
       builder: (context, constraints) {

@@ -4,10 +4,10 @@ import 'package:quickpalo/common/department_selector.dart';
 import 'package:quickpalo/common/time_selector.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_detail_screen.dart';
-import 'package:quickpalo/screens/call_screen.dart';
-import 'package:quickpalo/screens/message_screen.dart';
 import 'package:quickpalo/core/widgets/custom_button.dart';
 import 'package:quickpalo/core/widgets/custom_detail_action.dart';
+import 'package:quickpalo/features/calls/presentation/pages/call_screen.dart';
+import 'package:quickpalo/features/messages/presentation/pages/message_screen.dart';
 import 'package:quickpalo/models/organization_model.dart';
 
 class OrganizationDetailScreen extends StatefulWidget {
@@ -72,15 +72,9 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     child: SizedBox(
                       width: double.infinity,
                       height: isTablet ? 500 : 250,
-                      child: Image.asset(
+                      child: Image.network(
                         widget.organization.image,
                         fit: BoxFit.fill,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Icon(Icons.broken_image,
-                                size: 40, color: Colors.grey),
-                          );
-                        },
                       ),
                     ),
                   ),
@@ -156,7 +150,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const CallScreen(),
+                                    builder: (context) => CallScreen(),
                                   ),
                                 );
                               },
@@ -169,7 +163,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const MessageScreen(),
+                                    builder: (context) => MessageScreen(),
                                   ),
                                 );
                               },

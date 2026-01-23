@@ -67,7 +67,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       return;
     }
 
-    ref.read(authViewmodelProvider.notifier).register(
+    ref.read(authViewModelProvider.notifier).register(
         fullName: _fullNameController.text.trim(),
         email: _emailController.text.trim(),
         phoneNumber: _phoneNumberController.text.trim(),
@@ -77,7 +77,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AuthState>(authViewmodelProvider, (previous, next) {
+    ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.error) {
         SnackbarUtils.showError(
           context,
@@ -91,7 +91,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       }
     });
 
-    final authState = ref.watch(authViewmodelProvider);
+    final authState = ref.watch(authViewModelProvider);
     final isTablet = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(

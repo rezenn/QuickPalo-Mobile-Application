@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickpalo/common/organization_filter.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/data/organization_data.dart';
-import 'package:quickpalo/features/dashboard/presentation/pages/profile_screen.dart';
+import 'package:quickpalo/features/profile/presentation/pages/profile_screen.dart';
 import 'package:quickpalo/features/notification/presentation/pages/notification_screen.dart';
 import 'package:quickpalo/features/organizations/presentation/pages/organization_detail_screen.dart';
 import 'package:quickpalo/core/widgets/custom_big_card.dart';
