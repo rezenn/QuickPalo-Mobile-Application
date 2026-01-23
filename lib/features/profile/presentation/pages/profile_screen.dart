@@ -8,6 +8,8 @@ import 'package:quickpalo/core/widgets/custom_button.dart';
 import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
 import 'package:quickpalo/features/auth/presentation/state/auth_state.dart';
 import 'package:quickpalo/features/auth/presentation/view_model/auth_viewmodel.dart';
+import 'package:quickpalo/features/profile/presentation/pages/edit_profile_screen.dart';
+import 'package:quickpalo/features/profile/presentation/widgets/profile_action_button.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -92,7 +94,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             children: [
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
                   child: Text(
                     "Profile",
                     style: const TextStyle(
@@ -102,7 +104,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                 ),
               ),
-              Divider(),
+              Divider(
+                color: Colors.black,
+                height: 2,
+              ),
               Stack(
                 clipBehavior: Clip.none,
                 alignment: Alignment.center,
@@ -115,7 +120,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         child: Container(
                           height: 160,
                           width: double.infinity,
-                          color: lightPurpleColor.withAlpha(120),
+                          color: buttonColor3.withAlpha(120),
                         ),
                       ),
                     ),
@@ -123,7 +128,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
                   // Profile image overlay
                   Positioned(
-                    bottom: -60,
+                    bottom: -40,
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -133,7 +138,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
                       ),
                       child: CircleAvatar(
-                        radius: 60,
+                        radius: 50,
                         backgroundColor: Colors.white,
                         child: Text(
                           "R",
@@ -148,13 +153,114 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 80), // important spacing after overlap
+              const SizedBox(height: 40),
+              Text(
+                "Test User",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Inter bold 24",
+                    fontSize: 26),
+              ),
               const SizedBox(height: 16),
-              CustomButton(
-                  onPressed: () {
-                    _showLogoutDialog(context);
-                  },
-                  text: "Logout"),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Phone",
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontFamily: "Inter Regular",
+                          fontSize: 18),
+                    ),
+                    Text(
+                      "9877654321",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Inter bold 24",
+                          color: Colors.black87.withAlpha(200),
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Email",
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontFamily: "Inter Regular",
+                          fontSize: 18),
+                    ),
+                    Text(
+                      "testuser@gmail.com",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Inter bold 24",
+                          color: Colors.black87.withAlpha(200),
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Divider(
+                  color: Colors.black,
+                  height: 3,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    ProfileActionButton(
+                      icon: Icons.dark_mode_outlined,
+                      label: "Dark Mode",
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    ProfileActionButton(
+                      icon: Icons.notifications_rounded,
+                      label: "Notifications",
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    ProfileActionButton(
+                      icon: Icons.person,
+                      label: "Edit Profile",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EditProfileScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ProfileActionButton(
+                      icon: Icons.calendar_month_outlined,
+                      label: "Calendar",
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    ProfileActionButton(
+                      icon: Icons.logout,
+                      label: "Logout",
+                      color: Colors.red,
+                      onPressed: () => _showLogoutDialog(context),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
