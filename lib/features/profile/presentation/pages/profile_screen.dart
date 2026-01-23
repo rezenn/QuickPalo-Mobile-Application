@@ -17,50 +17,50 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _showLogoutDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(20),
+        ),
+        title: Text(
+          "Logout",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+        ),
+        content: Text("Are you sure you want to logout?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                color: lightPurpleColor2,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.circular(20),
+                borderRadius: BorderRadius.circular(8),
               ),
-              title: Text(
-                "Logout",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+            ),
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              // Clear user session
+              await ref.read(authViewModelProvider.notifier).logout();
+            },
+            child: Text(
+              'Logout',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
               ),
-              content: Text("Are you sure you want to logout?"),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(dialogContext),
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                      color: lightPurpleColor2,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () async {
-                    Navigator.pop(dialogContext);
-                    // Clear user session
-                    await ref.read(authViewModelProvider.notifier).logout();
-                  },
-                  child: Text(
-                    'Logout',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ));
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
