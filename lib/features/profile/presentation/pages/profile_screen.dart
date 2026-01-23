@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
@@ -84,22 +86,70 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
     });
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SafeArea(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Center(
-                child: Text(
-                  "Profile",
-                  style: const TextStyle(
-                    fontFamily: "Inter Bold 24",
-                    fontSize: 24,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: Text(
+                    "Profile",
+                    style: const TextStyle(
+                      fontFamily: "Inter Bold 24",
+                      fontSize: 24,
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Text("Profile Screen"),
+              Divider(),
+              Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: ClipRRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                        child: Container(
+                          height: 160,
+                          width: double.infinity,
+                          color: lightPurpleColor.withAlpha(120),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Profile image overlay
+                  Positioned(
+                    bottom: -60,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.black87,
+                          width: 2,
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.white,
+                        child: Text(
+                          "R",
+                          style: TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: lightPurpleColor3,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 80), // important spacing after overlap
+              const SizedBox(height: 16),
               CustomButton(
                   onPressed: () {
                     _showLogoutDialog(context);
