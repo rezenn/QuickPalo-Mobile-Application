@@ -11,6 +11,9 @@ class HiveTableConstant {
 
   static const int appointmentTypeId = 2;
   static const String appointmentTable = "appointment_table";
+
+  static const int profileTypeId = 3;
+  static const String profileTable = "profile_table";
 }
 
 //

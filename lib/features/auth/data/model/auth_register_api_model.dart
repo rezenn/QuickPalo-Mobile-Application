@@ -7,8 +7,7 @@ class AuthRegisterApiModel {
   final String phoneNumber;
   final String? password;
   final String? confirmPassword;
-
-  // final String? profilePicture;
+  final String? profilePicture;
 
   AuthRegisterApiModel(
       {this.id,
@@ -16,7 +15,8 @@ class AuthRegisterApiModel {
       required this.email,
       required this.phoneNumber,
       this.password,
-      this.confirmPassword});
+      this.confirmPassword,
+      this.profilePicture});
 
   // ToJson
   Map<String, dynamic> toJson() {
@@ -25,8 +25,8 @@ class AuthRegisterApiModel {
       "email": email,
       "phoneNumber": phoneNumber,
       "password": password,
-      "confirmPassword": confirmPassword
-      // "profilePicture": profilePicture,
+      "confirmPassword": confirmPassword,
+      "profilePicture": profilePicture,
     };
   }
 
@@ -38,7 +38,7 @@ class AuthRegisterApiModel {
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
       password: json['password'] as String?,
-      // profilePicture: json['profilePicture'] as String?,
+      profilePicture: json['profilePicture'] as String?,
     );
   }
 
@@ -47,8 +47,9 @@ class AuthRegisterApiModel {
     return AuthEntity(
       authId: id,
       email: email,
-      phoneNumber: phoneNumber, fullName: fullname,
-      // profilePicture: profilePicture,
+      phoneNumber: phoneNumber,
+      fullName: fullname,
+      profilePicture: profilePicture,
     );
   }
 
@@ -60,7 +61,7 @@ class AuthRegisterApiModel {
       password: entity.password,
       fullname: entity.fullName,
       confirmPassword: entity.confirmPassword,
-      // profilePicture: entity.profilePicture,
+      profilePicture: entity.profilePicture,
     );
   }
   // to entity list

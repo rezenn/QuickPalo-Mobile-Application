@@ -29,6 +29,74 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     super.dispose();
   }
 
+  final List<XFile> _selectedMedia = [];
+  final ImagePicker _imagePicker = ImagePicker();
+  String? _selectedMediaType;
+
+  Future<bool> _requestPermission(Permission permission) async {
+    final status = await permission.status;
+    if (status.isGranted) {
+      return true;
+    }
+    if (status.isDenied) {
+      final result = await permission.request();
+      return result.isGranted;
+    }
+
+    if (status.isPermanentlyDenied) {
+      _showPermissionDeniedDialog();
+      return false;
+    }
+
+    return false;
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Permission Required"),
+        content: Text(
+            "Permission to access your camera or gallery is required. Please enable it from the setting of your device"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              openAppSettings();
+            },
+            child: Text('Open Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _pickFromCamera() async {
+    final hasPermission = await _requestPermission(Permission.camera);
+    if (!hasPermission) return;
+
+    final XFile? photo = await _imagePicker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
+    );
+
+    if (photo != null) {
+      setState(() {
+        _selectedMedia.clear();
+        _selectedMedia.add(photo);
+        _selectedMediaType = 'photo';
+      });
+      // Upload photo to server
+      await ref
+          .read(itemViewModelProvider.notifier)
+          .uploadPhoto(File(photo.path));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +106,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           "Edit Profile",
         ),
         bottom: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(1.0), // Set the height of the line
+          preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: Colors.black, // Set the color of the line
-            height: 1.0, // Set the height of the Container (line thickness)
+            color: Colors.black,
+            height: 1.0,
           ),
         ),
       ),
@@ -65,12 +132,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   ),
                 ),
 
-                // Overlay card
                 Positioned(
-                  bottom: -530,
+                  bottom: -500,
+                  // bottom: -530,
                   child: Container(
                     width: 400,
-                    height: 620,
+                    height: 570,
+                    // height: 620,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -196,14 +264,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               onPressed: () {},
                               text: "Save Profile",
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            CustomButton(
-                              onPressed: () {},
-                              text: "Change Password",
-                              color: buttonColor3,
-                            )
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            // CustomButton(
+                            //   onPressed: () {},
+                            //   text: "Change Password",
+                            //   color: buttonColor3,
+                            // )
                           ],
                         ),
                       ),
@@ -212,7 +280,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 60), // must match overlay offset
+            const SizedBox(height: 60),
           ],
         ),
       ),
