@@ -2,31 +2,32 @@ import 'package:quickpalo/features/auth/domain/entities/auth_entity.dart';
 
 class AuthRegisterApiModel {
   final String? id;
-  final String fullname;
+  final String fullName;
   final String email;
   final String phoneNumber;
   final String? password;
   final String? confirmPassword;
-  final String? profilePicture;
+  // final String? profilePicture;
 
-  AuthRegisterApiModel(
-      {this.id,
-      required this.fullname,
-      required this.email,
-      required this.phoneNumber,
-      this.password,
-      this.confirmPassword,
-      this.profilePicture});
+  AuthRegisterApiModel({
+    this.id,
+    required this.fullName,
+    required this.email,
+    required this.phoneNumber,
+    this.password,
+    this.confirmPassword,
+    // this.profilePicture
+  });
 
   // ToJson
   Map<String, dynamic> toJson() {
     return {
-      "fullname": fullname,
+      "fullName": fullName,
       "email": email,
       "phoneNumber": phoneNumber,
       "password": password,
       "confirmPassword": confirmPassword,
-      "profilePicture": profilePicture,
+      // "profilePicture": profilePicture,
     };
   }
 
@@ -34,11 +35,11 @@ class AuthRegisterApiModel {
   factory AuthRegisterApiModel.fromJson(Map<String, dynamic> json) {
     return AuthRegisterApiModel(
       id: json['_id'] as String,
-      fullname: json['fullname'] as String,
+      fullName: json['fullName'] as String,
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
       password: json['password'] as String?,
-      profilePicture: json['profilePicture'] as String?,
+      // profilePicture: json['profilePicture'] as String?,
     );
   }
 
@@ -48,8 +49,8 @@ class AuthRegisterApiModel {
       authId: id,
       email: email,
       phoneNumber: phoneNumber,
-      fullName: fullname,
-      profilePicture: profilePicture,
+      fullName: fullName,
+      // profilePicture: profilePicture,
     );
   }
 
@@ -59,9 +60,9 @@ class AuthRegisterApiModel {
       email: entity.email,
       phoneNumber: entity.phoneNumber,
       password: entity.password,
-      fullname: entity.fullName,
+      fullName: entity.fullName,
       confirmPassword: entity.confirmPassword,
-      profilePicture: entity.profilePicture,
+      // profilePicture: entity.profilePicture,
     );
   }
   // to entity list

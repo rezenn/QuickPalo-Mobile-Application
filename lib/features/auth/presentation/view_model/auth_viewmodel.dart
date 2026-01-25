@@ -3,6 +3,7 @@ import 'package:quickpalo/features/auth/domain/usecases/login_usecase.dart';
 import 'package:quickpalo/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:quickpalo/features/auth/domain/usecases/register_usecase.dart';
 import 'package:quickpalo/features/auth/presentation/state/auth_state.dart';
+import 'package:quickpalo/core/services/storage/user_session_service.dart';
 
 // provider
 final authViewModelProvider = NotifierProvider<AuthViewmodel, AuthState>(
@@ -13,12 +14,14 @@ class AuthViewmodel extends Notifier<AuthState> {
   late final LoginUsecase _loginUsecase;
   late final RegisterUsecase _registerUsecase;
   late final LogoutUsecase _logoutUsecase;
+  late final UserSessionService _sessionService;
 
   @override
   AuthState build() {
     _registerUsecase = ref.read(registerUsecaseProvider);
     _loginUsecase = ref.read(loginUsecaseProvider);
     _logoutUsecase = ref.read(logoutUsecaseProvider);
+    _sessionService = ref.read(userSessionServiceProvider);
 
     return AuthState();
   }
@@ -70,6 +73,15 @@ class AuthViewmodel extends Notifier<AuthState> {
         );
       },
       (authEntity) {
+        // Save session
+        _sessionService.saveUserSession(
+          userId: authEntity.authId ?? "",
+          email: authEntity.email,
+          fullName: authEntity.fullName,
+          phoneNumber: authEntity.phoneNumber,
+          profileImage: authEntity.profilePicture,
+        );
+
         state = state.copyWith(
           status: AuthStatus.authenticated,
           authEntity: authEntity,
@@ -82,14 +94,15 @@ class AuthViewmodel extends Notifier<AuthState> {
     state = state.copyWith(status: AuthStatus.loading);
     final result = await _logoutUsecase();
     result.fold(
-      (failure) => state = state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: failure.message,
-      ),
-      (success) => state = state.copyWith(
+        (failure) => state = state.copyWith(
+              status: AuthStatus.error,
+              errorMessage: failure.message,
+            ), (success) async {
+      await _sessionService.clearSession();
+      state = state.copyWith(
         status: AuthStatus.unauthenticated,
         authEntity: null,
-      ),
-    );
+      );
+    });
   }
 }

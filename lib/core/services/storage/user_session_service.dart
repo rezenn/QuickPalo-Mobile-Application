@@ -19,27 +19,27 @@ class UserSessionService {
   static const String _keyUserEmail = "username";
   static const String _keyUserFullName = "user_full_name";
   static const String _keyUserPhoneNumber = "user_phone_number";
-  // static const String _keyUserProfileImage = "user_profile_image";
+  static const String _keyUserProfileImage = "user_profile_image";
 
   // store user session
   Future<void> saveUserSession({
     required String userId,
     required String email,
-    required String fullname,
+    required String fullName,
     required String? phoneNumber,
-    // String? profileImage,
+    String? profileImage,
   }) async {
     await _prefs.setBool(_keyIsLoggedIn, true);
     await _prefs.setString(_keyUserId, userId);
     await _prefs.setString(_keyUserEmail, email);
-    await _prefs.setString(_keyUserFullName, fullname);
+    await _prefs.setString(_keyUserFullName, fullName);
 
     if (phoneNumber != null) {
       await _prefs.setString(_keyUserPhoneNumber, phoneNumber);
     }
-    //  if (profileImage != null) {
-    //   await _prefs.setString(_keyUserProfileImage, profileImage);
-    // }
+    if (profileImage != null) {
+      await _prefs.setString(_keyUserProfileImage, profileImage);
+    }
   }
 
   // clear session
@@ -49,7 +49,7 @@ class UserSessionService {
     await _prefs.remove(_keyUserFullName);
     await _prefs.remove(_keyUserId);
     await _prefs.remove(_keyUserPhoneNumber);
-    // await _prefs.remove(_keyUserProfileImage);
+    await _prefs.remove(_keyUserProfileImage);
   }
 
   bool isLoggedIn() {
@@ -72,7 +72,7 @@ class UserSessionService {
     return _prefs.getString(_keyUserPhoneNumber);
   }
 
-  // String? getuserProfileImage() {
-  //   return _prefs.getString(_keyUserProfileImage);
-  // }
+  String? getuserProfileImage() {
+    return _prefs.getString(_keyUserProfileImage);
+  }
 }

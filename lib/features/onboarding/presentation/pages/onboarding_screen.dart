@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -13,27 +14,27 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final controller = PageController();
   bool isLastPage = false;
-  // final showLogin = false;
+  final showLogin = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loadPrefs();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
 
-  // Future<void> _loadPrefs() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final loggedIn = prefs.getBool('showLogin') ?? false;
+  Future<void> _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final loggedIn = prefs.getBool('showLogin') ?? false;
 
-  //   if (loggedIn) {
-  //     WidgetsBinding.instance.addPostFrameCallback((_) {
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (_) => const LoginScreen()),
-  //       );
-  //     });
-  //   }
-  // }
+    if (loggedIn) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+        );
+      });
+    }
+  }
 
   @override
   void dispose() {

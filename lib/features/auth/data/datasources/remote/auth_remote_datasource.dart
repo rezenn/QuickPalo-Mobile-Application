@@ -44,7 +44,7 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
         await _userSessionService.saveUserSession(
           userId: user.id!,
           email: user.email,
-          fullname: user.fullname,
+          fullName: user.fullName,
           phoneNumber: user.phoneNumber,
         );
 
@@ -72,7 +72,7 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
       await _userSessionService.saveUserSession(
         userId: registeredUser.id!,
         email: registeredUser.email,
-        fullname: registeredUser.fullname,
+        fullName: registeredUser.fullName,
         phoneNumber: registeredUser.phoneNumber,
       );
 

@@ -25,7 +25,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
-  final bool _isLoading = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -36,10 +36,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+
       await ref.read(authViewModelProvider.notifier).login(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
+
+      setState(() => _isLoading = false);
     }
   }
 
@@ -49,11 +53,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated) {
         SnackbarUtils.showSuccess(context, "Login successful");
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder: (context) => const DashboardScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+          (route) => false,
         );
       } else if (next.status == AuthStatus.error && next.errorMessage != null) {
         SnackbarUtils.showError(context, next.errorMessage!);
@@ -175,9 +178,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ForgotPasswordScreen(),
-                                      ),
+                                          builder: (context) =>
+                                              const ForgotPasswordScreen()),
                                     );
                                   },
                                 ),
