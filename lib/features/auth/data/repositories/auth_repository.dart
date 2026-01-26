@@ -139,7 +139,7 @@ class AuthRepository implements IAuthRepository {
           email: user.email,
           phoneNumber: user.phoneNumber,
           password: user.password,
-          // profilePicture: user.profilePicture,
+          profilePicture: user.profilePicture,
         );
 
         await _authDataSource.register(authModel);

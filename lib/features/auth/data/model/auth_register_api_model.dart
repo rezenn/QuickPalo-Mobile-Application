@@ -1,3 +1,4 @@
+import 'package:quickpalo/core/api/api_endpoints.dart';
 import 'package:quickpalo/features/auth/domain/entities/auth_entity.dart';
 
 class AuthRegisterApiModel {
@@ -7,17 +8,16 @@ class AuthRegisterApiModel {
   final String phoneNumber;
   final String? password;
   final String? confirmPassword;
-  // final String? profilePicture;
+  final String? profilePicture;
 
-  AuthRegisterApiModel({
-    this.id,
-    required this.fullName,
-    required this.email,
-    required this.phoneNumber,
-    this.password,
-    this.confirmPassword,
-    // this.profilePicture
-  });
+  AuthRegisterApiModel(
+      {this.id,
+      required this.fullName,
+      required this.email,
+      required this.phoneNumber,
+      this.password,
+      this.confirmPassword,
+      this.profilePicture});
 
   // ToJson
   Map<String, dynamic> toJson() {
@@ -27,7 +27,7 @@ class AuthRegisterApiModel {
       "phoneNumber": phoneNumber,
       "password": password,
       "confirmPassword": confirmPassword,
-      // "profilePicture": profilePicture,
+      "profilePicture": profilePicture,
     };
   }
 
@@ -39,7 +39,9 @@ class AuthRegisterApiModel {
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
       password: json['password'] as String?,
-      // profilePicture: json['profilePicture'] as String?,
+      profilePicture: json['profilePicture'] != null
+          ? ApiEndpoints.imageUrl(json['profilePicture'])
+          : null,
     );
   }
 
@@ -50,7 +52,7 @@ class AuthRegisterApiModel {
       email: email,
       phoneNumber: phoneNumber,
       fullName: fullName,
-      // profilePicture: profilePicture,
+      profilePicture: profilePicture,
     );
   }
 
@@ -62,7 +64,7 @@ class AuthRegisterApiModel {
       password: entity.password,
       fullName: entity.fullName,
       confirmPassword: entity.confirmPassword,
-      // profilePicture: entity.profilePicture,
+      profilePicture: entity.profilePicture,
     );
   }
   // to entity list

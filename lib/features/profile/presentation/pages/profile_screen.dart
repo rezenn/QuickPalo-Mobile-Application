@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/core/services/storage/user_session_service.dart';
 import 'package:quickpalo/core/utils/snackbar_utils.dart';
 import 'package:quickpalo/features/auth/presentation/pages/login_page.dart';
 import 'package:quickpalo/features/auth/presentation/state/auth_state.dart';
@@ -86,6 +87,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         );
       }
     });
+
+    final session = ref.read(userSessionServiceProvider);
+
+    final fullName = session.getuserFullName() ?? "User";
+    final email = session.getuserEmail() ?? "User@mail.com";
+    final phoneNumber = session.getuserPhoneNumber() ?? "9877654321";
+    final profileImageUrl = session.getuserProfileImage();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -136,15 +145,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundColor: Colors.white,
-                        child: Text(
-                          "R",
-                          style: TextStyle(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                            color: lightPurpleColor3,
-                          ),
-                        ),
+                        backgroundColor:
+                            const Color.fromARGB(255, 190, 220, 255),
+                        child: profileImageUrl != null
+                            ? ClipOval(
+                                child: Image.network(
+                                  profileImageUrl,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Text(
+                                fullName[0].toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 60,
+                                  fontWeight: FontWeight.bold,
+                                  color: lightPurpleColor3,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -152,7 +171,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
               const SizedBox(height: 40),
               Text(
-                "Test User",
+                fullName,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontFamily: "Inter bold 24",
@@ -173,7 +192,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           fontSize: 18),
                     ),
                     Text(
-                      "9877654321",
+                      phoneNumber,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: "Inter bold 24",
@@ -197,7 +216,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           fontSize: 18),
                     ),
                     Text(
-                      "testuser@gmail.com",
+                      email,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: "Inter bold 24",

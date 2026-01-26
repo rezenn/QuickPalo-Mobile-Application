@@ -46,6 +46,9 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
           email: user.email,
           fullName: user.fullName,
           phoneNumber: user.phoneNumber,
+          profileImage: user.profilePicture != null
+              ? ApiEndpoints.imageUrl(user.profilePicture!)
+              : null,
         );
 
         return user;
@@ -70,10 +73,13 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
 
       // Optional: save session immediately after registration
       await _userSessionService.saveUserSession(
-        userId: registeredUser.id!,
-        email: registeredUser.email,
-        fullName: registeredUser.fullName,
-        phoneNumber: registeredUser.phoneNumber,
+        userId: user.id!,
+        email: user.email,
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        profileImage: user.profilePicture != null
+            ? ApiEndpoints.imageUrl(user.profilePicture!)
+            : null,
       );
 
       return registeredUser;

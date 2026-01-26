@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/common/organization_filter.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/core/services/storage/user_session_service.dart';
 import 'package:quickpalo/data/organization_data.dart';
 import 'package:quickpalo/features/profile/presentation/pages/profile_screen.dart';
 import 'package:quickpalo/features/notification/presentation/pages/notification_screen.dart';
@@ -9,11 +11,21 @@ import 'package:quickpalo/core/widgets/custom_big_card.dart';
 import 'package:quickpalo/core/widgets/custom_search_bar.dart';
 import 'package:quickpalo/core/widgets/custom_small_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
-  //
+
+  @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final session = ref.read(userSessionServiceProvider);
+
+    final fullName = session.getuserFullName() ?? "User";
+    final profileImageUrl = session.getuserProfileImage();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -38,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Hem Raj Shrestha",
+                          fullName,
                           style: TextStyle(
                             color: blackColor,
                             fontSize: 24,
@@ -79,9 +91,11 @@ class HomeScreen extends StatelessWidget {
                           },
                           child: CircleAvatar(
                             radius: 26,
-                            backgroundImage: AssetImage(
-                              "assets/images/profile.png",
-                            ),
+                            backgroundImage: profileImageUrl != null
+                                ? NetworkImage(profileImageUrl)
+                                : const AssetImage(
+                                    "assets/images/profile.png",
+                                  ) as ImageProvider,
                           ),
                         ),
                       ],

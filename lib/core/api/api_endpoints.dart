@@ -38,9 +38,12 @@ class ApiEndpoints {
   static const String login = '/auth/login';
   static const String register = '/auth/register';
   static String userById(String id) => '/auth/$id';
+  static String imageUrl(String fileName) {
+    return "http://$computerIpAddress:$port/uploads/profile/$fileName";
+  }
 
   // Profile
   static const String profiles = '/profiles';
   static String profileById(String id) => '/profiles/$id';
-  static const String profileUploadPhoto = '/profiles/upload-photo';
+  static const String profileUploadPhoto = '/auth/update-user';
 }
