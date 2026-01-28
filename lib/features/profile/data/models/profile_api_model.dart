@@ -19,20 +19,35 @@ class ProfileApiModel {
   factory ProfileApiModel.fromJson(Map<String, dynamic> json) {
     return ProfileApiModel(
       id: json['_id'] as String,
-      fullName: json['fullname'] as String,
+      fullName:
+          json['fullName'] as String? ?? json['fullname'] as String? ?? '',
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
       profilePicture: json['profilePicture'] as String?,
     );
   }
 
-  // to json (for update profile)
+  // to json (for update profile) - Send only filename, not full URL
   Map<String, dynamic> toJson() {
+    // Extract filename if it's a URL
+    String? picture = profilePicture;
+    if (picture != null && picture.contains('/')) {
+      final uri = Uri.tryParse(picture);
+      if (uri != null && uri.pathSegments.isNotEmpty) {
+        // Check if it's already just a filename (no scheme)
+        if (!picture.contains('://')) {
+          picture = picture.split('/').last;
+        } else {
+          picture = uri.pathSegments.last;
+        }
+      }
+    }
+
     return {
-      "fullname": fullName,
+      "fullName": fullName,
       "email": email,
       "phoneNumber": phoneNumber,
-      "profilePicture": profilePicture,
+      if (picture != null && picture.isNotEmpty) "profilePicture": picture,
     };
   }
 

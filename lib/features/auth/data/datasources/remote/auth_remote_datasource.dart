@@ -1,7 +1,8 @@
-// provider
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/core/api/api_client.dart';
 import 'package:quickpalo/core/api/api_endpoints.dart';
+import 'package:quickpalo/core/services/storage/token_service.dart';
 import 'package:quickpalo/core/services/storage/user_session_service.dart';
 import 'package:quickpalo/features/auth/data/datasources/auth_datasource.dart';
 import 'package:quickpalo/features/auth/data/model/auth_register_api_model.dart';
@@ -10,18 +11,22 @@ final authRemoteDataSourceProvider = Provider<IAuthRemoteDataSource>((ref) {
   return AuthRemoteDatasource(
     apiClient: ref.read(apiClientProvider),
     userSessionService: ref.read(userSessionServiceProvider),
+    tokenService: ref.read(tokenServiceProvider),
   );
 });
 
 class AuthRemoteDatasource implements IAuthRemoteDataSource {
   final ApiClient _apiClient;
   final UserSessionService _userSessionService;
+  final TokenService _tokenService;
 
   AuthRemoteDatasource({
     required ApiClient apiClient,
     required UserSessionService userSessionService,
+    required TokenService tokenService,
   })  : _apiClient = apiClient,
-        _userSessionService = userSessionService;
+        _userSessionService = userSessionService,
+        _tokenService = tokenService;
 
   @override
   Future<AuthRegisterApiModel?> getUserById(String authId) {
@@ -38,6 +43,11 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
 
       if (response.data['success'] == true) {
         final data = response.data['data'] as Map<String, dynamic>;
+        final token = response.data['token'] as String;
+
+        // Save token
+        await _tokenService.saveToken(token);
+
         final user = AuthRegisterApiModel.fromJson(data);
 
         // Save session
@@ -69,6 +79,13 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
 
     if (response.data['success'] == true) {
       final data = response.data['data'] as Map<String, dynamic>;
+      final token = response.data['token'] as String?;
+
+      // Save token if provided
+      if (token != null) {
+        await _tokenService.saveToken(token);
+      }
+
       final registeredUser = AuthRegisterApiModel.fromJson(data);
 
       // Optional: save session immediately after registration
@@ -90,12 +107,8 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
 
   @override
   Future<bool> logout() async {
+    await _tokenService.removeToken();
     await _userSessionService.clearSession();
     return true;
   }
-
-  // @override
-  // Future<AuthApiModel?> getUserById(String authId) {
-  //   throw UnimplementedError();
-  // }
 }

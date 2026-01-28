@@ -29,6 +29,8 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
   @override
   Future<bool> deleteProfile(String userId) async {
     final token = await _tokenService.getToken();
+    if (token == null) throw Exception('No token found');
+
     await _apiClient.delete(
       ApiEndpoints.profileById(userId),
       options: Options(headers: {'Authorization': 'Bearer $token'}),
@@ -38,43 +40,88 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
 
   @override
   Future<List<ProfileApiModel>> getAllProfiles() async {
-    final response = await _apiClient.get(ApiEndpoints.profiles);
+    final token = await _tokenService.getToken();
+    if (token == null) throw Exception('No token found');
+
+    final response = await _apiClient.get(
+      ApiEndpoints.profiles,
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
     final data = response.data['data'] as List;
     return data.map((json) => ProfileApiModel.fromJson(json)).toList();
   }
 
   @override
   Future<ProfileApiModel> getProfileById(String userId) async {
-    final response = await _apiClient.get(ApiEndpoints.profileById(userId));
+    final token = await _tokenService.getToken();
+    if (token == null) throw Exception('No token found');
+
+    final response = await _apiClient.get(
+      ApiEndpoints.profileById(userId),
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
     return ProfileApiModel.fromJson(response.data['data']);
   }
 
   @override
   Future<bool> updateProfile(ProfileApiModel profile) async {
     final token = await _tokenService.getToken();
-    await _apiClient.put(
-      ApiEndpoints.profileById(profile.id),
-      data: profile.toJson(),
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
-    return true;
+    if (token == null) throw Exception('No token found');
+
+    // Create data for the endpoint - note the endpoint is /auth/update-user, not /profiles
+    final updateData = {
+      "fullName": profile.fullName,
+      "email": profile.email,
+      "phoneNumber": profile.phoneNumber,
+      if (profile.profilePicture != null &&
+          !profile.profilePicture!.startsWith('http'))
+        "profilePicture": profile.profilePicture, // Send only filename, not URL
+    };
+
+    print('Sending update data: $updateData');
+
+    try {
+      final response = await _apiClient.put(
+        ApiEndpoints.profileUploadPhoto, // This is /auth/update-user
+        data: updateData,
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      print('Update response: ${response.data}');
+      return true;
+    } catch (e) {
+      print('Update error: $e');
+      rethrow;
+    }
   }
 
   @override
   Future<String> uploadPhoto(File photo) async {
+    final token = await _tokenService.getToken();
+    if (token == null) throw Exception('No token found');
+
     final fileName = photo.path.split('/').last;
     final formData = FormData.fromMap({
-      'profilePhoto':
+      'profilePicture':
           await MultipartFile.fromFile(photo.path, filename: fileName),
     });
-    // Get token from token service
-    final token = await _tokenService.getToken();
-    final response = await _apiClient.uploadFile(
-      ApiEndpoints.profileUploadPhoto,
-      formData: formData,
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
+
+    final response = await _apiClient.put(
+      ApiEndpoints.profileUploadPhoto, // Use the same endpoint
+      data: formData,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'multipart/form-data',
+        },
+      ),
     );
 
-    return response.data['data'];
+    // Extract filename from response
+    final data = response.data['data'];
+    if (data is Map<String, dynamic>) {
+      return data['profilePicture'] as String;
+    }
+    throw Exception('Invalid response format');
   }
 }

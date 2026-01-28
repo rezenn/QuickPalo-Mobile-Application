@@ -84,12 +84,13 @@ class ProfileRepository implements IProfileRepository {
     }
   }
 
+
   @override
   Future<Either<Failure, String>> uploadPhoto(File photo) async {
     if (await _networkInfo.isConnected) {
       try {
-        final url = await _remoteDataSource.uploadPhoto(photo);
-        return Right(url);
+        final fileName = await _remoteDataSource.uploadPhoto(photo);
+        return Right(fileName);
       } catch (e) {
         return Left(ApiFailure(message: e.toString()));
       }

@@ -67,39 +67,6 @@ class ProfileViewModel extends Notifier<ProfileState> {
     );
   }
 
-  // Correct updateProfile method
-  Future<void> updateProfile(
-    Map<String, String> data, {
-    required String id,
-    required String fullName,
-    required String email,
-    required String phoneNumber,
-    String? profilePicture,
-  }) async {
-    state = state.copyWith(status: ProfileStatus.loading);
-
-    final result = await _updateProfileUsecase(
-      UpdateProfileParams(
-        id: id,
-        fullName: fullName,
-        email: email,
-        phoneNumber: phoneNumber,
-        profilePicture: profilePicture,
-      ),
-    );
-
-    result.fold(
-      (failure) => state = state.copyWith(
-        status: ProfileStatus.error,
-        errorMessage: failure.message,
-      ),
-      (success) {
-        state = state.copyWith(status: ProfileStatus.updated);
-        getProfileById(id);
-      },
-    );
-  }
-
   Future<void> deleteProfile(String userId) async {
     state = state.copyWith(status: ProfileStatus.loading);
 
@@ -119,6 +86,40 @@ class ProfileViewModel extends Notifier<ProfileState> {
     );
   }
 
+  Future<bool?> updateProfile({
+    required String id,
+    required String fullName,
+    required String email,
+    required String phoneNumber,
+    String? profilePicture,
+  }) async {
+    state = state.copyWith(status: ProfileStatus.loading);
+
+    final result = await _updateProfileUsecase(
+      UpdateProfileParams(
+        id: id,
+        fullName: fullName,
+        email: email,
+        phoneNumber: phoneNumber,
+        profilePicture: profilePicture,
+      ),
+    );
+
+    return result.fold(
+      (failure) {
+        state = state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: failure.message,
+        );
+        return false;
+      },
+      (success) {
+        state = state.copyWith(status: ProfileStatus.updated);
+        return true;
+      },
+    );
+  }
+
   Future<String?> uploadPhoto(File photo) async {
     state = state.copyWith(status: ProfileStatus.loading);
 
@@ -132,12 +133,12 @@ class ProfileViewModel extends Notifier<ProfileState> {
         );
         return null;
       },
-      (url) {
+      (filename) {
         state = state.copyWith(
           status: ProfileStatus.loaded,
-          uploadedPhotoUrl: url,
+          uploadedPhotoUrl: filename,
         );
-        return url;
+        return filename;
       },
     );
   }

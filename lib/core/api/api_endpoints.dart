@@ -31,6 +31,28 @@ class ApiEndpoints {
     return "http://localhost:$port/api";
   }
 
+  static String imageUrl(String fileName) {
+    if (fileName.startsWith('http')) return fileName;
+
+    if (isPhysicalDevice) {
+      return "http://$computerIpAddress:$port/uploads/profile/$fileName";
+    }
+
+    if (kIsWeb) {
+      return "http://localhost:$port/uploads/profile/$fileName";
+    }
+
+    if (Platform.isAndroid) {
+      return "http://10.0.2.2:$port/uploads/profile/$fileName";
+    }
+
+    if (Platform.isIOS) {
+      return "http://localhost:$port/uploads/profile/$fileName";
+    }
+
+    return "http://localhost:$port/uploads/profile/$fileName";
+  }
+
   static const Duration connectionTimeout = Duration(seconds: 30);
   static const Duration receiveTimeout = Duration(seconds: 30);
 
@@ -38,12 +60,14 @@ class ApiEndpoints {
   static const String login = '/auth/login';
   static const String register = '/auth/register';
   static String userById(String id) => '/auth/$id';
-  static String imageUrl(String fileName) {
-    return "http://$computerIpAddress:$port/uploads/profile/$fileName";
-  }
 
   // Profile
   static const String profiles = '/profiles';
   static String profileById(String id) => '/profiles/$id';
   static const String profileUploadPhoto = '/auth/update-user';
+  static const String currentUser = '/auth/get-user';
+
+  // static String imageUrl(String fileName) {
+  //   return "http://$computerIpAddress:$port/uploads/profile/$fileName";
+  // }
 }

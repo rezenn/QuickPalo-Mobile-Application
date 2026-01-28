@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickpalo/core/api/api_endpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
@@ -22,7 +23,27 @@ class UserSessionService {
   static const String _keyUserProfileImage = "user_profile_image";
 
   // store user session
-  Future<void> saveUserSession({
+  // Future<void> saveUserSession({
+  //   required String userId,
+  //   required String email,
+  //   required String fullName,
+  //   required String? phoneNumber,
+  //   String? profileImage,
+  // }) async {
+  //   await _prefs.setBool(_keyIsLoggedIn, true);
+  //   await _prefs.setString(_keyUserId, userId);
+  //   await _prefs.setString(_keyUserEmail, email);
+  //   await _prefs.setString(_keyUserFullName, fullName);
+
+  //   if (phoneNumber != null) {
+  //     await _prefs.setString(_keyUserPhoneNumber, phoneNumber);
+  //   }
+  //   if (profileImage != null) {
+  //     await _prefs.setString(_keyUserProfileImage, profileImage);
+  //   }
+  // }
+
+Future<void> saveUserSession({
     required String userId,
     required String email,
     required String fullName,
@@ -37,10 +58,18 @@ class UserSessionService {
     if (phoneNumber != null) {
       await _prefs.setString(_keyUserPhoneNumber, phoneNumber);
     }
+    
     if (profileImage != null) {
-      await _prefs.setString(_keyUserProfileImage, profileImage);
+      // Store only the filename, not the full URL
+      final fileName = profileImage.contains('/') 
+          ? profileImage.split('/').last 
+          : profileImage;
+      await _prefs.setString(_keyUserProfileImage, fileName);
     }
   }
+
+  
+
 
   // clear session
   Future<void> clearSession() async {
@@ -72,7 +101,14 @@ class UserSessionService {
     return _prefs.getString(_keyUserPhoneNumber);
   }
 
+  // String? getuserProfileImage() {
+  //   return _prefs.getString(_keyUserProfileImage);
+  // }
   String? getuserProfileImage() {
-    return _prefs.getString(_keyUserProfileImage);
+    final fileName = _prefs.getString(_keyUserProfileImage);
+    if (fileName == null || fileName.isEmpty) return null;
+    
+    // Convert filename to full URL when retrieving
+    return ApiEndpoints.imageUrl(fileName);
   }
 }
