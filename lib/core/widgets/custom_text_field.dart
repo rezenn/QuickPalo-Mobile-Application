@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
 
 enum FieldType { email, password, text }
 
@@ -11,6 +12,9 @@ class CustomTextField extends StatelessWidget {
     required this.obscureText,
     required this.keyboardType,
     required this.fieldType,
+    this.enabled = true,
+    this.fillColor,
+    this.textColor,
     this.suffixIcon,
     this.validator,
   });
@@ -20,7 +24,11 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final Widget? suffixIcon;
+  final bool enabled;
   final FieldType fieldType;
+  final Color? fillColor;
+  final Color? textColor;
+
   final FormFieldValidator<String>? validator;
 
   @override
@@ -28,24 +36,30 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       obscureText: obscureText,
       keyboardType: keyboardType,
+      style: TextStyle(
+        // Add this to change the text color
+        color: textColor, // Or use Colors.grey.shade700 for darker grey
+      ),
       decoration: InputDecoration(
         hintText: hintText,
         suffixIcon: suffixIcon,
+        filled: fillColor != null,
+        fillColor: fillColor,
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: Colors.black),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: Colors.purple),
         ),
       ),
-
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator:
-          validator ??
+      validator: validator ??
           (value) {
+            if (!enabled) return null;
+
             if (value == null || value.trim().isEmpty) {
               return errortext;
             }
