@@ -15,14 +15,12 @@ class TokenService {
 
   // Save token
   Future<void> saveToken(String token) async {
-    print('Saving token: $token');
     await _prefs.setString(_tokenKey, token);
   }
 
   // Get token
   Future<String?> getToken() async {
     final token = _prefs.getString(_tokenKey);
-    print('Retrieved token from SharedPreferences: $token');
     return token;
   }
 

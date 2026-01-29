@@ -89,13 +89,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                             );
                           },
-                          child: CircleAvatar(
-                            radius: 26,
-                            backgroundImage: profileImageUrl != null
-                                ? NetworkImage(profileImageUrl)
-                                : const AssetImage(
-                                    "assets/images/profile.png",
-                                  ) as ImageProvider,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: lightPurpleColor.withAlpha(150),
+                                  width: 2),
+                            ),
+                            child: CircleAvatar(
+                              radius: 26,
+                              backgroundImage: profileImageUrl != null
+                                  ? NetworkImage(profileImageUrl)
+                                  : null,
+                              child: profileImageUrl == null
+                                  ? Text(
+                                      fullName[0].toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        color: lightPurpleColor3,
+                                      ),
+                                    )
+                                  : null,
+                            ),
                           ),
                         ),
                       ],

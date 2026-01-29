@@ -8,6 +8,11 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [message];
 }
 
+class ServerFailure extends Failure {
+  const ServerFailure({String message = "Server error occurred"})
+      : super(message);
+}
+
 class LocalDatabaseFailure extends Failure {
   const LocalDatabaseFailure({
     String message = "Local database operation failed",

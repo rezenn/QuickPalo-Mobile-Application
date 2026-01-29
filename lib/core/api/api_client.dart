@@ -329,12 +329,15 @@ class _AuthInterceptor extends Interceptor {
 
       if (!isPublicEndpoint && token != null && token.isNotEmpty) {
         options.headers['Authorization'] = 'Bearer $token';
-        print('Added token to request: Bearer $token');
       } else {
-        print('No token available or public endpoint');
+        if (kDebugMode) {
+          print('No token available or public endpoint');
+        }
       }
     } catch (e) {
-      print('Error getting token: $e');
+      if (kDebugMode) {
+        print('Error getting token: $e');
+      }
     }
 
     handler.next(options);
@@ -342,9 +345,7 @@ class _AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    if (err.response?.statusCode == 401) {
-      print("Unauthorized! Token might be invalid or expired.");
-    }
+    if (err.response?.statusCode == 401) {}
     handler.next(err);
   }
 }

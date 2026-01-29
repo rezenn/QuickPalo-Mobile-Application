@@ -139,14 +139,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.black87,
+                          color: lightPurpleColor,
                           width: 2,
                         ),
                       ),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundColor:
-                            const Color.fromARGB(255, 190, 220, 255),
+                        backgroundColor: lightPurpleColor,
                         child: profileImageUrl != null
                             ? ClipOval(
                                 child: Image.network(

@@ -652,7 +652,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: lightPurpleColor3.withOpacity(0.1),
+                    color: lightPurpleColor3.withAlpha(30),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(Icons.camera_alt,
@@ -676,7 +676,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: lightPurpleColor3.withOpacity(0.1),
+                    color: lightPurpleColor3.withAlpha(30),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(Icons.photo_library,
@@ -813,12 +813,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: lightPurpleColor3.withOpacity(0.3),
+                                  color: lightPurpleColor3.withAlpha(70),
                                   width: 3,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: lightPurpleColor3.withOpacity(0.1),
+                                    color: lightPurpleColor3.withAlpha(30),
                                     blurRadius: 10,
                                     spreadRadius: 2,
                                   ),
@@ -880,7 +880,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
+                                        color: Colors.black.withAlpha(30),
                                         blurRadius: 8,
                                         spreadRadius: 1,
                                       ),
@@ -1053,7 +1053,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           // Loading Overlay
           if (_isLoading || state.status == ProfileStatus.loading)
             Container(
-              color: Colors.black.withOpacity(0.4),
+              color: Colors.black.withAlpha(155),
               child: Center(
                 child: Container(
                   padding: const EdgeInsets.all(24),
@@ -1062,7 +1062,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withAlpha(30),
                         blurRadius: 20,
                         spreadRadius: 2,
                       ),

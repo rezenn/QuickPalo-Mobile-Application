@@ -19,7 +19,7 @@ class ProfileActionButton extends StatelessWidget {
     final effectiveColor = color ?? Colors.black.withAlpha(190);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: SizedBox(
         width: double.infinity,
         height: 50,

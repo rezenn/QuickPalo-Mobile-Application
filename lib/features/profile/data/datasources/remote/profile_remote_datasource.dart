@@ -78,7 +78,6 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
         "profilePicture": profile.profilePicture, // Send only filename, not URL
     };
 
-    print('Sending update data: $updateData');
 
     try {
       final response = await _apiClient.put(
@@ -87,10 +86,8 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 
-      print('Update response: ${response.data}');
       return true;
     } catch (e) {
-      print('Update error: $e');
       rethrow;
     }
   }

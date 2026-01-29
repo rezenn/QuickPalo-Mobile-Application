@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/app/theme/app_colors.dart';
 
 enum FieldType { email, password, text }
 
