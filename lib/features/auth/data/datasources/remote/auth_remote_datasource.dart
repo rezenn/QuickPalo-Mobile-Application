@@ -74,12 +74,10 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
   @override
   Future<AuthRegisterApiModel> register(AuthRegisterApiModel user) async {
     try {
-
       final response = await _apiClient.post(
         ApiEndpoints.register,
         data: user.toJson(),
       );
-
 
       if (response.data['success'] == true) {
         final data = response.data['data'] as Map<String, dynamic>;
@@ -103,8 +101,7 @@ class AuthRemoteDatasource implements IAuthRemoteDataSource {
                 ? ApiEndpoints.imageUrl(registeredUser.profilePicture!)
                 : null,
           );
-        } else {
-        }
+        } else {}
 
         return registeredUser;
       } else {
