@@ -8,7 +8,7 @@ import 'package:quickpalo/core/error/failures.dart';
 
 class MockAuthRepository extends Mock implements IAuthRepository {}
 
-class IBatchrepository {}
+// class IBatchrepository {}
 
 void main() {
   late RegisterUsecase usecase;

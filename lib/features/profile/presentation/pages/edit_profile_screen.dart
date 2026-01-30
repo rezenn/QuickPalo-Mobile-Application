@@ -957,19 +957,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           fieldType: FieldType.text,
                         ),
                         const SizedBox(height: 20),
-
-                        const CustomLabel(text: "Phone Number"),
-                        const SizedBox(height: 8),
-                        CustomTextField(
-                          controller: _phoneNumberController,
-                          hintText: "Enter your phone number",
-                          errortext: "Please enter a valid phone number",
-                          keyboardType: TextInputType.phone,
-                          obscureText: false,
-                          fieldType: FieldType.text,
-                        ),
-                        const SizedBox(height: 20),
-
                         const CustomLabel(text: "Email Address"),
                         const SizedBox(height: 8),
                         // Disabled Email Field
@@ -981,7 +968,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                             errortext: "Please enter a valid email",
                             keyboardType: TextInputType.emailAddress,
                             textColor: Colors.grey.shade600,
-                            fillColor: Colors.grey.shade300,
+                            fillColor: Colors.grey.shade200,
                             obscureText: false,
                             fieldType: FieldType.email,
                             enabled: false,
@@ -991,14 +978,38 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         const SizedBox(height: 5),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            "Email cannot be changed",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey.shade600,
-                              fontStyle: FontStyle.italic,
-                            ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                size: 20,
+                                color: lightPurpleColor2,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Email cannot be changed",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: lightPurpleColor3,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        const SizedBox(height: 20),
+
+                        const CustomLabel(text: "Phone Number"),
+                        const SizedBox(height: 8),
+                        CustomTextField(
+                          controller: _phoneNumberController,
+                          hintText: "Enter your phone number",
+                          errortext: "Please enter a valid phone number",
+                          keyboardType: TextInputType.phone,
+                          obscureText: false,
+                          fieldType: FieldType.text,
                         ),
 
                         const SizedBox(height: 50),
