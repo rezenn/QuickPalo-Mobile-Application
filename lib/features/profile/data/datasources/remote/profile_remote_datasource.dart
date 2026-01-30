@@ -26,30 +26,30 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
   })  : _apiClient = apiClient,
         _tokenService = tokenService;
 
-  @override
-  Future<bool> deleteProfile(String userId) async {
-    final token = await _tokenService.getToken();
-    if (token == null) throw Exception('No token found');
+  // @override
+  // Future<bool> deleteProfile(String userId) async {
+  //   final token = await _tokenService.getToken();
+  //   if (token == null) throw Exception('No token found');
 
-    await _apiClient.delete(
-      ApiEndpoints.profileById(userId),
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
-    return true;
-  }
+  //   await _apiClient.delete(
+  //     ApiEndpoints.profileById(userId),
+  //     options: Options(headers: {'Authorization': 'Bearer $token'}),
+  //   );
+  //   return true;
+  // }
 
-  @override
-  Future<List<ProfileApiModel>> getAllProfiles() async {
-    final token = await _tokenService.getToken();
-    if (token == null) throw Exception('No token found');
+  // @override
+  // Future<List<ProfileApiModel>> getAllProfiles() async {
+  //   final token = await _tokenService.getToken();
+  //   if (token == null) throw Exception('No token found');
 
-    final response = await _apiClient.get(
-      ApiEndpoints.profiles,
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
-    final data = response.data['data'] as List;
-    return data.map((json) => ProfileApiModel.fromJson(json)).toList();
-  }
+  //   final response = await _apiClient.get(
+  //     ApiEndpoints.profiles,
+  //     options: Options(headers: {'Authorization': 'Bearer $token'}),
+  //   );
+  //   final data = response.data['data'] as List;
+  //   return data.map((json) => ProfileApiModel.fromJson(json)).toList();
+  // }
 
   @override
   Future<ProfileApiModel> getProfileById(String userId) async {
@@ -77,7 +77,6 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
           !profile.profilePicture!.startsWith('http'))
         "profilePicture": profile.profilePicture, // Send only filename, not URL
     };
-
 
     try {
       final response = await _apiClient.put(

@@ -145,7 +145,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundColor: lightPurpleColor,
+                        backgroundColor: Colors.white,
                         child: profileImageUrl != null
                             ? ClipOval(
                                 child: Image.network(

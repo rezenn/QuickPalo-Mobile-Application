@@ -388,7 +388,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                                 .toUpperCase()
                                             : "U",
                                         style: const TextStyle(
-                                          fontSize: 48,
+                                          fontSize: 64,
                                           fontWeight: FontWeight.w700,
                                           color: lightPurpleColor3,
                                         ),

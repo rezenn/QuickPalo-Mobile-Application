@@ -84,7 +84,6 @@ class ProfileRepository implements IProfileRepository {
     }
   }
 
-
   @override
   Future<Either<Failure, String>> uploadPhoto(File photo) async {
     if (await _networkInfo.isConnected) {
@@ -99,48 +98,48 @@ class ProfileRepository implements IProfileRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, bool>> deleteProfile(String userId) async {
-    if (await _networkInfo.isConnected) {
-      try {
-        await _remoteDataSource.deleteProfile(userId);
-        return const Right(true);
-      } catch (e) {
-        return Left(ApiFailure(message: e.toString()));
-      }
-    } else {
-      try {
-        final result = await _localDataSource.deleteProfile(userId);
-        if (result) {
-          return const Right(true);
-        }
-        return const Left(
-          LocalDatabaseFailure(message: "Failed to delete profile"),
-        );
-      } catch (e) {
-        return Left(LocalDatabaseFailure(message: e.toString()));
-      }
-    }
-  }
+  // @override
+  // Future<Either<Failure, bool>> deleteProfile(String userId) async {
+  //   if (await _networkInfo.isConnected) {
+  //     try {
+  //       await _remoteDataSource.deleteProfile(userId);
+  //       return const Right(true);
+  //     } catch (e) {
+  //       return Left(ApiFailure(message: e.toString()));
+  //     }
+  //   } else {
+  //     try {
+  //       final result = await _localDataSource.deleteProfile(userId);
+  //       if (result) {
+  //         return const Right(true);
+  //       }
+  //       return const Left(
+  //         LocalDatabaseFailure(message: "Failed to delete profile"),
+  //       );
+  //     } catch (e) {
+  //       return Left(LocalDatabaseFailure(message: e.toString()));
+  //     }
+  //   }
+  // }
 
-  @override
-  Future<Either<Failure, List<ProfileEntity>>> getAllProfiles() async {
-    if (await _networkInfo.isConnected) {
-      try {
-        final models = await _remoteDataSource.getAllProfiles();
-        final entities = ProfileApiModel.toEntityList(models);
-        return Right(entities);
-      } catch (e) {
-        return Left(ApiFailure(message: e.toString()));
-      }
-    } else {
-      try {
-        final models = await _localDataSource.getAllProfiles();
-        final entities = ProfileHiveModel.toEntityList(models);
-        return Right(entities);
-      } catch (e) {
-        return Left(LocalDatabaseFailure(message: e.toString()));
-      }
-    }
-  }
+  // @override
+  // Future<Either<Failure, List<ProfileEntity>>> getAllProfiles() async {
+  //   if (await _networkInfo.isConnected) {
+  //     try {
+  //       final models = await _remoteDataSource.getAllProfiles();
+  //       final entities = ProfileApiModel.toEntityList(models);
+  //       return Right(entities);
+  //     } catch (e) {
+  //       return Left(ApiFailure(message: e.toString()));
+  //     }
+  //   } else {
+  //     try {
+  //       final models = await _localDataSource.getAllProfiles();
+  //       final entities = ProfileHiveModel.toEntityList(models);
+  //       return Right(entities);
+  //     } catch (e) {
+  //       return Left(LocalDatabaseFailure(message: e.toString()));
+  //     }
+  //   }
+  // }
 }

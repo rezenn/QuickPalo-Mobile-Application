@@ -32,3 +32,13 @@ class NetworkFailure extends Failure {
   const NetworkFailure({String message = "No internet connection"})
       : super(message);
 }
+
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure({String message = "Unauthorized user"})
+      : super(message);
+}
+
+class UserNotFoundFailure extends Failure {
+  const UserNotFoundFailure({String message = "User not found"})
+      : super(message);
+}

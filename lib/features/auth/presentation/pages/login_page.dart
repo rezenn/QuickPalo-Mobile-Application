@@ -62,7 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         SnackbarUtils.showError(context, next.errorMessage!);
       }
     });
-    final authState = ref.watch(authViewModelProvider);
+    // final authState = ref.watch(authViewModelProvider);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -139,7 +139,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               SizedBox(height: 5),
                               CustomTextField(
                                 controller: _emailController,
-                                hintText: "hemraj@mail.com",
+                                hintText: "user@mail.com",
                                 errortext: "Please enter a valid email",
                                 // keyboardType: TextInputType.,
                                 obscureText: false,
@@ -191,12 +191,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "Don't have an account?",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: textColorGrey,
+                                  Flexible(
+                                    child: Text(
+                                      "Don't have an account?",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: textColorGrey,
+                                      ),
                                     ),
+                                  ),
+                                  SizedBox(
+                                    width: 4,
                                   ),
                                   CustomTextButton(
                                     text: "Sign Up",
@@ -224,7 +229,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 10,
                                     ),
-                                    child: Text("Or"),
+                                    child: Text("OR"),
                                   ),
                                   Expanded(
                                     child: Divider(
