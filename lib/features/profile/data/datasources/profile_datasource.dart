@@ -7,7 +7,6 @@ abstract interface class IProfileLocalDataSource {
   // Future<List<ProfileHiveModel>> getAllProfiles();
   Future<ProfileHiveModel?> getProfileById(String userId);
   Future<bool> updateProfile(ProfileHiveModel profile);
-  // Future<bool> deleteProfile(String userId);
 }
 
 abstract interface class IProfileRemoteDataSource {
@@ -15,5 +14,4 @@ abstract interface class IProfileRemoteDataSource {
   // Future<List<ProfileApiModel>> getAllProfiles();
   Future<ProfileApiModel> getProfileById(String userId);
   Future<bool> updateProfile(ProfileApiModel profile);
-  // Future<bool> deleteProfile(String userId);
 }

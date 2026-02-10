@@ -15,16 +15,6 @@ class ProfileLocalDatasource implements IProfileLocalDataSource {
       : _hiveService = hiveService;
 
   // @override
-  // Future<bool> deleteProfile(String userId) async {
-  //   try {
-  //     await _hiveService.deleteProfile(userId);
-  //     return true;
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // }
-
-  // @override
   // Future<List<ProfileHiveModel>> getAllProfiles() async {
   //   try {
   //     return _hiveService.getAllProfiles();

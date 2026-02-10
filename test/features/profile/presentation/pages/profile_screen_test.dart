@@ -77,7 +77,7 @@ void main() {
       );
 
       await tester.pumpAndSettle();
-
+//
       expect(find.text('Edit Profile'), findsOneWidget);
       expect(find.text('Logout'), findsOneWidget);
     });

@@ -27,18 +27,6 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
         _tokenService = tokenService;
 
   // @override
-  // Future<bool> deleteProfile(String userId) async {
-  //   final token = await _tokenService.getToken();
-  //   if (token == null) throw Exception('No token found');
-
-  //   await _apiClient.delete(
-  //     ApiEndpoints.profileById(userId),
-  //     options: Options(headers: {'Authorization': 'Bearer $token'}),
-  //   );
-  //   return true;
-  // }
-
-  // @override
   // Future<List<ProfileApiModel>> getAllProfiles() async {
   //   final token = await _tokenService.getToken();
   //   if (token == null) throw Exception('No token found');
@@ -68,14 +56,13 @@ class ProfileRemoteDatasource implements IProfileRemoteDataSource {
     final token = await _tokenService.getToken();
     if (token == null) throw Exception('No token found');
 
-    // Create data for the endpoint - note the endpoint is /auth/update-user, not /profiles
     final updateData = {
       "fullName": profile.fullName,
       "email": profile.email,
       "phoneNumber": profile.phoneNumber,
       if (profile.profilePicture != null &&
           !profile.profilePicture!.startsWith('http'))
-        "profilePicture": profile.profilePicture, // Send only filename, not URL
+        "profilePicture": profile.profilePicture,
     };
 
     try {
