@@ -25,7 +25,7 @@ class CustomSmallCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
                 aspectRatio: 16 / 10, // responsive image
-                child: Image.asset(
+                child: Image.network(
                   imagePath,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {

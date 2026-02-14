@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quickpalo/core/constants/hive_table_constants.dart';
 import 'package:quickpalo/features/auth/data/model/auth_hive_model.dart';
+import 'package:quickpalo/features/organizations/data/models/organization_hive_model.dart';
 import 'package:quickpalo/features/profile/data/models/profile_hive_model.dart';
 
 final hiveServiceProvider = Provider<HiveService>((ref) {
@@ -10,7 +11,6 @@ final hiveServiceProvider = Provider<HiveService>((ref) {
 });
 
 class HiveService {
-  // Initialize Hive and open boxes
   Future<void> init() async {
     final directory = await getApplicationDocumentsDirectory();
     final path = "${directory.path}/${HiveTableConstant.dbName}";
@@ -27,12 +27,17 @@ class HiveService {
     if (!Hive.isAdapterRegistered(HiveTableConstant.profileTypeId)) {
       Hive.registerAdapter(ProfileHiveModelAdapter());
     }
+    if (!Hive.isAdapterRegistered(HiveTableConstant.organizationTypeId)) {
+      Hive.registerAdapter(OrganizationHiveModelAdapter());
+    }
   }
 
   // Open Hive boxes
   Future<void> _openBoxes() async {
     await Hive.openBox<AuthHiveModel>(HiveTableConstant.authTable);
     await Hive.openBox<ProfileHiveModel>(HiveTableConstant.profileTable);
+    await Hive.openBox<OrganizationHiveModel>(
+        HiveTableConstant.organizationTable);
   }
 
   // Close Hive
@@ -106,5 +111,40 @@ class HiveService {
 
   Future<void> saveProfile(ProfileHiveModel profile) async {
     await _profileBox.put(profile.userId, profile);
+  }
+
+  // Organization methods
+  Box<OrganizationHiveModel> get _organizationBox =>
+      Hive.box<OrganizationHiveModel>(HiveTableConstant.organizationTable);
+
+  List<OrganizationHiveModel> getAllOrganizations() {
+    return _organizationBox.values.toList();
+  }
+
+  OrganizationHiveModel? getOrganizationById(String id) {
+    return _organizationBox.get(id);
+  }
+
+  Future<void> saveOrganization(OrganizationHiveModel organization) async {
+    if (organization.id != null) {
+      await _organizationBox.put(organization.id, organization);
+    }
+  }
+
+  Future<void> saveOrganizations(
+      List<OrganizationHiveModel> organizations) async {
+    for (var org in organizations) {
+      if (org.id != null) {
+        await _organizationBox.put(org.id, org);
+      }
+    }
+  }
+
+  Future<void> deleteOrganization(String id) async {
+    await _organizationBox.delete(id);
+  }
+
+  Future<void> clearOrganizations() async {
+    await _organizationBox.clear();
   }
 }
