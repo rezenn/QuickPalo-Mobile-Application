@@ -22,27 +22,6 @@ class UserSessionService {
   static const String _keyUserPhoneNumber = "user_phone_number";
   static const String _keyUserProfileImage = "user_profile_image";
 
-  // store user session
-  // Future<void> saveUserSession({
-  //   required String userId,
-  //   required String email,
-  //   required String fullName,
-  //   required String? phoneNumber,
-  //   String? profileImage,
-  // }) async {
-  //   await _prefs.setBool(_keyIsLoggedIn, true);
-  //   await _prefs.setString(_keyUserId, userId);
-  //   await _prefs.setString(_keyUserEmail, email);
-  //   await _prefs.setString(_keyUserFullName, fullName);
-
-  //   if (phoneNumber != null) {
-  //     await _prefs.setString(_keyUserPhoneNumber, phoneNumber);
-  //   }
-  //   if (profileImage != null) {
-  //     await _prefs.setString(_keyUserProfileImage, profileImage);
-  //   }
-  // }
-
 Future<void> saveUserSession({
     required String userId,
     required String email,
@@ -67,9 +46,6 @@ Future<void> saveUserSession({
       await _prefs.setString(_keyUserProfileImage, fileName);
     }
   }
-
-  
-
 
   // clear session
   Future<void> clearSession() async {

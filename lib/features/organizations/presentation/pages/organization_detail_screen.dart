@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/common/date_selector.dart';
-import 'package:quickpalo/common/department_selector.dart';
-import 'package:quickpalo/common/time_selector.dart';
+import 'package:quickpalo/features/organizations/domain/entities/organization_entity.dart';
+import 'package:quickpalo/features/organizations/presentation/widgets/date_selector.dart';
+import 'package:quickpalo/features/organizations/presentation/widgets/department_selector.dart';
+import 'package:quickpalo/features/organizations/presentation/widgets/time_selector.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_detail_screen.dart';
 import 'package:quickpalo/core/widgets/custom_button.dart';
 import 'package:quickpalo/core/widgets/custom_detail_action.dart';
-import 'package:quickpalo/features/calls/presentation/pages/call_screen.dart';
 import 'package:quickpalo/features/messages/presentation/pages/message_screen.dart';
-import 'package:quickpalo/models/organization_model.dart';
+import 'package:quickpalo/core/api/api_endpoints.dart';
 
 class OrganizationDetailScreen extends StatefulWidget {
-  final OrganizationModel organization;
+  final OrganizationEntity organization;
 
   const OrganizationDetailScreen({super.key, required this.organization});
 
@@ -21,44 +21,37 @@ class OrganizationDetailScreen extends StatefulWidget {
 }
 
 class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
-  // int _navIndex = 0;
-  // void _onNavTap(int index) {
-  //   setState(() => _navIndex = index);
-
-  //   switch (index) {
-  //     case 0:
-  //       Navigator.pop(context);
-  //       break;
-  //     case 1:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const CalendarScreen()),
-  //       );
-  //       break;
-  //     case 2:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const HistoryScreen()),
-  //       );
-  //       break;
-  //     case 3:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const ProfileScreen()),
-  //       );
-  //       break;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isTablet = constraints.maxWidth > 600;
+        final org = widget.organization;
+
+        final address = [org.street, org.city, org.state]
+            .where((part) => part != null && part.isNotEmpty)
+            .join(', ');
+
+        final workingHours = org.workingHours.isNotEmpty
+            ? '${org.workingHours.first.openingTime} - ${org.workingHours.first.closingTime}'
+            : 'Hours not available';
+
+        final departmentNames =
+            org.departments.map((dept) => dept.name).toList();
+
+        final timeSlotStrings = org.timeSlots
+            .where((slot) => slot.isAvailable)
+            .map((slot) => '${slot.startTime} - ${slot.endTime}')
+            .toList();
+
+        final imageUrl = org.user?.profilePicture != null
+            ? ApiEndpoints.imageUrl(org.user!.profilePicture!)
+            : 'https://via.placeholder.com/800x400';
 
         return Scaffold(
-          appBar: AppBar(title: const Text("Book Appointment")),
-
+          appBar: AppBar(
+            title: const Text("Book Appointment"),
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: isTablet
@@ -73,8 +66,20 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                       width: double.infinity,
                       height: isTablet ? 500 : 250,
                       child: Image.network(
-                        widget.organization.image,
-                        fit: BoxFit.fill,
+                        imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey[300],
+                            child: Center(
+                              child: Icon(
+                                Icons.broken_image,
+                                size: 50,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -89,7 +94,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                             Padding(
                               padding: const EdgeInsets.only(right: 5),
                               child: Text(
-                                widget.organization.title,
+                                org.organizationName,
                                 style: TextStyle(
                                   fontFamily: "Inter Bold 18",
                                   fontSize: isTablet ? 34 : 22,
@@ -97,23 +102,26 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: Colors.red,
-                                  size: isTablet ? 20 : 13,
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  widget.organization.location,
-                                  style: TextStyle(
-                                    fontSize: isTablet ? 22 : 14,
-                                    color: Colors.grey.shade700,
+                            if (address.isNotEmpty)
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_pin,
+                                    color: Colors.red,
+                                    size: isTablet ? 20 : 13,
                                   ),
-                                ),
-                              ],
-                            ),
+                                  const SizedBox(width: 5),
+                                  Expanded(
+                                    child: Text(
+                                      address,
+                                      style: TextStyle(
+                                        fontSize: isTablet ? 22 : 14,
+                                        color: Colors.grey.shade700,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             Row(
                               children: [
                                 Icon(
@@ -123,7 +131,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  widget.organization.time,
+                                  workingHours,
                                   style: TextStyle(
                                     fontSize: isTablet ? 22 : 14,
                                     color: Colors.grey.shade700,
@@ -142,19 +150,16 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         ),
                         child: Row(
                           children: [
-                            CustomDetailAction(
-                              icon: Icons.call,
-                              label: "Call",
-                              isTablet: isTablet,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CallScreen(),
-                                  ),
-                                );
-                              },
-                            ),
+                            // CustomDetailAction(
+                            //   icon: Icons.call,
+                            //   label: "Call",
+                            //   isTablet: isTablet,
+                            //   onTap: () {
+                            //     if (org.contactPhone != null) {
+                            //       // Implement call functionality
+                            //     }
+                            //   },
+                            // ),
                             CustomDetailAction(
                               icon: Icons.message,
                               label: "Message",
@@ -163,7 +168,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MessageScreen(),
+                                    builder: (context) => const MessageScreen(),
                                   ),
                                 );
                               },
@@ -175,38 +180,43 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                   ),
                   const SizedBox(height: 10),
                   Divider(),
-                  Text(
-                    "About",
-                    style: TextStyle(
-                      fontSize: isTablet ? 30 : 20,
-                      fontFamily: "Inter Bold 24",
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Text(
-                      widget.organization.description,
+                  if (org.description != null &&
+                      org.description!.isNotEmpty) ...[
+                    Text(
+                      "About",
                       style: TextStyle(
-                        fontSize: isTablet ? 20 : 16,
-                        height: 1.5,
-                        color: Colors.grey.shade800,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                    child: Text(
-                      "Department",
-                      style: TextStyle(
-                        fontSize: 22,
+                        fontSize: isTablet ? 30 : 20,
                         fontFamily: "Inter Bold 24",
                       ),
                     ),
-                  ),
-                  DepartmentSelector(
-                    departments: widget.organization.departments,
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        org.description!,
+                        style: TextStyle(
+                          fontSize: isTablet ? 20 : 16,
+                          height: 1.5,
+                          color: Colors.grey.shade800,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                  if (departmentNames.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      child: Text(
+                        "Department",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: "Inter Bold 24",
+                        ),
+                      ),
+                    ),
+                    DepartmentSelector(
+                      departments: departmentNames,
+                    ),
+                  ],
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
                     child: Text(
@@ -218,7 +228,13 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     ),
                   ),
                   DateSelector(),
-                  TimeSelector(timeSlots: widget.organization.timeSlots),
+                  if (timeSlotStrings.isNotEmpty)
+                    TimeSelector(timeSlots: timeSlotStrings)
+                  else
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text('No time slots available'),
+                    ),
                   SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -240,10 +256,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
               ),
             ),
           ),
-          // bottomNavigationBar: CustomNavBar(
-          //   currentIndex: _navIndex,
-          //   onTap: _onNavTap,
-          // ),
         );
       },
     );

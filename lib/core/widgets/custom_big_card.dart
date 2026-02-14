@@ -43,7 +43,7 @@ class CustomBigCard extends StatelessWidget {
                   child: SizedBox(
                     width: double.infinity,
                     height: cardHeight * 1.1,
-                    child: Image.asset(
+                    child: Image.network(
                       imagePath,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {

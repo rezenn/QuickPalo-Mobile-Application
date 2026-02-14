@@ -11,16 +11,7 @@ class OrganizationFilter extends StatefulWidget {
 class _OrganizationFilterState extends State<OrganizationFilter> {
   int selectedDate = 0;
 
-  final dates = [
-    "All",
-    "Hospital",
-    "Bank",
-    "Service Center",
-    "University",
-    "School",
-    "College",
-    "Government Office",
-  ];
+  final dates = ['All', 'Hospital', 'Clinic', 'Bank', 'School', 'Others'];
 
   @override
   Widget build(BuildContext context) {
