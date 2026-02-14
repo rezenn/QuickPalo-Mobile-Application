@@ -97,11 +97,22 @@ class OrganizationViewModel extends Notifier<OrganizationState> {
 
   String _mapFailureToMessage(Failure failure) {
     if (failure is ServerFailure) {
-      return 'Server error  ${failure.message ?? "Unknown error"}';
+      return 'Server error: ${failure.message}';
     } else if (failure is NetworkFailure) {
-      return 'Network error: ${failure.message ?? "Please check your connection"}';
+      return 'Network error: ${failure.message}';
+    } else if (failure is ApiFailure) {
+      if (failure.statusCode != null) {
+        return 'API Error (${failure.statusCode}): ${failure.message}';
+      }
+      return 'API Error: ${failure.message}';
+    } else if (failure is LocalDatabaseFailure) {
+      return 'Database error: ${failure.message}';
+    } else if (failure is UnauthorizedFailure) {
+      return 'Unauthorized: ${failure.message}';
+    } else if (failure is UserNotFoundFailure) {
+      return 'User not found: ${failure.message}';
     } else {
-      return 'Unexpected error: ${failure.message ?? "Unknown error"}';
+      return 'Unexpected error: ${failure.message}';
     }
   }
 }

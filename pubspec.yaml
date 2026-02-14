@@ -123,9 +123,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - assets/images/organization_image/
     - assets/icons/
     - assets/lottie/
+    # - assets/images/placeholder.png
+    # - assets/images/placeholder_150.png
+    # - assets/images/placeholder_300x200.png
+    # - assets/images/placeholder_800x400.png
 
   #   - images/a_dot_ham.jpeg
 

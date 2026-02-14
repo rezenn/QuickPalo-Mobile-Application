@@ -232,7 +232,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     itemBuilder: (context, index) {
                       final org = organizations[index];
                       final address = [org.street, org.city, org.state]
-                          .where((part) => part != null && part!.isNotEmpty)
+                          .where((part) => part != null && part.isNotEmpty)
                           .join(', ');
 
                       final workingHours = org.workingHours.isNotEmpty
