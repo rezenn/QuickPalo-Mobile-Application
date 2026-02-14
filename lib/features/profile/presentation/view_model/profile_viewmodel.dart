@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quickpalo/features/profile/domain/usecases/delete_profile_usecase.dart';
-import 'package:quickpalo/features/profile/domain/usecases/get_all_profile_usecase.dart';
 import 'package:quickpalo/features/profile/domain/usecases/get_profile_by_id_usecase.dart';
 import 'package:quickpalo/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:quickpalo/features/profile/domain/usecases/upload_photo_usecase.dart';
@@ -14,39 +12,18 @@ final profileViewModelProvider =
 );
 
 class ProfileViewModel extends Notifier<ProfileState> {
-  // late final GetAllProfilesUsecase _getAllProfilesUsecase;
   late final GetProfileByIdUsecase _getProfileByIdUsecase;
   late final UpdateProfileUsecase _updateProfileUsecase;
-  // late final DeleteProfileUsecase _deleteProfileUsecase;
   late final UploadPhotoUsecase _uploadPhotoUsecase;
 
   @override
   ProfileState build() {
-    // _getAllProfilesUsecase = ref.read(getAllProfilesUsecaseProvider);
     _getProfileByIdUsecase = ref.read(getProfileByIdUsecaseProvider);
     _updateProfileUsecase = ref.read(updateProfileUsecaseProvider);
-    // _deleteProfileUsecase = ref.read(deleteProfileUsecaseProvider);
     _uploadPhotoUsecase = ref.read(uploadPhotoUsecaseProvider);
 
     return const ProfileState();
   }
-
-  // Future<void> getAllProfiles() async {
-  //   state = state.copyWith(status: ProfileStatus.loading);
-
-  //   final result = await _getAllProfilesUsecase();
-
-  //   result.fold(
-  //     (failure) => state = state.copyWith(
-  //       status: ProfileStatus.error,
-  //       errorMessage: failure.message,
-  //     ),
-  //     (profiles) => state = state.copyWith(
-  //       status: ProfileStatus.loaded,
-  //       profiles: profiles,
-  //     ),
-  //   );
-  // }
 
   Future<void> getProfileById(String userId) async {
     state = state.copyWith(status: ProfileStatus.loading);
@@ -66,25 +43,6 @@ class ProfileViewModel extends Notifier<ProfileState> {
       ),
     );
   }
-
-  // Future<void> deleteProfile(String userId) async {
-  //   state = state.copyWith(status: ProfileStatus.loading);
-
-  //   final result = await _deleteProfileUsecase(
-  //     DeleteProfileParams(userId: userId),
-  //   );
-
-  //   result.fold(
-  //     (failure) => state = state.copyWith(
-  //       status: ProfileStatus.error,
-  //       errorMessage: failure.message,
-  //     ),
-  //     (success) {
-  //       state = state.copyWith(status: ProfileStatus.deleted);
-  //       getAllProfiles();
-  //     },
-  //   );
-  // }
 
   Future<bool?> updateProfile({
     required String id,
