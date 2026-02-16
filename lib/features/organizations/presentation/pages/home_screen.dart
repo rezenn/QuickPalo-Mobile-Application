@@ -206,7 +206,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             imagePath: org.user?.profilePicture != null
                                 ? ApiEndpoints.imageUrl(
                                     org.user!.profilePicture!)
-                                : 'https://via.placeholder.com/150',
+                                : "assets/images/placeholder.png",
                           ),
                         );
                       },
@@ -252,7 +252,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: CustomBigCard(
                           imagePath: org.user?.profilePicture != null
                               ? ApiEndpoints.imageUrl(org.user!.profilePicture!)
-                              : 'https://via.placeholder.com/300x200',
+                              : "assets/images/placeholder.png",
                           title: org.organizationName,
                           location: address,
                           time: workingHours,

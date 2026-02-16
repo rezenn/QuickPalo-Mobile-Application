@@ -33,23 +33,24 @@ class OrganizationHiveModelAdapter extends TypeAdapter<OrganizationHiveModel> {
       departments: (fields[11] as List)
           .map((dynamic e) => (e as Map).cast<String, dynamic>())
           .toList(),
-      appointmentDuration: fields[12] as int,
-      advanceBookingDays: fields[13] as int,
-      timeSlots: (fields[14] as List)
+      fees: fields[12] as int,
+      appointmentDuration: fields[13] as int,
+      advanceBookingDays: fields[14] as int,
+      timeSlots: (fields[15] as List)
           .map((dynamic e) => (e as Map).cast<String, dynamic>())
           .toList(),
-      isActive: fields[15] as bool,
-      isVerified: fields[16] as bool,
-      createdAt: fields[17] as String?,
-      updatedAt: fields[18] as String?,
-      user: (fields[19] as Map?)?.cast<String, dynamic>(),
+      isActive: fields[16] as bool,
+      isVerified: fields[17] as bool,
+      createdAt: fields[18] as String?,
+      updatedAt: fields[19] as String?,
+      user: (fields[20] as Map?)?.cast<String, dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, OrganizationHiveModel obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(21)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -75,20 +76,22 @@ class OrganizationHiveModelAdapter extends TypeAdapter<OrganizationHiveModel> {
       ..writeByte(11)
       ..write(obj.departments)
       ..writeByte(12)
-      ..write(obj.appointmentDuration)
+      ..write(obj.fees)
       ..writeByte(13)
-      ..write(obj.advanceBookingDays)
+      ..write(obj.appointmentDuration)
       ..writeByte(14)
-      ..write(obj.timeSlots)
+      ..write(obj.advanceBookingDays)
       ..writeByte(15)
-      ..write(obj.isActive)
+      ..write(obj.timeSlots)
       ..writeByte(16)
-      ..write(obj.isVerified)
+      ..write(obj.isActive)
       ..writeByte(17)
-      ..write(obj.createdAt)
+      ..write(obj.isVerified)
       ..writeByte(18)
-      ..write(obj.updatedAt)
+      ..write(obj.createdAt)
       ..writeByte(19)
+      ..write(obj.updatedAt)
+      ..writeByte(20)
       ..write(obj.user);
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/core/api/api_client.dart';
 import 'package:quickpalo/core/api/api_endpoints.dart';
@@ -62,9 +63,10 @@ class OrganizationRemoteDatasource implements IOrganizationRemoteDataSource {
     try {
       final response =
           await _apiClient.get(ApiEndpoints.organizationById(organizationId));
-
       if (response.data['success'] == true) {
-        return OrganizationApiModel.fromJson(response.data['data']);
+        final data = response.data['data'];
+
+        return OrganizationApiModel.fromJson(data);
       }
       throw Exception('Organization not found');
     } catch (e) {

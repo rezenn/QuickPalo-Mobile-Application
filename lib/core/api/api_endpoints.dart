@@ -7,7 +7,7 @@ class ApiEndpoints {
   // MUST be true for physical device
   static const bool isPhysicalDevice = true;
 
-  static const String computerIpAddress = "192.168.101.7";
+  static const String computerIpAddress = "192.168.101.6";
 
   static const int port = 5050;
 

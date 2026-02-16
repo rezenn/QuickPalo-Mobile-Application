@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:quickpalo/features/organizations/domain/entities/organization_entity.dart';
 
 class OrganizationApiModel {
@@ -13,6 +14,7 @@ class OrganizationApiModel {
   final String? contactPhone;
   final List<WorkingHourEntity> workingHours;
   final List<DepartmentEntity> departments;
+  final int fees;
   final int appointmentDuration;
   final int advanceBookingDays;
   final List<TimeSlotEntity> timeSlots;
@@ -35,6 +37,7 @@ class OrganizationApiModel {
     this.contactPhone,
     required this.workingHours,
     required this.departments,
+    required this.fees,
     required this.appointmentDuration,
     required this.advanceBookingDays,
     required this.timeSlots,
@@ -138,6 +141,23 @@ class OrganizationApiModel {
       }
     }
 
+    int fees = 1;
+    if (json.containsKey('fees') && json['fees'] != null) {
+      try {
+        final feesValue = json['fees'];
+        if (feesValue is int) {
+          fees = feesValue;
+        } else if (feesValue is double) {
+          fees = feesValue.toInt();
+        } else if (feesValue is String) {
+          fees = int.tryParse(feesValue) ?? 1;
+        } else {
+          fees = int.tryParse(feesValue.toString()) ?? 1;
+        }
+      } catch (e) {
+        throw Exception('Failed to parse fees in fromJson: $e');
+      }
+    }
     int appointmentDuration = 30;
     if (json.containsKey('appointmentDuration') &&
         json['appointmentDuration'] != null) {
@@ -208,6 +228,7 @@ class OrganizationApiModel {
           : null,
       workingHours: workingHours,
       departments: departments,
+      fees: fees,
       appointmentDuration: appointmentDuration,
       advanceBookingDays: advanceBookingDays,
       timeSlots: timeSlots,
@@ -233,6 +254,7 @@ class OrganizationApiModel {
       contactPhone: contactPhone,
       workingHours: workingHours,
       departments: departments,
+      fees: fees,
       appointmentDuration: appointmentDuration,
       advanceBookingDays: advanceBookingDays,
       timeSlots: timeSlots,

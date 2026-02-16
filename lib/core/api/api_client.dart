@@ -81,14 +81,11 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    print('🌐 GET Request to: ${_dio.options.baseUrl}$path');
     try {
       final response = await _dio.get(path,
           queryParameters: queryParameters, options: options);
-      print('✅ Response status: ${response.statusCode}');
       return response;
     } catch (e) {
-      print('❌ GET Error: $e');
       rethrow;
     }
   }

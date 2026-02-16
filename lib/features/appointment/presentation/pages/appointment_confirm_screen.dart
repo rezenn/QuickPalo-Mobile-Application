@@ -3,7 +3,9 @@ import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/core/widgets/custom_button.dart';
 
 class AppointmentConfirmScreen extends StatelessWidget {
-  const AppointmentConfirmScreen({super.key});
+  final Map<String, dynamic>? appointmentData;
+
+  const AppointmentConfirmScreen({super.key, this.appointmentData});
 
   @override
   Widget build(BuildContext context) {

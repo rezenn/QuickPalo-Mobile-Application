@@ -30,20 +30,22 @@ class OrganizationHiveModel {
   @HiveField(11)
   final List<Map<String, dynamic>> departments;
   @HiveField(12)
-  final int appointmentDuration;
+  final int fees;
   @HiveField(13)
-  final int advanceBookingDays;
+  final int appointmentDuration;
   @HiveField(14)
-  final List<Map<String, dynamic>> timeSlots;
+  final int advanceBookingDays;
   @HiveField(15)
-  final bool isActive;
+  final List<Map<String, dynamic>> timeSlots;
   @HiveField(16)
-  final bool isVerified;
+  final bool isActive;
   @HiveField(17)
-  final String? createdAt;
+  final bool isVerified;
   @HiveField(18)
-  final String? updatedAt;
+  final String? createdAt;
   @HiveField(19)
+  final String? updatedAt;
+  @HiveField(20)
   final Map<String, dynamic>? user;
 
   OrganizationHiveModel({
@@ -59,6 +61,7 @@ class OrganizationHiveModel {
     this.contactPhone,
     required this.workingHours,
     required this.departments,
+    required this.fees,
     required this.appointmentDuration,
     required this.advanceBookingDays,
     required this.timeSlots,
@@ -83,6 +86,7 @@ class OrganizationHiveModel {
       contactPhone: entity.contactPhone,
       workingHours: entity.workingHours.map((e) => e.toJson()).toList(),
       departments: entity.departments.map((e) => e.toJson()).toList(),
+      fees: entity.fees,
       appointmentDuration: entity.appointmentDuration,
       advanceBookingDays: entity.advanceBookingDays,
       timeSlots: entity.timeSlots.map((e) => e.toJson()).toList(),
@@ -108,6 +112,7 @@ class OrganizationHiveModel {
       'contactPhone': contactPhone,
       'workingHours': workingHours,
       'departments': departments,
+      'fees': fees,
       'appointmentDuration': appointmentDuration,
       'advanceBookingDays': advanceBookingDays,
       'timeSlots': timeSlots,

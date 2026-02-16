@@ -22,6 +22,11 @@ class OrganizationDetailScreen extends StatefulWidget {
 
 class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -32,10 +37,21 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
             .where((part) => part != null && part.isNotEmpty)
             .join(', ');
 
+        final contactPhone =
+            org.contactPhone != null && org.contactPhone!.isNotEmpty
+                ? org.contactPhone!
+                : 'Phone Number not available';
         final workingHours = org.workingHours.isNotEmpty
             ? '${org.workingHours.first.openingTime} - ${org.workingHours.first.closingTime}'
             : 'Hours not available';
 
+        String getFormattedFees(int? fees) {
+          if (fees == null) return 'Fees not available';
+          if (fees == 0) return 'Free';
+          return 'Rs $fees';
+        }
+
+        final fees = getFormattedFees(org.fees);
         final departmentNames =
             org.departments.map((dept) => dept.name).toList();
 
@@ -125,6 +141,23 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                             Row(
                               children: [
                                 Icon(
+                                  Icons.phone_outlined,
+                                  color: Colors.grey,
+                                  size: isTablet ? 20 : 13,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  contactPhone,
+                                  style: TextStyle(
+                                    fontSize: isTablet ? 22 : 14,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
                                   Icons.access_time,
                                   color: Colors.grey,
                                   size: isTablet ? 20 : 13,
@@ -132,6 +165,23 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                 const SizedBox(width: 10),
                                 Text(
                                   workingHours,
+                                  style: TextStyle(
+                                    fontSize: isTablet ? 22 : 14,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.payments,
+                                  color: Colors.grey,
+                                  size: isTablet ? 20 : 13,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  fees,
                                   style: TextStyle(
                                     fontSize: isTablet ? 22 : 14,
                                     color: Colors.grey.shade700,

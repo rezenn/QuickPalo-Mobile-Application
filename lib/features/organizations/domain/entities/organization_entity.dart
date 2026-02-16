@@ -168,6 +168,7 @@ class OrganizationEntity extends Equatable {
   final String? contactPhone;
   final List<WorkingHourEntity> workingHours;
   final List<DepartmentEntity> departments;
+  final int fees;
   final int appointmentDuration;
   final int advanceBookingDays;
   final List<TimeSlotEntity> timeSlots;
@@ -190,6 +191,7 @@ class OrganizationEntity extends Equatable {
     this.contactPhone,
     required this.workingHours,
     required this.departments,
+    this.fees = 1,
     this.appointmentDuration = 30,
     this.advanceBookingDays = 7,
     required this.timeSlots,
@@ -214,6 +216,7 @@ class OrganizationEntity extends Equatable {
         contactPhone,
         workingHours,
         departments,
+        fees,
         appointmentDuration,
         advanceBookingDays,
         timeSlots,
@@ -295,6 +298,7 @@ class OrganizationEntity extends Equatable {
       contactPhone: json['contactPhone'],
       workingHours: workingHours,
       departments: departments,
+      fees: json['fees'] ?? 1,
       appointmentDuration: json['appointmentDuration'] ?? 30,
       advanceBookingDays: json['advanceBookingDays'] ?? 7,
       timeSlots: timeSlots,
@@ -345,6 +349,7 @@ class OrganizationEntity extends Equatable {
       if (contactPhone != null) 'contactPhone': contactPhone,
       'workingHours': workingHours.map((hour) => hour.toJson()).toList(),
       'departments': departments.map((dept) => dept.toJson()).toList(),
+      'fees': fees,
       'appointmentDuration': appointmentDuration,
       'advanceBookingDays': advanceBookingDays,
       'timeSlots': timeSlots.map((slot) => slot.toJson()).toList(),
@@ -369,6 +374,7 @@ class OrganizationEntity extends Equatable {
     String? contactPhone,
     List<WorkingHourEntity>? workingHours,
     List<DepartmentEntity>? departments,
+    int? fees,
     int? appointmentDuration,
     int? advanceBookingDays,
     List<TimeSlotEntity>? timeSlots,
@@ -391,6 +397,7 @@ class OrganizationEntity extends Equatable {
       contactPhone: contactPhone ?? this.contactPhone,
       workingHours: workingHours ?? this.workingHours,
       departments: departments ?? this.departments,
+      fees: fees ?? this.fees,
       appointmentDuration: appointmentDuration ?? this.appointmentDuration,
       advanceBookingDays: advanceBookingDays ?? this.advanceBookingDays,
       timeSlots: timeSlots ?? this.timeSlots,
