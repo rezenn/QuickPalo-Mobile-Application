@@ -16,13 +16,11 @@ final organizationRemoteDatasourceProvider =
 
 class OrganizationRemoteDatasource implements IOrganizationRemoteDataSource {
   final ApiClient _apiClient;
-  // final TokenService _tokenService;
 
   OrganizationRemoteDatasource({
     required ApiClient apiClient,
     required TokenService tokenService,
   }) : _apiClient = apiClient;
-  // _tokenService = tokenService;
 
   @override
   Future<List<OrganizationApiModel>> getAllOrganizations() async {

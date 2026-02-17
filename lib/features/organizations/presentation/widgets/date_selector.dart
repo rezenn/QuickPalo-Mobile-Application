@@ -13,7 +13,7 @@ class DateSelector extends StatefulWidget {
 
 class _DateSelectorState extends State<DateSelector> {
   int selectedDate = 0;
-  late List<DateTime> dates; // Use DateTime list directly
+  late List<DateTime> dates;
 
   @override
   void initState() {
@@ -75,9 +75,6 @@ class _DateSelectorState extends State<DateSelector> {
                     if (widget.onDateSelected != null) {
                       widget.onDateSelected!(date);
                     }
-
-                    print(
-                        'Selected: ${DateFormat('EEEE, MMMM d, yyyy').format(date)}');
                   },
                 ),
               );

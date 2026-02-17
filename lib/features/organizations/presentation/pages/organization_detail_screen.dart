@@ -21,10 +21,9 @@ class OrganizationDetailScreen extends StatefulWidget {
 }
 
 class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  String? _selectedDepartment;
+  DateTime? _selectedDate;
+  String? _selectedTimeSlot;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +63,10 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
             ? ApiEndpoints.imageUrl(org.user!.profilePicture!)
             : 'https://via.placeholder.com/800x400';
 
+        final bool isBookingEnabled = _selectedDepartment != null &&
+            _selectedDate != null &&
+            _selectedTimeSlot != null;
+
         return Scaffold(
           appBar: AppBar(
             title: const Text("Book Appointment"),
@@ -71,8 +74,8 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
           body: SingleChildScrollView(
             child: Padding(
               padding: isTablet
-                  ? EdgeInsets.symmetric(horizontal: 25)
-                  : EdgeInsets.symmetric(horizontal: 5.0),
+                  ? const EdgeInsets.symmetric(horizontal: 25)
+                  : const EdgeInsets.symmetric(horizontal: 5.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -200,16 +203,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         ),
                         child: Row(
                           children: [
-                            // CustomDetailAction(
-                            //   icon: Icons.call,
-                            //   label: "Call",
-                            //   isTablet: isTablet,
-                            //   onTap: () {
-                            //     if (org.contactPhone != null) {
-                            //       // Implement call functionality
-                            //     }
-                            //   },
-                            // ),
                             CustomDetailAction(
                               icon: Icons.message,
                               label: "Message",
@@ -229,7 +222,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Divider(),
+                  const Divider(),
                   if (org.description != null &&
                       org.description!.isNotEmpty) ...[
                     Text(
@@ -253,8 +246,8 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     const SizedBox(height: 10),
                   ],
                   if (departmentNames.isNotEmpty) ...[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(
                         "Department",
                         style: TextStyle(
@@ -265,10 +258,15 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                     ),
                     DepartmentSelector(
                       departments: departmentNames,
+                      onDepartmentSelected: (department) {
+                        setState(() {
+                          _selectedDepartment = department;
+                        });
+                      },
                     ),
                   ],
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(8, 5, 0, 0),
                     child: Text(
                       "Slots",
                       style: TextStyle(
@@ -277,30 +275,61 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                       ),
                     ),
                   ),
-                  DateSelector(),
+                  DateSelector(
+                    onDateSelected: (date) {
+                      setState(() {
+                        _selectedDate = date;
+                      });
+                    },
+                  ),
                   if (timeSlotStrings.isNotEmpty)
-                    TimeSelector(timeSlots: timeSlotStrings)
+                    TimeSelector(
+                      timeSlots: timeSlotStrings,
+                      onTimeSelected: (timeSlot) {
+                        setState(() {
+                          _selectedTimeSlot = timeSlot;
+                        });
+                      },
+                    )
                   else
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
                       child: Text('No time slots available'),
                     ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CustomButton(
                       text: "Book Appointment",
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const AppointmentDetailScreen(),
-                          ),
-                        );
-                      },
+                      onPressed: isBookingEnabled
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AppointmentDetailScreen(
+                                    organization: org,
+                                    selectedDepartment: _selectedDepartment!,
+                                    selectedDate: _selectedDate!,
+                                    selectedTimeSlot: _selectedTimeSlot!,
+                                  ),
+                                ),
+                              );
+                            }
+                          : null,
                     ),
                   ),
+                  if (!isBookingEnabled)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Please select department, date, and time to continue',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   const SizedBox(height: 20),
                 ],
               ),

@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_confirm_screen.dart';
 import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:quickpalo/features/organizations/domain/entities/organization_entity.dart';
 
 class AppointmentDetailScreen extends StatefulWidget {
-  const AppointmentDetailScreen({super.key});
+  final OrganizationEntity organization;
+  final String selectedDepartment;
+  final DateTime selectedDate;
+  final String selectedTimeSlot;
+
+  const AppointmentDetailScreen({
+    super.key,
+    required this.organization,
+    required this.selectedDepartment,
+    required this.selectedDate,
+    required this.selectedTimeSlot,
+  });
 
   @override
   State<AppointmentDetailScreen> createState() =>
@@ -15,18 +27,6 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
 
   String _selectedPaymentMethod = 'online';
   bool _isLoading = false;
-
-  // Mock data
-  final Map<String, dynamic> _appointmentData = {
-    'organizationName': 'City Medical Center',
-    'organizationLocation': '123 Healthcare Ave, Medical District',
-    'clientName': 'John Doe',
-    'date': 'March 15, 2024',
-    'time': '10:30 AM',
-    'department': 'Cardiology',
-    'fee': '1500',
-    'currency': 'Rs',
-  };
 
   @override
   void dispose() {
@@ -45,21 +45,51 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           _isLoading = false;
         });
 
-        // Pass data to confirmation screen
+        final appointmentData = {
+          'organizationId': widget.organization.id,
+          'organizationName': widget.organization.organizationName,
+          'organizationLocation': widget.organization.fullAddress,
+          'department': widget.selectedDepartment,
+          'date': _formatDate(widget.selectedDate),
+          'time': widget.selectedTimeSlot,
+          'fee': widget.organization.fees.toString(),
+          'currency': 'Rs',
+          'note': _noteController.text,
+          'paymentMethod': _selectedPaymentMethod,
+        };
+
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => AppointmentConfirmScreen(
-              appointmentData: {
-                ..._appointmentData,
-                'note': _noteController.text,
-                'paymentMethod': _selectedPaymentMethod,
-              },
+              appointmentData: appointmentData,
             ),
           ),
         );
       }
     });
+  }
+
+  String _formatDate(DateTime date) {
+    return '${_getMonth(date.month)} ${date.day}, ${date.year}';
+  }
+
+  String _getMonth(int month) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    return months[month - 1];
   }
 
   Widget _buildInfoRow(String label, String value, {IconData? icon}) {
@@ -121,6 +151,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Organization Card
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -140,7 +171,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _appointmentData['organizationName']!,
+                        widget.organization.organizationName,
                         style: const TextStyle(
                           fontFamily: "Inter",
                           fontSize: 24,
@@ -158,7 +189,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              _appointmentData['organizationLocation']!,
+                              widget.organization.fullAddress,
                               style: TextStyle(
                                 fontSize: isTablet ? 16 : 14,
                                 color: Colors.grey[600],
@@ -170,7 +201,10 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 20),
+
+                // Appointment Details Card
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -197,23 +231,26 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                         ),
                       ),
                       const Divider(height: 24),
+
                       _buildInfoRow(
-                        "Client:",
-                        _appointmentData['clientName']!,
+                        "Department:",
+                        widget.selectedDepartment,
+                        icon: Icons.local_hospital_outlined,
                       ),
                       _buildInfoRow(
                         "Date:",
-                        _appointmentData['date']!,
+                        _formatDate(widget.selectedDate),
+                        icon: Icons.calendar_today_outlined,
                       ),
                       _buildInfoRow(
                         "Time:",
-                        _appointmentData['time']!,
+                        widget.selectedTimeSlot,
+                        icon: Icons.access_time_outlined,
                       ),
-                      _buildInfoRow(
-                        "Department:",
-                        _appointmentData['department']!,
-                      ),
+
                       const SizedBox(height: 16),
+
+                      // Note field
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.grey[50],
@@ -228,13 +265,21 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                             hintStyle: TextStyle(color: Colors.grey[400]),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.all(16),
+                            prefixIcon: const Icon(
+                              Icons.note_outlined,
+                              color: Colors.grey,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 20),
+
+                // Payment Section Card
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -264,7 +309,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                             ),
                           ),
                           Text(
-                            "${_appointmentData['currency']} ${_appointmentData['fee']}",
+                            "Rs ${widget.organization.fees}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
@@ -273,7 +318,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                           ),
                         ],
                       ),
+
                       const Divider(height: 24),
+
                       const Text(
                         "Select Payment Method:",
                         style: TextStyle(
@@ -282,6 +329,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
+
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.grey[50],
@@ -370,6 +418,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                           ],
                         ),
                       ),
+
                       if (_selectedPaymentMethod == 'physical') ...[
                         const SizedBox(height: 16),
                         Container(
@@ -400,13 +449,19 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 30),
+
+                // Confirm Button
                 CustomButton(
                   onPressed: _isLoading ? null : _confirmAppointment,
                   text: _isLoading ? "Processing..." : "Confirm Appointment",
                   isLoading: _isLoading,
                 ),
+
                 const SizedBox(height: 20),
+
+                // Terms and conditions
                 Center(
                   child: Text(
                     "By confirming, you agree to our Terms & Conditions",
