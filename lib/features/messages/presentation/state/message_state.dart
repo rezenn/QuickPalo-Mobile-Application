@@ -1,55 +1,3 @@
-// // lib/features/messages/presentation/state/message_state.dart
-// import 'package:equatable/equatable.dart';
-// import '../../domain/entities/stream_token_entity.dart';
-// import '../../domain/entities/message_entity.dart';
-
-// class MessagesState extends Equatable {
-//   final bool isLoading;
-//   final bool isSending;
-//   final String? error;
-//   final StreamTokenEntity? streamToken;
-//   final List<MessageEntity> messages;
-
-//   const MessagesState({
-//     required this.isLoading,
-//     required this.isSending,
-//     this.error,
-//     this.streamToken,
-//     required this.messages,
-//   });
-
-//   factory MessagesState.initial() {
-//     return const MessagesState(
-//       isLoading: false,
-//       isSending: false,
-//       error: null,
-//       streamToken: null,
-//       messages: [],
-//     );
-//   }
-
-//   MessagesState copyWith({
-//     bool? isLoading,
-//     bool? isSending,
-//     String? error,
-//     StreamTokenEntity? streamToken,
-//     List<MessageEntity>? messages,
-//   }) {
-//     return MessagesState(
-//       isLoading: isLoading ?? this.isLoading,
-//       isSending: isSending ?? this.isSending,
-//       error: error,
-//       streamToken: streamToken ?? this.streamToken,
-//       messages: messages ?? this.messages,
-//     );
-//   }
-
-//   @override
-//   List<Object?> get props =>
-//       [isLoading, isSending, error, streamToken, messages];
-// }
-
-// lib/features/messages/presentation/state/message_state.dart
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/stream_token_entity.dart';
 import '../../domain/entities/message_entity.dart';
@@ -60,7 +8,7 @@ class MessagesState extends Equatable {
   final String? error;
   final StreamTokenEntity? streamToken;
   final List<MessageEntity> messages;
-  final String? currentChannelId; // Add this
+  final String? currentChannelId;
 
   const MessagesState({
     required this.isLoading,
@@ -68,7 +16,7 @@ class MessagesState extends Equatable {
     this.error,
     this.streamToken,
     required this.messages,
-    this.currentChannelId, // Add this
+    this.currentChannelId,
   });
 
   factory MessagesState.initial() {

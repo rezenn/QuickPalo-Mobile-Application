@@ -1,4 +1,3 @@
-// lib/features/messages/data/models/message_api_model.dart
 import 'package:quickpalo/features/messages/domain/entities/message_entity.dart';
 
 class MessageApiModel {
