@@ -7,7 +7,7 @@ import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_detail_screen.dart';
 import 'package:quickpalo/core/widgets/custom_button.dart';
 import 'package:quickpalo/core/widgets/custom_detail_action.dart';
-import 'package:quickpalo/features/messages/presentation/pages/message_screen.dart';
+import 'package:quickpalo/features/messages/presentation/pages/chat_screen.dart';
 import 'package:quickpalo/core/api/api_endpoints.dart';
 
 class OrganizationDetailScreen extends StatefulWidget {
@@ -211,7 +211,11 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const MessageScreen(),
+                                    builder: (context) => ChatScreen(
+                                      orgUserId: org.user?.id ??
+                                          '', // Make sure this is the user ID
+                                      orgName: org.organizationName,
+                                    ),
                                   ),
                                 );
                               },

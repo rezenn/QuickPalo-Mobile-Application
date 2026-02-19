@@ -309,7 +309,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                             ),
                           ),
                           Text(
-                            "Rs ${widget.organization.fees}",
+                            "``Rs ``${widget.organization.fees}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
@@ -318,9 +318,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                           ),
                         ],
                       ),
-
                       const Divider(height: 24),
-
                       const Text(
                         "Select Payment Method:",
                         style: TextStyle(
@@ -329,7 +327,6 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.grey[50],
@@ -418,7 +415,6 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                           ],
                         ),
                       ),
-
                       if (_selectedPaymentMethod == 'physical') ...[
                         const SizedBox(height: 16),
                         Container(

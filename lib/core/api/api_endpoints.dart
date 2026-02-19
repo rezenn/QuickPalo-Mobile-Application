@@ -7,7 +7,7 @@ class ApiEndpoints {
   // MUST be true for physical device
   static const bool isPhysicalDevice = true;
 
-  static const String computerIpAddress = "192.168.101.6";
+  static const String computerIpAddress = "192.168.101.4";
 
   static const int port = 5050;
 
@@ -75,4 +75,9 @@ class ApiEndpoints {
   static const String organizations = '/organizations';
   static const String organizationDetails = '/organizations/details';
   static String organizationById(String id) => '/organizations/$id';
+
+  // message
+  static const String streamToken = '/message/stream-token';
+  static const String sendMessageToOrg = '/message/send-to-org';
+  static const String getMessages = '/message/get-messages'; 
 }
