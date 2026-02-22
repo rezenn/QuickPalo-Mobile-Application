@@ -90,6 +90,7 @@ dependencies:
   test_cov_console: ^0.2.2
   http: ^1.6.0
   stream_chat_flutter: ^9.23.0
+  sensors_plus: ^7.0.0
 
 dev_dependencies:
   flutter_test:
