@@ -5,6 +5,7 @@ class ProfileActionButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   final Color? color;
+  final Widget? trailing;
 
   const ProfileActionButton({
     super.key,
@@ -12,6 +13,7 @@ class ProfileActionButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.color,
+    this.trailing,
   });
 
   @override
@@ -23,7 +25,7 @@ class ProfileActionButton extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 50,
-        child: ElevatedButton.icon(
+        child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             alignment: Alignment.centerLeft,
@@ -32,14 +34,22 @@ class ProfileActionButton extends StatelessWidget {
             ),
             elevation: 2,
           ),
-          icon: Icon(icon, size: 25, color: effectiveColor),
-          label: Text(
-            label,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: effectiveColor,
-            ),
+          child: Row(
+            children: [
+              Icon(icon, size: 25, color: effectiveColor),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: effectiveColor,
+                  ),
+                ),
+              ),
+              if (trailing != null) trailing!,
+            ],
           ),
         ),
       ),

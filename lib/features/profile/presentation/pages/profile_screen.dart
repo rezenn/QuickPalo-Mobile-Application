@@ -10,6 +10,7 @@ import 'package:quickpalo/features/auth/presentation/state/auth_state.dart';
 import 'package:quickpalo/features/auth/presentation/view_model/auth_viewmodel.dart';
 import 'package:quickpalo/features/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:quickpalo/features/profile/presentation/widgets/profile_action_button.dart';
+import 'package:quickpalo/features/sensor/presentation/providers/proximity_toggle_provider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -267,6 +268,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       onPressed: () {},
                     ),
                     const SizedBox(height: 10),
+                    Consumer(
+                      builder: (context, ref, _) {
+                        final isEnabled = ref.watch(proximityToggleProvider);
+                        return ProfileActionButton(
+                          icon: Icons.sensors,
+                          label: "Proximity Logout",
+                          onPressed: () => ref
+                              .read(proximityToggleProvider.notifier)
+                              .toggle(),
+                          trailing: Switch(
+                            value: isEnabled,
+                            activeThumbColor: lightPurpleColor3,
+                            onChanged: (_) => ref
+                                .read(proximityToggleProvider.notifier)
+                                .toggle(),
+                          ),
+                        );
+                      },
+                    ),
                     ProfileActionButton(
                       icon: Icons.logout,
                       label: "Logout",

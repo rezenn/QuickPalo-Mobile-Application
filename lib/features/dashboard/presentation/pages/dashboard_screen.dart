@@ -4,6 +4,7 @@ import 'package:quickpalo/features/dashboard/presentation/pages/history_screen.d
 import 'package:quickpalo/features/organizations/presentation/pages/home_screen.dart';
 import 'package:quickpalo/core/widgets/custom_nav_bar.dart';
 import 'package:quickpalo/features/profile/presentation/pages/profile_screen.dart';
+import 'package:quickpalo/features/sensor/presentation/widgets/sensor_logout_listener.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -30,11 +31,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: screenList[_selectedIndex],
-      bottomNavigationBar: CustomNavBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+    return SensorLogoutListener(
+      child: Scaffold(
+        body: screenList[_selectedIndex],
+        bottomNavigationBar: CustomNavBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

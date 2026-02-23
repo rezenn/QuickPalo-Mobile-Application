@@ -252,7 +252,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
     );
   }
-//
+
   Widget _buildMessageInput(MessagesState state) {
     return Container(
       padding: const EdgeInsets.all(8),
