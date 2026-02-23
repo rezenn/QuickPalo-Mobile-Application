@@ -1,7 +1,5 @@
-// core/sensors/presentation/notifiers/sensor_notifier.dart
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:quickpalo/features/sensor/domain/entities/sensor_event.dart';
 import 'package:quickpalo/features/sensor/domain/usecases/watch_sensor_usecase.dart';
 
@@ -19,7 +17,6 @@ class SensorNotifier extends Notifier<AsyncValue<SensorEvent?>> {
     return const AsyncValue.data(null);
   }
 
-  // Call this for each sensor you want to watch
   void watch(SensorType type, {required Future<void> Function() onTriggered}) {
     if (_subscriptions.containsKey(type)) return;
 

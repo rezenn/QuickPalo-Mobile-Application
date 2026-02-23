@@ -212,8 +212,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ChatScreen(
-                                      orgUserId: org.user?.id ??
-                                          '', // Make sure this is the user ID
+                                      orgUserId: org.user?.id ?? '',
                                       orgName: org.organizationName,
                                     ),
                                   ),
@@ -230,7 +229,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                   if (org.description != null &&
                       org.description!.isNotEmpty) ...[
                     Text(
-                      "About",
+                      "Description",
                       style: TextStyle(
                         fontSize: isTablet ? 30 : 20,
                         fontFamily: "Inter Bold 24",

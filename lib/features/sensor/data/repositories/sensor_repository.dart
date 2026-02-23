@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickpalo/features/sensor/data/datasources/accelerometer_datasource.dart';
 import 'package:quickpalo/features/sensor/data/datasources/i_sensor_datasource.dart';
 import 'package:quickpalo/features/sensor/data/datasources/proximity_datasource.dart';
 import 'package:quickpalo/features/sensor/domain/entities/sensor_event.dart';
@@ -8,7 +9,7 @@ final sensorRepositoryProvider = Provider<ISensorRepository>((ref) {
   return SensorRepository(
     datasources: [
       ref.read(proximityDatasourceProvider),
-      // ref.read(accelerometerDatasourceProvider),
+      ref.read(accelerometerDatasourceProvider),
     ],
   );
 });
