@@ -10,7 +10,6 @@ class AppointmentSingleScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(appointmentViewModelProvider);
-    // Use updated appointment from state if available
     final apt = state.appointments.firstWhere(
       (a) => a.id == appointment.id,
       orElse: () => appointment,
@@ -87,7 +86,7 @@ class AppointmentSingleScreen extends ConsumerWidget {
               title: 'Appointment Info',
               children: [
                 _DetailRow(
-                  icon: Icons.calendar_today_outlined,
+                  icon: Icons.calendar_month_outlined,
                   label: 'Date',
                   value: _formatDate(apt.date),
                 ),
@@ -97,7 +96,7 @@ class AppointmentSingleScreen extends ConsumerWidget {
                   value: apt.timeslot.displayTime,
                 ),
                 _DetailRow(
-                  icon: Icons.local_hospital_outlined,
+                  icon: Icons.business,
                   label: 'Department',
                   value: apt.departmentName,
                 ),
@@ -171,7 +170,8 @@ class AppointmentSingleScreen extends ConsumerWidget {
                 height: 50,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red,
                     side: BorderSide(color: Colors.red.shade300, width: 1.5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -240,7 +240,7 @@ class AppointmentSingleScreen extends ConsumerWidget {
       case AppointmentStatus.noShow:
         return Colors.orange;
       default:
-        return const Color(0xFF6C5CE7);
+        return const Color(0xFFBA7BF0);
     }
   }
 
@@ -316,7 +316,7 @@ class _Card extends StatelessWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF6C5CE7),
+              color: Color(0xFFBA7BF0),
               letterSpacing: 0.5,
             ),
           ),

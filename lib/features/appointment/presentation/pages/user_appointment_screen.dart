@@ -153,7 +153,7 @@ class _AppointmentCard extends ConsumerWidget {
         margin: const EdgeInsets.only(bottom: 14),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.06),
@@ -166,16 +166,15 @@ class _AppointmentCard extends ConsumerWidget {
           children: [
             // Status bar
             Container(
-              width: 1125,
               height: 5,
               decoration: BoxDecoration(
                 color: statusColor,
                 borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10)),
+                    const BorderRadius.vertical(top: Radius.circular(15)),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -216,12 +215,12 @@ class _AppointmentCard extends ConsumerWidget {
                         : 'Pay at Location',
                   ),
                   if (appointment.isCancellable) ...[
-                    const SizedBox(height: 14),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          foregroundColor: Colors.red.shade500,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.red.shade500,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           shape: RoundedRectangleBorder(
@@ -383,7 +382,7 @@ class _ErrorView extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6C5CE7),
+                backgroundColor: const Color(0xFFBA7BF0),
                 foregroundColor: Colors.white,
               ),
               onPressed: onRetry,
