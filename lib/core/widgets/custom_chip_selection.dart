@@ -26,7 +26,7 @@ class CustomChipSelection extends StatelessWidget {
             : EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         decoration: BoxDecoration(
           color: isSelected
-              ? lightPurpleColor.withAlpha(255)
+              ? lightPurpleColor2.withAlpha(220)
               : lightSelectClipColor,
           borderRadius: BorderRadius.circular(12),
           // border: hasBorder ? Border.all(color: boderColor) : null,

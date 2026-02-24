@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/features/appointment/domain/entities/appointment_entity.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_booking_screen.dart';
 import 'package:quickpalo/features/organizations/domain/entities/organization_entity.dart';
@@ -102,7 +103,7 @@ class _AppointmentDetailScreenState
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      isAvailable ? const Color(0xFFB61BE1) : Colors.grey,
+                      isAvailable ? lightPurpleColor2 : Colors.grey,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(

@@ -207,7 +207,7 @@ class _AppointmentBookingScreenState
                 height: 54,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFB61BE1),
+                    backgroundColor: lightPurpleColor2,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),

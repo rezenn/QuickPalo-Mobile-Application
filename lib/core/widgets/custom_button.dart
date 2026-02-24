@@ -6,7 +6,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
-    this.color = buttonColor1,
+    this.color = lightPurpleColor2,
     this.isLoading = false,
   });
 
