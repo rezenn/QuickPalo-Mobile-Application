@@ -7,7 +7,7 @@ class ApiEndpoints {
   // MUST be true for physical device
   static const bool isPhysicalDevice = true;
 
-  static const String computerIpAddress = "192.168.101.12";
+  static const String computerIpAddress = "192.168.101.5";
 
   static const int port = 5050;
 
@@ -67,10 +67,6 @@ class ApiEndpoints {
   static const String profileUploadPhoto = '/auth/update-user';
   static const String currentUser = '/auth/get-user';
 
-  // static String imageUrl(String fileName) {
-  //   return "http://$computerIpAddress:$port/uploads/profile/$fileName";
-  // }
-
   // Organization Endpoints
   static const String organizations = '/organizations';
   static const String organizationDetails = '/organizations/details';
@@ -80,4 +76,14 @@ class ApiEndpoints {
   static const String streamToken = '/message/stream-token';
   static const String sendMessageToOrg = '/message/send-to-org';
   static const String getMessages = '/message/get-messages';
+
+  // appointments
+  static const String appointments = '/appointments';
+  static String appointmentById(String id) => '/appointments/$id';
+  static const String userAppointments = '/appointments/user';
+  static const String checkAvailability = '/appointments/availability';
+  static String cancelAppointment(String id) => '/appointments/$id/cancel';
+  // static String completeAppointment(String id) => '/appointments/$id/complete';
+  // static String organizationAppointments(String orgId) =>
+  //     '/appointments/organization/$orgId';
 }

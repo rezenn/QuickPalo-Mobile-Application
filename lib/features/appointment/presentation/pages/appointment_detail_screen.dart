@@ -1,478 +1,443 @@
 import 'package:flutter/material.dart';
-import 'package:quickpalo/features/appointment/presentation/pages/appointment_confirm_screen.dart';
-import 'package:quickpalo/core/widgets/custom_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickpalo/features/appointment/domain/entities/appointment_entity.dart';
+import 'package:quickpalo/features/appointment/presentation/pages/appointment_booking_screen.dart';
 import 'package:quickpalo/features/organizations/domain/entities/organization_entity.dart';
+import '../view_model/appointment_viewmodel.dart';
+import '../state/appointment_state.dart';
+import 'package:quickpalo/features/appointment/domain/entities/appointment_entity.dart'
+    as appointment;
 
-class AppointmentDetailScreen extends StatefulWidget {
+/// Wraps the organization detail screen with appointment booking logic.
+/// Checks slot availability before proceeding.
+class AppointmentDetailScreen extends ConsumerStatefulWidget {
   final OrganizationEntity organization;
   final String selectedDepartment;
+  final String selectedDepartmentId;
   final DateTime selectedDate;
-  final String selectedTimeSlot;
+  final String selectedTimeSlot; // "09:00 - 09:30"
 
   const AppointmentDetailScreen({
     super.key,
     required this.organization,
     required this.selectedDepartment,
+    required this.selectedDepartmentId,
     required this.selectedDate,
     required this.selectedTimeSlot,
   });
 
   @override
-  State<AppointmentDetailScreen> createState() =>
+  ConsumerState<AppointmentDetailScreen> createState() =>
       _AppointmentDetailScreenState();
 }
 
-class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
-  final TextEditingController _noteController = TextEditingController();
-
-  String _selectedPaymentMethod = 'online';
-  bool _isLoading = false;
+class _AppointmentDetailScreenState
+    extends ConsumerState<AppointmentDetailScreen> {
+  bool _hasCheckedAvailability = false;
 
   @override
-  void dispose() {
-    _noteController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkAvailability());
   }
 
-  void _confirmAppointment() {
-    setState(() {
-      _isLoading = true;
-    });
+  Future<void> _checkAvailability() async {
+    final parts = widget.selectedTimeSlot.split(' - ');
+    if (parts.length != 2) return;
 
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-
-        final appointmentData = {
-          'organizationId': widget.organization.id,
-          'organizationName': widget.organization.organizationName,
-          'organizationLocation': widget.organization.fullAddress,
-          'department': widget.selectedDepartment,
-          'date': _formatDate(widget.selectedDate),
-          'time': widget.selectedTimeSlot,
-          'fee': widget.organization.fees.toString(),
-          'currency': 'Rs',
-          'note': _noteController.text,
-          'paymentMethod': _selectedPaymentMethod,
-        };
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AppointmentConfirmScreen(
-              appointmentData: appointmentData,
-            ),
+    await ref.read(appointmentViewModelProvider.notifier).checkAvailability(
+          CheckAvailabilityParams(
+            organizationId: widget.organization.id ?? '',
+            date: widget.selectedDate,
+            startTime: parts[0].trim(),
+            endTime: parts[1].trim(),
+            departmentId: widget.selectedDepartmentId,
           ),
         );
-      }
-    });
+
+    if (mounted) setState(() => _hasCheckedAvailability = true);
   }
 
-  String _formatDate(DateTime date) {
-    return '${_getMonth(date.month)} ${date.day}, ${date.year}';
-  }
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(appointmentViewModelProvider);
+    final isChecking = state.status == AppointmentScreenStatus.checking;
+    final availability = state.availability;
+    final isAvailable = availability?.isAvailable ?? false;
 
-  String _getMonth(int month) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-    return months[month - 1];
-  }
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Confirm Slot'),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Organization Card
+            _OrgCard(organization: widget.organization),
+            const SizedBox(height: 20),
 
-  Widget _buildInfoRow(String label, String value, {IconData? icon}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (icon != null) ...[
-            Icon(icon, size: 18, color: Colors.grey[600]),
-            const SizedBox(width: 8),
-          ],
-          SizedBox(
-            width: 100,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+            // Slot Summary Card
+            _SlotSummaryCard(
+              department: widget.selectedDepartment,
+              date: widget.selectedDate,
+              timeSlot: widget.selectedTimeSlot,
+              fees: widget.organization.fees,
+            ),
+            const SizedBox(height: 20),
+
+            // Availability Status
+            if (isChecking)
+              const _AvailabilityChecking()
+            else if (_hasCheckedAvailability)
+              _AvailabilityBadge(
+                  isAvailable: isAvailable, availability: availability),
+
+            const SizedBox(height: 28),
+
+            // Proceed Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isAvailable ? const Color(0xFF6C5CE7) : Colors.grey,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  elevation: isAvailable ? 3 : 0,
+                ),
+                onPressed: (isAvailable && !isChecking)
+                    ? () {
+                        final parts = widget.selectedTimeSlot.split(' - ');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AppointmentBookingScreen(
+                              organization: widget.organization,
+                              selectedDepartment: widget.selectedDepartment,
+                              selectedDepartmentId: widget.selectedDepartmentId,
+                              selectedDate: widget.selectedDate,
+                              timeslot: appointment.TimeSlotEntity(
+                                startTime: parts[0].trim(),
+                                endTime: parts[1].trim(),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    : null,
+                child: Text(
+                  isChecking
+                      ? 'Checking...'
+                      : isAvailable
+                          ? 'Proceed to Book'
+                          : 'Slot Unavailable',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.3,
+                  ),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+
+            if (_hasCheckedAvailability && !isAvailable) ...[
+              const SizedBox(height: 16),
+              Center(
+                child: TextButton.icon(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.arrow_back, size: 18),
+                  label: const Text('Choose Another Slot'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF6C5CE7),
+                  ),
+                ),
               ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OrgCard extends StatelessWidget {
+  final OrganizationEntity organization;
+  const _OrgCard({required this.organization});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F7FF),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE0DBFF), width: 1.2),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: const Color(0xFF6C5CE7).withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.business_rounded,
+                color: Color(0xFF6C5CE7), size: 28),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  organization.organizationName,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2D3436),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  organization.fullAddress,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
+
+class _SlotSummaryCard extends StatelessWidget {
+  final String department;
+  final DateTime date;
+  final String timeSlot;
+  final int fees;
+
+  const _SlotSummaryCard({
+    required this.department,
+    required this.date,
+    required this.timeSlot,
+    required this.fees,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isTablet = constraints.maxWidth > 600;
-        final horizontalPadding = isTablet ? constraints.maxWidth * 0.2 : 16.0;
-
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              "Appointment Details",
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
-          body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: 16,
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Appointment Summary',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF2D3436),
             ),
+          ),
+          const Divider(height: 24),
+          _Row(
+            icon: Icons.local_hospital_outlined,
+            label: 'Department',
+            value: department,
+          ),
+          const SizedBox(height: 12),
+          _Row(
+            icon: Icons.calendar_today_outlined,
+            label: 'Date',
+            value: _formatDate(date),
+          ),
+          const SizedBox(height: 12),
+          _Row(
+            icon: Icons.access_time_outlined,
+            label: 'Time',
+            value: timeSlot,
+          ),
+          const Divider(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Appointment Fee',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF636E72),
+                ),
+              ),
+              Text(
+                'Rs $fees',
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF6C5CE7),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDate(DateTime d) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return '${days[d.weekday - 1]}, ${months[d.month - 1]} ${d.day}, ${d.year}';
+  }
+}
+
+class _Row extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  const _Row({required this.icon, required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: const Color(0xFF6C5CE7)),
+        const SizedBox(width: 10),
+        Text(
+          '$label: ',
+          style: const TextStyle(fontSize: 14, color: Color(0xFF636E72)),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF2D3436),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AvailabilityChecking extends StatelessWidget {
+  const _AvailabilityChecking();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blue.shade200),
+      ),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            'Checking slot availability...',
+            style: TextStyle(color: Colors.blue.shade700, fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AvailabilityBadge extends StatelessWidget {
+  final bool isAvailable;
+  final AvailabilityEntity? availability;
+  const _AvailabilityBadge({required this.isAvailable, this.availability});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isAvailable ? Colors.green : Colors.red;
+    final icon =
+        isAvailable ? Icons.check_circle_outline : Icons.cancel_outlined;
+    final title = isAvailable ? 'Slot Available!' : 'Slot Not Available';
+    final subtitle = isAvailable
+        ? 'This time slot is open for your selected department.'
+        : (availability?.departmentName != null
+            ? 'Department "${availability!.departmentName}" is booked at this time.'
+            : 'This time slot is already booked.');
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.shade200),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color.shade600, size: 24),
+          const SizedBox(width: 12),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Organization Card
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.organization.organizationName,
-                        style: const TextStyle(
-                          fontFamily: "Inter",
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.location_pin,
-                            color: Colors.red,
-                            size: isTablet ? 20 : 18,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              widget.organization.fullAddress,
-                              style: TextStyle(
-                                fontSize: isTablet ? 16 : 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: color.shade700,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
                   ),
                 ),
-
-                const SizedBox(height: 20),
-
-                // Appointment Details Card
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Appointment Information",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Divider(height: 24),
-
-                      _buildInfoRow(
-                        "Department:",
-                        widget.selectedDepartment,
-                        icon: Icons.local_hospital_outlined,
-                      ),
-                      _buildInfoRow(
-                        "Date:",
-                        _formatDate(widget.selectedDate),
-                        icon: Icons.calendar_today_outlined,
-                      ),
-                      _buildInfoRow(
-                        "Time:",
-                        widget.selectedTimeSlot,
-                        icon: Icons.access_time_outlined,
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Note field
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[50],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey[300]!),
-                        ),
-                        child: TextFormField(
-                          controller: _noteController,
-                          maxLines: 3,
-                          decoration: InputDecoration(
-                            hintText: "Add any notes for the appointment...",
-                            hintStyle: TextStyle(color: Colors.grey[400]),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.all(16),
-                            prefixIcon: const Icon(
-                              Icons.note_outlined,
-                              color: Colors.grey,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Payment Section Card
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Appointment Fee",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Text(
-                            "``Rs ``${widget.organization.fees}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.purple,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Divider(height: 24),
-                      const Text(
-                        "Select Payment Method:",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[50],
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          children: [
-                            RadioListTile<String>(
-                              title: const Row(
-                                children: [
-                                  Icon(Icons.payment,
-                                      color: Colors.purple, size: 24),
-                                  SizedBox(width: 12),
-                                  Text(
-                                    "Online Payment",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              subtitle: const Text(
-                                "Pay via credit card, debit card",
-                                style: TextStyle(fontSize: 13),
-                              ),
-                              value: 'online',
-                              groupValue: _selectedPaymentMethod,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedPaymentMethod = value!;
-                                });
-                              },
-                              activeColor: Colors.purple,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              secondary: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.green[50],
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.green[200]!),
-                                ),
-                                child: Text(
-                                  "Recommended",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.green[700],
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Divider(height: 0, indent: 56),
-                            RadioListTile<String>(
-                              title: const Row(
-                                children: [
-                                  Icon(Icons.payments,
-                                      color: Colors.amber, size: 24),
-                                  SizedBox(width: 12),
-                                  Text(
-                                    "Physical Payment",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              subtitle: const Text(
-                                "Pay with cash or card at the location",
-                                style: TextStyle(fontSize: 13),
-                              ),
-                              value: 'physical',
-                              groupValue: _selectedPaymentMethod,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedPaymentMethod = value!;
-                                });
-                              },
-                              activeColor: Colors.purple,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (_selectedPaymentMethod == 'physical') ...[
-                        const SizedBox(height: 16),
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.amber[50],
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.amber[200]!),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.info_outline,
-                                color: Colors.amber[700],
-                                size: 20,
-                              ),
-                              const SizedBox(width: 12),
-                              const Expanded(
-                                child: Text(
-                                  "Please ensure you have the exact amount or card ready at the reception.",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                // Confirm Button
-                CustomButton(
-                  onPressed: _isLoading ? null : _confirmAppointment,
-                  text: _isLoading ? "Processing..." : "Confirm Appointment",
-                  isLoading: _isLoading,
-                ),
-
-                const SizedBox(height: 20),
-
-                // Terms and conditions
-                Center(
-                  child: Text(
-                    "By confirming, you agree to our Terms & Conditions",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[500],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: TextStyle(color: color.shade600, fontSize: 13),
                 ),
               ],
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

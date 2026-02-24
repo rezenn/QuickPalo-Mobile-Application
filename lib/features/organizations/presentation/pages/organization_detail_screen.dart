@@ -22,6 +22,7 @@ class OrganizationDetailScreen extends StatefulWidget {
 
 class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
   String? _selectedDepartment;
+  String? _selectedDepartmentId;
   DateTime? _selectedDate;
   String? _selectedTimeSlot;
 
@@ -260,10 +261,11 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                       ),
                     ),
                     DepartmentSelector(
-                      departments: departmentNames,
-                      onDepartmentSelected: (department) {
+                      departments: org.departments,
+                      onDepartmentSelected: (dept) {
                         setState(() {
-                          _selectedDepartment = department;
+                          _selectedDepartment = dept.name;
+                          _selectedDepartmentId = dept.id;
                         });
                       },
                     ),
@@ -314,6 +316,8 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                     selectedDepartment: _selectedDepartment!,
                                     selectedDate: _selectedDate!,
                                     selectedTimeSlot: _selectedTimeSlot!,
+                                    selectedDepartmentId:
+                                        _selectedDepartmentId!,
                                   ),
                                 ),
                               );

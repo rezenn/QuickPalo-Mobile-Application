@@ -13,10 +13,12 @@ enum OrganizationType {
 }
 
 class DepartmentEntity extends Equatable {
+  final String? id;
   final String name;
   final String? description;
 
   const DepartmentEntity({
+    this.id,
     required this.name,
     this.description,
   });
@@ -26,6 +28,7 @@ class DepartmentEntity extends Equatable {
 
   factory DepartmentEntity.fromJson(Map<String, dynamic> json) {
     return DepartmentEntity(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
       name: json['name'] ?? '',
       description: json['description'],
     );
@@ -33,6 +36,7 @@ class DepartmentEntity extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
+      if (id != null) '_id': id,
       'name': name,
       if (description != null) 'description': description,
     };

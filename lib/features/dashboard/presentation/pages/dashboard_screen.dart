@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickpalo/features/appointment/presentation/pages/user_appointment_screen.dart';
 import 'package:quickpalo/features/dashboard/presentation/pages/calendar_screen.dart';
-import 'package:quickpalo/features/dashboard/presentation/pages/history_screen.dart';
 import 'package:quickpalo/features/organizations/presentation/pages/home_screen.dart';
 import 'package:quickpalo/features/dashboard/presentation/widgets/custom_nav_bar.dart';
 import 'package:quickpalo/features/profile/presentation/pages/profile_screen.dart';
-import 'package:quickpalo/features/sensor/domain/entities/sensor_event.dart';
-import 'package:quickpalo/features/sensor/presentation/notifiers/sensor_notifier.dart';
 import 'package:quickpalo/features/sensor/presentation/notifiers/shake_refresh_notifier.dart';
 import 'package:quickpalo/features/sensor/presentation/widgets/sensor_logout_listener.dart';
 
@@ -23,7 +21,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   final List<Widget> screenList = const [
     HomeScreen(),
     CalendarScreen(),
-    HistoryScreen(),
+    UserAppointmentsScreen(),
     ProfileScreen(),
   ];
 
@@ -36,19 +34,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   ref.read(sensorNotifierProvider.notifier).watch(
-    //     SensorType.accelerometer,
-    //     onTriggered: () async {
-    //       ref.read(shakeRefreshProvider.notifier).trigger();
-    //     },
-    //   );
-    // });
   }
 
   @override
   void dispose() {
-    // ref.read(sensorNotifierProvider.notifier).unwatch(SensorType.accelerometer);
     super.dispose();
   }
 
@@ -65,9 +54,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             content: Row(children: [
               Icon(Icons.home, color: Colors.white),
               SizedBox(width: 8),
-              Text('Back to Dashboard'),
+              Text('Redirecting to Dashboard'),
             ]),
-            duration: Duration(seconds: 1),
+            duration: Duration(seconds: 2),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
           ),
