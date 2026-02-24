@@ -38,7 +38,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             child: Text(
               "Cancel",
               style: TextStyle(
-                color: lightPurpleColor2,
+                color: Colors.black45,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -129,7 +129,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         child: Container(
                           height: 160,
                           width: double.infinity,
-                          color: buttonColor3.withAlpha(120),
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                lightBlueColor,
+                                lightBlueColor2,
+                                lightPurpleColor,
+                                lightPurpleColor2,
+                                lightPurpleColor3,
+                              ],
+                              begin: Alignment.centerRight,
+                              end: Alignment.centerLeft,
+                              stops: [0.0, 0.13, 0.5, 0.78, 1.0],
+                            ),
+                          ),
                         ),
                       ),
                     ),

@@ -13,8 +13,7 @@ class UserAppointmentsScreen extends ConsumerStatefulWidget {
       _UserAppointmentsScreenState();
 }
 
-class _UserAppointmentsScreenState
-    extends ConsumerState<UserAppointmentsScreen>
+class _UserAppointmentsScreenState extends ConsumerState<UserAppointmentsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -65,11 +64,12 @@ class _UserAppointmentsScreenState
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
-          labelColor: const Color(0xFF6C5CE7),
+          labelColor: const Color(0xFFBA7BF0),
           unselectedLabelColor: Colors.grey,
-          indicatorColor: const Color(0xFF6C5CE7),
+          indicatorColor: const Color(0xFFBA7BF0),
           indicatorWeight: 3,
-          labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+          labelStyle:
+              const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
           tabs: [
             Tab(text: 'Active (${active.length})'),
             Tab(text: 'Past (${past.length})'),
@@ -79,7 +79,7 @@ class _UserAppointmentsScreenState
       ),
       body: state.status == AppointmentScreenStatus.loading
           ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFF6C5CE7)))
+              child: CircularProgressIndicator(color: Color(0xFFB61BE1)))
           : state.status == AppointmentScreenStatus.error
               ? _ErrorView(
                   message: state.errorMessage ?? 'Something went wrong',
@@ -110,7 +110,8 @@ class _AppointmentList extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.event_busy_outlined, size: 64, color: Colors.grey.shade300),
+            Icon(Icons.event_busy_outlined,
+                size: 64, color: Colors.grey.shade300),
             const SizedBox(height: 16),
             Text(
               'No appointments here',
@@ -144,8 +145,7 @@ class _AppointmentCard extends ConsumerWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) =>
-                AppointmentSingleScreen(appointment: appointment),
+            builder: (_) => AppointmentSingleScreen(appointment: appointment),
           ),
         );
       },
@@ -166,11 +166,12 @@ class _AppointmentCard extends ConsumerWidget {
           children: [
             // Status bar
             Container(
-              height: 4,
+              width: 1125,
+              height: 5,
               decoration: BoxDecoration(
                 color: statusColor,
-                borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(16)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10)),
               ),
             ),
             Padding(
@@ -187,7 +188,7 @@ class _AppointmentCard extends ConsumerWidget {
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF2D3436),
+                            color: Color(0xFFBA7BF0),
                           ),
                         ),
                       ),
@@ -199,7 +200,7 @@ class _AppointmentCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                   _InfoRow(
-                    icon: Icons.calendar_today_outlined,
+                    icon: Icons.calendar_month_outlined,
                     text: _formatDate(appointment.date),
                   ),
                   const SizedBox(height: 6),
@@ -292,14 +293,24 @@ class _AppointmentCard extends ConsumerWidget {
       case AppointmentStatus.noShow:
         return Colors.orange;
       default:
-        return const Color(0xFF6C5CE7);
+        return const Color(0xFFBA7BF0);
     }
   }
 
   String _formatDate(DateTime d) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
     ];
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return '${days[d.weekday - 1]}, ${months[d.month - 1]} ${d.day}, ${d.year}';
@@ -317,8 +328,7 @@ class _InfoRow extends StatelessWidget {
       children: [
         Icon(icon, size: 15, color: Colors.grey),
         const SizedBox(width: 8),
-        Text(text,
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+        Text(text, style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
       ],
     );
   }

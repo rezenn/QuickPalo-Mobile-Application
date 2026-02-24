@@ -66,6 +66,43 @@ class AppointmentApiModel {
           : null,
     );
   }
+
+  static DateTime _parseAppointmentDate(String raw) {
+    if (raw.isEmpty) return DateTime.now();
+
+    final jsDateRegex = RegExp(
+      r'[A-Za-z]{3}\s+([A-Za-z]{3})\s+(\d{1,2})\s+(\d{4})',
+    );
+    final jsMatch = jsDateRegex.firstMatch(raw);
+    if (jsMatch != null) {
+      const months = {
+        'Jan': 1,
+        'Feb': 2,
+        'Mar': 3,
+        'Apr': 4,
+        'May': 5,
+        'Jun': 6,
+        'Jul': 7,
+        'Aug': 8,
+        'Sep': 9,
+        'Oct': 10,
+        'Nov': 11,
+        'Dec': 12,
+      };
+      final month = months[jsMatch.group(1)!];
+      final day = int.parse(jsMatch.group(2)!);
+      final year = int.parse(jsMatch.group(3)!);
+      if (month != null) return DateTime(year, month, day);
+    }
+
+    if (RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(raw)) {
+      final p = raw.split('-');
+      return DateTime(int.parse(p[0]), int.parse(p[1]), int.parse(p[2]));
+    }
+
+    return DateTime.tryParse(raw)?.toLocal() ?? DateTime.now();
+  }
+
   static double _parseDouble(dynamic val) {
     if (val == null) return 0.0;
     if (val is double) return val;
@@ -85,7 +122,7 @@ class AppointmentApiModel {
       clientPhoneNumber: clientPhoneNumber,
       notes: notes,
       timeslot: TimeSlotEntity.fromJson(timeslot),
-      date: DateTime.tryParse(date) ?? DateTime.now(),
+      date: _parseAppointmentDate(date),
       status: _parseStatus(status),
       paymentAmount: paymentAmount,
       paymentMethod:
