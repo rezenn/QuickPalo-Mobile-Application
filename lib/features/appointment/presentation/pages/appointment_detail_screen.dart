@@ -188,7 +188,7 @@ class _OrgCard extends StatelessWidget {
               color: const Color(0xFFB61BE1).withOpacity(0.12),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.business_rounded,
+            child: const Icon(Icons.business_center_outlined,
                 color: Color(0xFF6C5CE7), size: 28),
           ),
           const SizedBox(width: 14),
@@ -262,7 +262,7 @@ class _SlotSummaryCard extends StatelessWidget {
           ),
           const Divider(height: 24),
           _Row(
-            icon: Icons.business,
+            icon: Icons.business_center_outlined,
             label: 'Department',
             value: department,
           ),
