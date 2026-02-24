@@ -83,7 +83,4 @@ class ApiEndpoints {
   static const String userAppointments = '/appointments/user';
   static const String checkAvailability = '/appointments/availability';
   static String cancelAppointment(String id) => '/appointments/$id/cancel';
-  // static String completeAppointment(String id) => '/appointments/$id/complete';
-  // static String organizationAppointments(String orgId) =>
-  //     '/appointments/organization/$orgId';
 }

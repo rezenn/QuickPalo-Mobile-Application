@@ -132,7 +132,7 @@ class _AppointmentBookingScreenState
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(height: 1, color: const Color(0xFFEEEEEE)),
+          child: Container(height: 1, color: Colors.white),
         ),
       ),
       body: SingleChildScrollView(
@@ -156,7 +156,6 @@ class _AppointmentBookingScreenState
               _AppField(
                 controller: _nameController,
                 label: 'Full Name',
-                // icon: Icons.person_outline,
                 validator: (v) =>
                     (v == null || v.trim().isEmpty) ? 'Name is required' : null,
               ),
@@ -164,7 +163,6 @@ class _AppointmentBookingScreenState
               _AppField(
                 controller: _emailController,
                 label: 'Email Address',
-                // icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) return 'Email is required';
@@ -176,7 +174,6 @@ class _AppointmentBookingScreenState
               _AppField(
                 controller: _phoneController,
                 label: 'Phone Number',
-                // icon: Icons.phone_outlined,
                 keyboardType: TextInputType.phone,
                 validator: (v) => (v == null || v.trim().isEmpty)
                     ? 'Phone is required'
@@ -186,7 +183,6 @@ class _AppointmentBookingScreenState
               _AppField(
                 controller: _noteController,
                 label: 'Notes (optional)',
-                // icon: Icons.note_outlined,
                 maxLines: 3,
                 required: false,
               ),
@@ -210,7 +206,7 @@ class _AppointmentBookingScreenState
                 height: 54,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6C5CE7),
+                    backgroundColor: const Color(0xFFB61BE1),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -254,8 +250,6 @@ class _AppointmentBookingScreenState
   }
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 class _SectionLabel extends StatelessWidget {
   final String label;
   const _SectionLabel({required this.label});
@@ -277,7 +271,6 @@ class _SectionLabel extends StatelessWidget {
 class _AppField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-  // final IconData icon;
   final TextInputType? keyboardType;
   final int maxLines;
   final bool required;
@@ -286,7 +279,6 @@ class _AppField extends StatelessWidget {
   const _AppField({
     required this.controller,
     required this.label,
-    // required this.icon,
     this.keyboardType,
     this.maxLines = 1,
     this.required = true,
@@ -302,7 +294,6 @@ class _AppField extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
         labelText: label,
-        // prefixIcon: Icon(icon, color: const Color(0xFF6C5CE7), size: 20),
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
@@ -315,7 +306,8 @@ class _AppField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6C5CE7), width: 1.8),
+          borderSide: const BorderSide(
+              color: Color.fromARGB(84, 182, 27, 225), width: 1.8),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -345,14 +337,14 @@ class _SlotBanner extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF6C5CE7), Color(0xFF8E79F3)],
+          colors: [Color.fromARGB(173, 182, 27, 225), Color(0xFFBA7BF0)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF6C5CE7).withOpacity(0.3),
+            color: const Color(0xFFB61BE1).withAlpha(100),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -436,8 +428,6 @@ class _PaymentSelector extends StatelessWidget {
             icon: Icons.credit_card_outlined,
             title: 'Online Payment',
             subtitle: 'Credit / Debit Card',
-            badge: 'Recommended',
-            badgeColor: Colors.green,
             onChanged: onChanged,
           ),
           Divider(height: 1, color: Colors.grey.shade200),
@@ -461,8 +451,7 @@ class _PaymentTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  final String? badge;
-  final Color? badgeColor;
+
   final ValueChanged<String> onChanged;
 
   const _PaymentTile({
@@ -471,8 +460,6 @@ class _PaymentTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.subtitle,
-    this.badge,
-    this.badgeColor,
     required this.onChanged,
   });
 
@@ -488,7 +475,9 @@ class _PaymentTile extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isSelected ? const Color(0xFF6C5CE7) : Colors.grey,
+              color: isSelected
+                  ? const Color.fromARGB(184, 182, 27, 225)
+                  : Colors.grey,
               size: 24,
             ),
             const SizedBox(width: 14),
@@ -503,31 +492,11 @@ class _PaymentTile extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: isSelected
-                              ? const Color(0xFF6C5CE7)
+                              ? const Color.fromARGB(210, 182, 27, 225)
                               : const Color(0xFF2D3436),
                           fontSize: 14,
                         ),
                       ),
-                      if (badge != null) ...[
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 7, vertical: 2),
-                          decoration: BoxDecoration(
-                            color:
-                                (badgeColor ?? Colors.green).withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            badge!,
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: badgeColor ?? Colors.green,
-                            ),
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                   Text(
@@ -541,7 +510,7 @@ class _PaymentTile extends StatelessWidget {
               value: value,
               groupValue: groupValue,
               onChanged: (v) => onChanged(v!),
-              activeColor: const Color(0xFF6C5CE7),
+              activeColor: const Color(0xFFB61BE1),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
           ],

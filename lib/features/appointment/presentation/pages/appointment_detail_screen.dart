@@ -8,14 +8,12 @@ import '../state/appointment_state.dart';
 import 'package:quickpalo/features/appointment/domain/entities/appointment_entity.dart'
     as appointment;
 
-/// Wraps the organization detail screen with appointment booking logic.
-/// Checks slot availability before proceeding.
 class AppointmentDetailScreen extends ConsumerStatefulWidget {
   final OrganizationEntity organization;
   final String selectedDepartment;
   final String selectedDepartmentId;
   final DateTime selectedDate;
-  final String selectedTimeSlot; // "09:00 - 09:30"
+  final String selectedTimeSlot;
 
   const AppointmentDetailScreen({
     super.key,
@@ -77,7 +75,6 @@ class _AppointmentDetailScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Organization Card
             _OrgCard(organization: widget.organization),
             const SizedBox(height: 20),
 
@@ -105,7 +102,7 @@ class _AppointmentDetailScreenState
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      isAvailable ? const Color(0xFF6C5CE7) : Colors.grey,
+                      isAvailable ? const Color(0xFFB61BE1) : Colors.grey,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -156,7 +153,7 @@ class _AppointmentDetailScreenState
                   icon: const Icon(Icons.arrow_back, size: 18),
                   label: const Text('Choose Another Slot'),
                   style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xFF6C5CE7),
+                    foregroundColor: const Color(0xFFB61BE1),
                   ),
                 ),
               ),
@@ -187,7 +184,7 @@ class _OrgCard extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: const Color(0xFF6C5CE7).withOpacity(0.12),
+              color: const Color(0xFFB61BE1).withOpacity(0.12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(Icons.business_rounded,
@@ -264,13 +261,13 @@ class _SlotSummaryCard extends StatelessWidget {
           ),
           const Divider(height: 24),
           _Row(
-            icon: Icons.local_hospital_outlined,
+            icon: Icons.business,
             label: 'Department',
             value: department,
           ),
           const SizedBox(height: 12),
           _Row(
-            icon: Icons.calendar_today_outlined,
+            icon: Icons.calendar_month_outlined,
             label: 'Date',
             value: _formatDate(date),
           ),
@@ -296,7 +293,7 @@ class _SlotSummaryCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF6C5CE7),
+                  color: Color(0xFFB61BE1),
                 ),
               ),
             ],
