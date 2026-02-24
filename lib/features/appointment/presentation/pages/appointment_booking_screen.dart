@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/core/services/storage/user_session_service.dart';
 import 'package:quickpalo/features/appointment/domain/entities/appointment_entity.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_success_screen.dart';
@@ -236,10 +237,20 @@ class _AppointmentBookingScreenState
 
               const SizedBox(height: 14),
               Center(
-                child: Text(
-                  'By confirming, you agree to our Terms & Conditions',
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                child: RichText(
                   textAlign: TextAlign.center,
+                  text: TextSpan(
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                      children: [
+                        TextSpan(text: "By confirming, you agree to our "),
+                        TextSpan(
+                            text: "Terms & Conditions",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: lightPurpleColor2,
+                                fontWeight: FontWeight.bold))
+                      ]),
                 ),
               ),
             ],

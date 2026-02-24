@@ -63,11 +63,12 @@ class _AppointmentSuccessScreenState extends State<AppointmentSuccessScreen>
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF6C5CE7),
+                    color: const Color.fromARGB(255, 189, 114, 254),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF6C5CE7).withOpacity(0.35),
+                        color: const Color.fromARGB(126, 182, 27, 225)
+                            .withAlpha(70),
                         blurRadius: 24,
                         offset: const Offset(0, 8),
                       ),
@@ -131,13 +132,13 @@ class _AppointmentSuccessScreenState extends State<AppointmentSuccessScreen>
                   child: Column(
                     children: [
                       _DetailRow(
-                        icon: Icons.local_hospital_outlined,
+                        icon: Icons.business,
                         label: 'Department',
                         value: apt.departmentName,
                       ),
                       _Divider(),
                       _DetailRow(
-                        icon: Icons.calendar_today_outlined,
+                        icon: Icons.calendar_month_outlined,
                         label: 'Date',
                         value: _formatDate(apt.date),
                       ),
@@ -149,7 +150,7 @@ class _AppointmentSuccessScreenState extends State<AppointmentSuccessScreen>
                       ),
                       _Divider(),
                       _DetailRow(
-                        icon: Icons.circle_outlined,
+                        icon: Icons.pending_actions_outlined,
                         label: 'Status',
                         value: apt.statusDisplayName,
                         valueColor: _statusColor(apt.status),
@@ -177,7 +178,7 @@ class _AppointmentSuccessScreenState extends State<AppointmentSuccessScreen>
                     height: 52,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6C5CE7),
+                        backgroundColor: const Color(0xFFBA7BF0),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -208,7 +209,7 @@ class _AppointmentSuccessScreenState extends State<AppointmentSuccessScreen>
                     child: const Text(
                       'Back to Home',
                       style: TextStyle(
-                        color: Color(0xFF6C5CE7),
+                        color: Color(0xFFBA7BF0),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
