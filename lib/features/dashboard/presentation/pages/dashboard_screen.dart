@@ -36,19 +36,19 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(sensorNotifierProvider.notifier).watch(
-        SensorType.accelerometer,
-        onTriggered: () async {
-          ref.read(shakeRefreshProvider.notifier).trigger();
-        },
-      );
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   ref.read(sensorNotifierProvider.notifier).watch(
+    //     SensorType.accelerometer,
+    //     onTriggered: () async {
+    //       ref.read(shakeRefreshProvider.notifier).trigger();
+    //     },
+    //   );
+    // });
   }
 
   @override
   void dispose() {
-    ref.read(sensorNotifierProvider.notifier).unwatch(SensorType.accelerometer);
+    // ref.read(sensorNotifierProvider.notifier).unwatch(SensorType.accelerometer);
     super.dispose();
   }
 

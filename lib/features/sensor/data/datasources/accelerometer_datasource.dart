@@ -10,9 +10,11 @@ final accelerometerDatasourceProvider = Provider<AccelerometerDatasource>(
 );
 
 class AccelerometerDatasource implements ISensorDatasource {
-  static const double _shakeThreshold = 5.0;
+  static const double _shakeThreshold = 13.0;
+
   final _controller = StreamController<SensorEvent>.broadcast();
   StreamSubscription? _sub;
+  DateTime? _lastShake;
 
   @override
   SensorType get sensorType => SensorType.accelerometer;
@@ -26,10 +28,26 @@ class AccelerometerDatasource implements ISensorDatasource {
       final magnitude = sqrt(
         event.x * event.x + event.y * event.y + event.z * event.z,
       );
+
       final isShake = magnitude > _shakeThreshold;
+
+      if (isShake) {
+        final now = DateTime.now();
+        if (_lastShake == null ||
+            now.difference(_lastShake!) > const Duration(seconds: 2)) {
+          _lastShake = now;
+          _controller.add(SensorEvent(
+            type: SensorType.accelerometer,
+            isTriggered: true,
+            rawData: {'x': event.x, 'y': event.y, 'z': event.z},
+          ));
+        }
+        return;
+      }
+
       _controller.add(SensorEvent(
         type: SensorType.accelerometer,
-        isTriggered: isShake,
+        isTriggered: false,
         rawData: {'x': event.x, 'y': event.y, 'z': event.z},
       ));
     });
@@ -39,5 +57,6 @@ class AccelerometerDatasource implements ISensorDatasource {
   void stop() {
     _sub?.cancel();
     _sub = null;
+    _lastShake = null;
   }
 }

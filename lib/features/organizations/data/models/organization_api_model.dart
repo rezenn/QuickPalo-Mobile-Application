@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:quickpalo/features/organizations/domain/entities/organization_entity.dart';
 
 class OrganizationApiModel {
