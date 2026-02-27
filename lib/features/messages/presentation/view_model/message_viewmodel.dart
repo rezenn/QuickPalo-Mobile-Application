@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:quickpalo/features/messages/domain/entities/message_entity.dart';
 import 'package:quickpalo/features/messages/domain/entities/stream_token_entity.dart';
 import 'package:quickpalo/features/messages/domain/usecases/get_stream_token_usecase.dart';
 import 'package:quickpalo/features/messages/domain/usecases/send_message_usecase.dart';
+import 'package:stream_chat/stream_chat.dart' as stream;
 import '../state/message_state.dart';
 
 final messageViewModelProvider =
@@ -16,70 +18,102 @@ class MessageViewModel extends StateNotifier<MessagesState> {
   final GetStreamTokenUsecase _getStreamToken;
   final SendMessageUsecase _sendMessage;
 
-  final Map<String, List<MessageEntity>> _channelMessages = {};
-
+  stream.StreamChatClient? _streamClient;
+  stream.Channel? _currentChannel;
+  StreamSubscription? _messageSubscription;
   StreamTokenEntity? _token;
 
   MessageViewModel(this._getStreamToken, this._sendMessage)
       : super(MessagesState.initial());
 
   Future<void> initializeChat() async {
-    if (_token != null) {
-      return;
-    }
+    if (_streamClient != null && _token != null) return;
 
     state = state.copyWith(isLoading: true, error: null);
 
     try {
       final result = await _getStreamToken(const GetStreamTokenParams());
 
-      result.fold(
-        (failure) {
-          state = state.copyWith(
-            isLoading: false,
-            error: failure.message,
-          );
+      await result.fold(
+        (failure) async {
+          state = state.copyWith(isLoading: false, error: failure.message);
         },
-        (token) {
+        (token) async {
           _token = token;
-          state = state.copyWith(
-            isLoading: false,
-            streamToken: token,
+
+          _streamClient = stream.StreamChatClient(token.apiKey);
+          await _streamClient!.connectUser(
+            stream.User(
+              id: token.userId,
+              name: token.userName,
+              image: token.userImage,
+            ),
+            token.token,
           );
+
+          state = state.copyWith(isLoading: false, streamToken: token);
         },
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  void setCurrentChannel(String orgUserId) {
-    if (_token == null) return;
+  Future<void> loadChannelMessages(String orgUserId) async {
+    if (_streamClient == null || _token == null) return;
+
+    await _messageSubscription?.cancel();
+    _messageSubscription = null;
+    await _currentChannel?.stopWatching();
 
     final channelId = [_token!.userId, orgUserId]..sort();
     final channelIdStr = channelId.join('_');
 
-    final channelMessages = _channelMessages[channelIdStr] ?? [];
-
     state = state.copyWith(
+      isLoading: true,
       currentChannelId: channelIdStr,
-      messages: channelMessages,
+      messages: [],
+      error: null,
     );
+
+    try {
+      _currentChannel = _streamClient!.channel(
+        'messaging',
+        id: channelIdStr,
+      );
+
+      final response = await _currentChannel!.watch();
+
+      final existing = (response.messages ?? [])
+          .map(_streamMessageToEntity)
+          .toList()
+          .reversed
+          .toList();
+
+      state = state.copyWith(isLoading: false, messages: existing);
+
+      _messageSubscription =
+          _currentChannel!.on(stream.EventType.messageNew).listen((event) {
+        if (event.message == null) return;
+        final newMsg = _streamMessageToEntity(event.message!);
+
+        final alreadyExists = state.messages.any((m) => m.id == newMsg.id);
+        if (!alreadyExists) {
+          state = state.copyWith(
+            messages: [newMsg, ...state.messages],
+          );
+        }
+      });
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
   }
 
   Future<void> sendMessage(String orgUserId, String message) async {
     if (_token == null) {
-      state = state.copyWith(
-        error: "Chat not initialized",
-      );
+      state = state.copyWith(error: 'Chat not initialized');
       return;
     }
-
-    final channelId = [_token!.userId, orgUserId]..sort();
-    final channelIdStr = channelId.join('_');
 
     state = state.copyWith(isSending: true, error: null);
 
@@ -90,24 +124,15 @@ class MessageViewModel extends StateNotifier<MessagesState> {
 
       result.fold(
         (failure) {
-          state = state.copyWith(
-            isSending: false,
-            error: failure.message,
-          );
+          state = state.copyWith(isSending: false, error: failure.message);
         },
         (messageEntity) {
-          if (!_channelMessages.containsKey(channelIdStr)) {
-            _channelMessages[channelIdStr] = [];
-          }
-          _channelMessages[channelIdStr] = [
-            messageEntity,
-            ...?_channelMessages[channelIdStr]
-          ];
-
-          if (state.currentChannelId == channelIdStr) {
+          final alreadyExists =
+              state.messages.any((m) => m.id == messageEntity.id);
+          if (!alreadyExists) {
             state = state.copyWith(
               isSending: false,
-              messages: _channelMessages[channelIdStr] ?? [],
+              messages: [messageEntity, ...state.messages],
             );
           } else {
             state = state.copyWith(isSending: false);
@@ -115,31 +140,27 @@ class MessageViewModel extends StateNotifier<MessagesState> {
         },
       );
     } catch (e) {
-      state = state.copyWith(
-        isSending: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(isSending: false, error: e.toString());
     }
   }
 
-  Future<void> loadChannelMessages(String orgUserId) async {
-    if (_token == null) return;
-
-    final channelId = [_token!.userId, orgUserId]..sort();
-    final channelIdStr = channelId.join('_');
-
-    final channelMessages = _channelMessages[channelIdStr] ?? [];
-
-    state = state.copyWith(
-      currentChannelId: channelIdStr,
-      messages: channelMessages,
+  MessageEntity _streamMessageToEntity(stream.Message msg) {
+    return MessageEntity(
+      id: msg.id,
+      channelId: _currentChannel?.id ?? '',
+      text: msg.text ?? '',
+      userId: msg.user?.id ?? '',
+      userName: msg.user?.name ?? '',
+      userImage: msg.user?.image,
+      createdAt: msg.createdAt,
     );
   }
 
   @override
   void dispose() {
-    _token = null;
-    _channelMessages.clear();
+    _messageSubscription?.cancel();
+    _currentChannel?.stopWatching();
+    _streamClient?.disconnectUser();
     super.dispose();
   }
 }

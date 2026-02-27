@@ -67,17 +67,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.orgName),
-        elevation: 0,
-        backgroundColor: lightPurpleColor,
-        foregroundColor: Colors.white,
+        elevation: 1,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildMessageList(state),
-          ),
-          _buildMessageInput(state),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          children: [
+            Expanded(
+              child: _buildMessageList(state),
+            ),
+            _buildMessageInput(state),
+          ],
+        ),
       ),
     );
   }
@@ -181,27 +182,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!isMe) ...[
-            CircleAvatar(
-              radius: 18,
-              backgroundColor: Colors.grey.shade300,
-              backgroundImage: message.userImage != null
-                  ? NetworkImage(message.userImage!)
-                  : null,
-              child: message.userImage == null
-                  ? Text(
-                      message.userName.isNotEmpty
-                          ? message.userName[0].toUpperCase()
-                          : '?',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                    )
-                  : null,
-            ),
-            const SizedBox(width: 8),
-          ],
           Flexible(
             child: Container(
               padding: const EdgeInsets.all(12),

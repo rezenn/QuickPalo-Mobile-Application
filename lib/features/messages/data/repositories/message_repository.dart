@@ -36,17 +36,15 @@ class MessageRepository implements IMessageRepository {
 
   @override
   Future<Either<Failure, StreamTokenEntity>> getStreamToken() async {
-    if (await _networkInfo.isConnected) {
-      try {
-        final remoteToken = await _remoteDataSource.getStreamToken();
-        return Right(remoteToken.toEntity());
-      } on ServerFailure catch (e) {
-        return Left(ServerFailure(message: e.message));
-      } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
-      }
+    if (!await _networkInfo.isConnected) return Left(NetworkFailure());
+    try {
+      final token = await _remoteDataSource.getStreamToken();
+      return Right(token.toEntity());
+    } on ServerFailure catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
-    return Left(NetworkFailure());
   }
 
   @override
@@ -54,24 +52,18 @@ class MessageRepository implements IMessageRepository {
     String orgUserId,
     String message,
   ) async {
-    if (await _networkInfo.isConnected) {
-      try {
-        final result = await _remoteDataSource.sendMessageToOrganization(
-          orgUserId,
-          message,
-        );
-
-        final messageApiModel = result['message'] as MessageApiModel;
-        final messageEntity = messageApiModel.toEntity();
-
-        return Right(messageEntity);
-      } on ServerFailure catch (e) {
-        return Left(ServerFailure(message: e.message));
-      } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
-      }
+    if (!await _networkInfo.isConnected) return Left(NetworkFailure());
+    try {
+      final result = await _remoteDataSource.sendMessageToOrganization(
+        orgUserId,
+        message,
+      );
+      final messageApiModel = result['message'] as MessageApiModel;
+      return Right(messageApiModel.toEntity());
+    } on ServerFailure catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
-
-    return Left(NetworkFailure());
   }
 }
