@@ -1,83 +1,55 @@
-// import 'package:flutter/services.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:local_auth/local_auth.dart';
-// import 'package:local_auth/auth_strings.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// final biometricServiceProvider = Provider<BiometricService>((ref) {
-//   return BiometricService();
-// });
+final biometricServiceProvider = Provider<BiometricService>((ref) {
+  return BiometricService();
+});
 
-// class BiometricService {
-//   final LocalAuthentication _localAuth = LocalAuthentication();
-//   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+class BiometricService {
+  final LocalAuthentication _auth = LocalAuthentication();
 
-//   Future<bool> isBiometricAvailable() async {
-//     try {
-//       return await _localAuth.canCheckBiometrics &&
-//           await _localAuth.isDeviceSupported();
-//     } on PlatformException catch (e) {
-//       print("Error getting biometrics: $e");
-//       return false;
-//     }
-//   }
+  Future<bool> isAvailable() async {
+    try {
+      // On Xiaomi/MIUI devices isDeviceSupported is the most reliable check
+      final isSupported = await _auth.isDeviceSupported();
+      if (!isSupported) return false;
 
-//   Future<List<BiometricType>> getAvailableBiometrics() async {
-//     try {
-//       return await _localAuth.getAvailableBiometrics();
-//     } on PlatformException catch (e) {
-//       print("Error getting biometrics: $e");
-//       return [];
-//     }
-//   }
+      // Try canCheckBiometrics — on Xiaomi this may still return false
+      // so we also try to get enrolled list
+      final canCheck = await _auth.canCheckBiometrics;
+      if (canCheck) return true;
 
-//   Future<bool> authenticateWithBiometrics({
-//     required String reason,
-//     String? cancleButton,
-//     String? localizedReason,
-//   }) async {
-//     try {
-//       return await _localAuth.authenticate(
-//           localizedReason: localizedReason ?? reason,
-//           options:
-//               AuthenticationOptions(stickyAuth: true, biometricOnly: true));
-//     } on PlatformException catch (e) {
-//       print("Error authenticating $e");
-//       return false;
-//     }
-//   }
+      // Last resort: try getAvailableBiometrics
+      // Xiaomi face unlock sometimes shows up here as BiometricType.face
+      // or BiometricType.weak
+      final enrolled = await _auth.getAvailableBiometrics();
+      return enrolled.isNotEmpty;
+    } catch (_) {
+      return false;
+    }
+  }
 
-//   Future<void> saveBiometricCredentials({
-//     required String email,
-//     required String password,
-//   }) async {
-//     await _secureStorage.write(key: "biometric_email", value: email);
-//     await _secureStorage.write(key: "biometric_password", value: password);
-//     await _secureStorage.write(key: "biometric_enabled", value: "true");
-//   }
+  Future<BiometricType?> getBiometricType() async {
+    try {
+      final enrolled = await _auth.getAvailableBiometrics();
+      if (enrolled.contains(BiometricType.face)) return BiometricType.face;
+      if (enrolled.contains(BiometricType.fingerprint))
+        return BiometricType.fingerprint;
+      if (enrolled.contains(BiometricType.strong)) return BiometricType.strong;
+      if (enrolled.contains(BiometricType.weak)) return BiometricType.weak;
+      return BiometricType.face; // Xiaomi face default
+    } catch (_) {
+      return BiometricType.face;
+    }
+  }
 
-//   Future<Map<String, String>?> getBiometricCredentials() async {
-//     final email = await _secureStorage.read(key: "biometric_email");
-//     final password = await _secureStorage.read(key: "biometric_password");
-//     final enabled = await _secureStorage.read(key: "biometric_enabled");
-//     if (email != null && password != null && enabled == "true") {
-//       return {"email": email, "password": password};
-//     }
-//     return null;
-//   }
-
-//   Future<bool> isBiometricLoginEnabled() async {
-//     final enabled = await _secureStorage.read(key: 'biometric_enabled');
-//     return enabled == 'true';
-//   }
-
-//   Future<void> disableBiometricLogin() async {
-//     await _secureStorage.delete(key: 'biometric_email');
-//     await _secureStorage.delete(key: 'biometric_password');
-//     await _secureStorage.write(key: 'biometric_enabled', value: 'false');
-//   }
-
-//   Future<void> clearBiometricData() async {
-//     await _secureStorage.deleteAll();
-//   }
-// }
+  Future<bool> authenticate() async {
+    try {
+      return await _auth.authenticate(
+        localizedReason: 'Authenticate to log in to QuickPalo',
+      );
+    } catch (_) {
+      return false;
+    }
+  }
+}

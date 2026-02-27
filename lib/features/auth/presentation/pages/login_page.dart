@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
 import 'package:quickpalo/core/utils/snackbar_utils.dart';
 import 'package:quickpalo/features/auth/presentation/state/auth_state.dart';
@@ -12,6 +13,8 @@ import 'package:quickpalo/core/widgets/custom_button2.dart';
 import 'package:quickpalo/core/widgets/custom_label.dart';
 import 'package:quickpalo/core/widgets/custom_text_button.dart';
 import 'package:quickpalo/core/widgets/custom_text_field.dart';
+import 'package:quickpalo/core/services/biometric/biometric_service.dart';
+import 'package:quickpalo/core/services/biometric/biometric_preference_service.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -26,6 +29,130 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
   bool _isLoading = false;
+  bool _biometricAvailable = false;
+  bool _biometricEnabled = false;
+  BiometricType? _biometricType;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkBiometrics();
+  }
+
+  Future<void> _checkBiometrics() async {
+    final biometricService = ref.read(biometricServiceProvider);
+    final prefService = ref.read(biometricPreferenceServiceProvider);
+
+    final available = await biometricService.isAvailable();
+    final enabled = await prefService.isEnabled();
+    final type = await biometricService.getBiometricType();
+
+    if (mounted) {
+      setState(() {
+        _biometricAvailable = available;
+        _biometricEnabled = enabled;
+        _biometricType = type;
+      });
+
+      // Auto-trigger biometric if previously enabled
+      if (available && enabled) {
+        _loginWithBiometrics();
+      }
+    }
+  }
+
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _isLoading = true);
+
+    await ref.read(authViewModelProvider.notifier).login(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+    // Offer to enable biometrics after successful login
+    final state = ref.read(authViewModelProvider);
+    if (state.status == AuthStatus.authenticated && _biometricAvailable) {
+      final prefService = ref.read(biometricPreferenceServiceProvider);
+      final alreadyEnabled = await prefService.isEnabled();
+      if (!alreadyEnabled && mounted) {
+        _offerBiometricSetup(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+        );
+      }
+    }
+
+    if (mounted) setState(() => _isLoading = false);
+  }
+
+  Future<void> _loginWithBiometrics() async {
+    final biometricService = ref.read(biometricServiceProvider);
+    final prefService = ref.read(biometricPreferenceServiceProvider);
+
+    final authenticated = await biometricService.authenticate();
+    if (!authenticated) return;
+
+    final credentials = await prefService.getCredentials();
+    if (credentials == null) {
+      if (mounted) {
+        SnackbarUtils.showError(
+            context, 'No saved credentials. Please log in manually.');
+      }
+      return;
+    }
+
+    if (mounted) setState(() => _isLoading = true);
+
+    await ref.read(authViewModelProvider.notifier).login(
+          email: credentials.email,
+          password: credentials.password,
+        );
+
+    if (mounted) setState(() => _isLoading = false);
+  }
+
+  void _offerBiometricSetup(String email, String password) {
+    final typeLabel =
+        _biometricType == BiometricType.face ? 'Face ID' : 'Fingerprint';
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text('Enable $typeLabel?'),
+        content: Text(
+            'Would you like to use $typeLabel to log in faster next time?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Not now', style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final prefService = ref.read(biometricPreferenceServiceProvider);
+              await prefService.enable(email, password);
+              if (mounted) {
+                SnackbarUtils.showSuccess(context, '$typeLabel login enabled!');
+              }
+            },
+            child: Text('Enable $typeLabel'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData get _biometricIcon {
+    if (_biometricType == BiometricType.face) return Icons.face;
+    return Icons.fingerprint;
+  }
+
+  String get _biometricLabel {
+    if (_biometricType == BiometricType.face) return 'Face ID';
+    return 'Fingerprint';
+  }
 
   @override
   void dispose() {
@@ -34,35 +161,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _handleLogin() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-
-      await ref.read(authViewModelProvider.notifier).login(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
-          );
-
-      setState(() => _isLoading = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Listen to auth changes
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated) {
-        SnackbarUtils.showSuccess(context, "Login successful");
+        SnackbarUtils.showSuccess(context, 'Login successful');
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+          MaterialPageRoute(builder: (_) => const DashboardScreen()),
           (route) => false,
         );
       } else if (next.status == AuthStatus.error && next.errorMessage != null) {
         SnackbarUtils.showError(context, next.errorMessage!);
       }
     });
-    // final authState = ref.watch(authViewModelProvider);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -90,31 +202,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       Center(
                         child: SizedBox(
                           width: isTablet ? 250 : 200,
                           child: ClipRRect(
-                            borderRadius: BorderRadiusGeometry.only(
-                              topRight: Radius.circular(25),
-                              bottomLeft: Radius.circular(25),
+                            borderRadius: const BorderRadiusDirectional.only(
+                              topEnd: Radius.circular(25),
+                              bottomStart: Radius.circular(25),
                             ),
-                            child: Image.asset(
-                              "assets/images/quickpalo_logo.png",
-                            ),
+                            child:
+                                Image.asset('assets/images/quickpalo_logo.png'),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
                         width: isTablet ? 400 : double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.black26,
                               blurRadius: 10,
@@ -127,32 +237,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           key: _formKey,
                           child: Column(
                             children: [
-                              Text(
-                                "Login",
+                              const Text(
+                                'Login',
                                 style: TextStyle(
                                   fontSize: 40,
-                                  fontFamily: "Inter Bold 24",
+                                  fontFamily: 'Inter Bold 24',
                                 ),
                               ),
-                              SizedBox(height: 15),
-                              CustomLabel(text: "Email", fontSize: 16),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 15),
+                              CustomLabel(text: 'Email', fontSize: 16),
+                              const SizedBox(height: 5),
                               CustomTextField(
                                 controller: _emailController,
-                                hintText: "user@mail.com",
-                                errortext: "Please enter a valid email",
-                                // keyboardType: TextInputType.,
+                                hintText: 'user@mail.com',
+                                errortext: 'Please enter a valid email',
                                 obscureText: false,
                                 keyboardType: TextInputType.emailAddress,
                                 fieldType: FieldType.email,
                               ),
-                              SizedBox(height: 25),
-                              CustomLabel(text: "Password", fontSize: 16),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 25),
+                              CustomLabel(text: 'Password', fontSize: 16),
+                              const SizedBox(height: 5),
                               CustomTextField(
                                 controller: _passwordController,
-                                hintText: "********",
-                                errortext: "Please enter a password",
+                                hintText: '********',
+                                errortext: 'Please enter a password',
                                 obscureText: _obscurePassword,
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -160,34 +269,54 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                         ? Icons.visibility_off
                                         : Icons.visibility,
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _obscurePassword = !_obscurePassword;
-                                    });
-                                  },
+                                  onPressed: () => setState(() =>
+                                      _obscurePassword = !_obscurePassword),
                                 ),
                                 keyboardType: TextInputType.text,
                                 fieldType: FieldType.password,
                               ),
-                              SizedBox(height: 15),
+                              const SizedBox(height: 15),
                               Align(
-                                alignment: Alignment.bottomRight,
+                                alignment: Alignment.centerRight,
                                 child: CustomTextButton(
-                                  text: "Forgot Password?",
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ForgotPasswordScreen()),
-                                    );
-                                  },
+                                  text: 'Forgot Password?',
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const ForgotPasswordScreen()),
+                                  ),
                                 ),
                               ),
                               CustomButton(
                                 onPressed: _isLoading ? null : _handleLogin,
-                                text: "Login",
+                                text: 'Login',
                               ),
+
+                              // ── Biometric button ─────────────────────────
+                              if (_biometricAvailable && _biometricEnabled) ...[
+                                const SizedBox(height: 12),
+                                OutlinedButton.icon(
+                                  onPressed:
+                                      _isLoading ? null : _loginWithBiometrics,
+                                  icon: Icon(_biometricIcon,
+                                      color: lightPurpleColor3),
+                                  label: Text(
+                                    'Login with $_biometricLabel',
+                                    style: TextStyle(color: lightPurpleColor3),
+                                  ),
+                                  style: OutlinedButton.styleFrom(
+                                    minimumSize:
+                                        const Size(double.infinity, 48),
+                                    side: BorderSide(color: lightPurpleColor3),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                              ],
+
+                              const SizedBox(height: 8),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -200,58 +329,45 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
+                                  const SizedBox(width: 4),
                                   CustomTextButton(
-                                    text: "Sign Up",
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RegisterScreen(),
-                                        ),
-                                      );
-                                    },
+                                    text: 'Sign Up',
+                                    onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const RegisterScreen()),
+                                    ),
                                   ),
                                 ],
                               ),
                               Row(
                                 children: const [
                                   Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
-                                      thickness: 1,
-                                    ),
-                                  ),
+                                      child: Divider(
+                                          color: Colors.grey, thickness: 1)),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                    ),
-                                    child: Text("OR"),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Text('OR'),
                                   ),
                                   Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
-                                      thickness: 1,
-                                    ),
-                                  ),
+                                      child: Divider(
+                                          color: Colors.grey, thickness: 1)),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               CustomButton2(
                                 onPressed: () {},
-                                text: "Continue with Google",
-                                imagePath: "assets/images/google.png",
+                                text: 'Continue with Google',
+                                imagePath: 'assets/images/google.png',
                               ),
-                              SizedBox(height: 30),
+                              const SizedBox(height: 30),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
-                      // Add login button here
+                      const SizedBox(height: 15),
                     ],
                   ),
                 ),
