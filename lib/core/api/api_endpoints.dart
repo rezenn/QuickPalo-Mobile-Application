@@ -85,4 +85,5 @@ class ApiEndpoints {
   static String cancelAppointment(String id) => '/appointments/$id/cancel';
 
   static const String createPaymentIntent = '/payments/create-payment-intent';
+  static String markAppointmentPaid(String id) => '/payments/$id/mark-paid';
 }

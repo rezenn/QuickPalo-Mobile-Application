@@ -13,7 +13,10 @@ abstract interface class IPaymentRemoteDataSource {
   Future<String> createPaymentIntent({
     required double amount,
     String currency,
+    String? appointmentId,
   });
+
+  Future<void> markAppointmentPaid(String appointmentId);
 }
 
 class PaymentRemoteDataSource implements IPaymentRemoteDataSource {
@@ -26,6 +29,7 @@ class PaymentRemoteDataSource implements IPaymentRemoteDataSource {
   Future<String> createPaymentIntent({
     required double amount,
     String currency = 'npr',
+    String? appointmentId,
   }) async {
     try {
       final response = await _apiClient.post(
@@ -33,6 +37,7 @@ class PaymentRemoteDataSource implements IPaymentRemoteDataSource {
         data: {
           'amount': amount,
           'currency': currency,
+          if (appointmentId != null) 'appointmentId': appointmentId,
         },
       );
 
@@ -44,6 +49,17 @@ class PaymentRemoteDataSource implements IPaymentRemoteDataSource {
           response.data['message'] ?? 'Failed to create payment intent');
     } catch (e) {
       throw Exception('Failed to create payment intent: $e');
+    }
+  }
+
+  @override
+  Future<void> markAppointmentPaid(String appointmentId) async {
+    try {
+      await _apiClient.patch(
+        ApiEndpoints.markAppointmentPaid(appointmentId),
+      );
+    } catch (e) {
+      throw Exception('Failed to mark appointment as paid: $e');
     }
   }
 }

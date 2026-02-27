@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
-import 'package:quickpalo/core/services/payment.dart';
+import 'package:quickpalo/core/services/payment/payment.dart';
 import 'package:quickpalo/core/services/storage/user_session_service.dart';
+import 'package:quickpalo/features/appointment/data/datasources/remote/payment_remote_datasource.dart';
 import 'package:quickpalo/features/appointment/domain/entities/appointment_entity.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_success_screen.dart';
 import 'package:quickpalo/features/organizations/domain/entities/organization_entity.dart';
@@ -18,7 +19,7 @@ class AppointmentBookingScreen extends ConsumerStatefulWidget {
   final DateTime selectedDate;
   final appointment.TimeSlotEntity timeslot;
 
-  const AppointmentBookingScreen({  
+  const AppointmentBookingScreen({
     super.key,
     required this.organization,
     required this.selectedDepartment,
@@ -81,7 +82,15 @@ class _AppointmentBookingScreenState
           : PaymentMethod.cash,
     );
 
-    // ── Handle Stripe for online payments ──────────────────────────────────
+    final success = await ref
+        .read(appointmentViewModelProvider.notifier)
+        .createAppointment(params);
+
+    if (!success || !mounted) return;
+
+    final apt = ref.read(appointmentViewModelProvider).selectedAppointment;
+    if (apt == null) return;
+
     if (_paymentMethod == 'online' && widget.organization.fees > 0) {
       setState(() => _isProcessingPayment = true);
 
@@ -90,14 +99,17 @@ class _AppointmentBookingScreenState
             await ref.read(paymentServiceProvider).processPayment(
                   amount: widget.organization.fees.toDouble(),
                   merchantName: widget.organization.organizationName,
-                  currency: 'usd', // change to 'npr' etc. if needed
                 );
 
         if (!paymentSuccess) {
-          // User cancelled the payment sheet — stop silently
           setState(() => _isProcessingPayment = false);
+          if (mounted) _navigateToSuccess(apt);
           return;
         }
+
+        await ref
+            .read(paymentRemoteDatasourceProvider)
+            .markAppointmentPaid(apt.id!);
       } catch (e) {
         setState(() => _isProcessingPayment = false);
         if (mounted) {
@@ -111,30 +123,27 @@ class _AppointmentBookingScreenState
             ),
           );
         }
+        if (mounted) _navigateToSuccess(apt);
         return;
       } finally {
         if (mounted) setState(() => _isProcessingPayment = false);
       }
     }
 
-    // ── Payment succeeded (or cash) → create appointment ──────────────────
-    final success = await ref
-        .read(appointmentViewModelProvider.notifier)
-        .createAppointment(params);
+    if (mounted) _navigateToSuccess(apt);
+  }
 
-    if (success && mounted) {
-      final apt = ref.read(appointmentViewModelProvider).selectedAppointment;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (_) => AppointmentSuccessScreen(
-            appointment: apt!,
-            organizationName: widget.organization.organizationName,
-          ),
+  void _navigateToSuccess(AppointmentEntity apt) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AppointmentSuccessScreen(
+          appointment: apt,
+          organizationName: widget.organization.organizationName,
         ),
-        (route) => route.isFirst,
-      );
-    }
+      ),
+      (route) => route.isFirst,
+    );
   }
 
   @override
@@ -159,10 +168,9 @@ class _AppointmentBookingScreenState
       }
     });
 
-    // Button label changes to reflect which step we're on
     String buttonLabel = 'Confirm Appointment';
+    if (isCreating) buttonLabel = 'Creating Appointment...';
     if (_isProcessingPayment) buttonLabel = 'Processing Payment...';
-    if (isCreating) buttonLabel = 'Booking...';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F4FF),
@@ -186,16 +194,13 @@ class _AppointmentBookingScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Slot banner
               _SlotBanner(
                 department: widget.selectedDepartment,
                 date: widget.selectedDate,
                 timeslot: widget.timeslot,
               ),
               const SizedBox(height: 24),
-
-              // Client Info
-              _SectionLabel(label: 'Your Information'),
+              const _SectionLabel(label: 'Your Information'),
               const SizedBox(height: 12),
               _AppField(
                 controller: _nameController,
@@ -230,27 +235,19 @@ class _AppointmentBookingScreenState
                 maxLines: 3,
                 required: false,
               ),
-
               const SizedBox(height: 24),
-
-              // Payment Method
-              _SectionLabel(label: 'Payment Method'),
+              const _SectionLabel(label: 'Payment Method'),
               const SizedBox(height: 12),
               _PaymentSelector(
                 selected: _paymentMethod,
                 fees: widget.organization.fees,
                 onChanged: (v) => setState(() => _paymentMethod = v),
               ),
-
-              // Stripe badge — shown only when online is selected
               if (_paymentMethod == 'online') ...[
                 const SizedBox(height: 12),
                 _StripeBadge(),
               ],
-
               const SizedBox(height: 30),
-
-              // Submit Button
               SizedBox(
                 width: double.infinity,
                 height: 54,
@@ -289,7 +286,7 @@ class _AppointmentBookingScreenState
                       : Text(
                           _paymentMethod == 'online' &&
                                   widget.organization.fees > 0
-                              ? 'Pay Rs ${widget.organization.fees} & Confirm'
+                              ? 'Confirm & Pay Rs ${widget.organization.fees}'
                               : 'Confirm Appointment',
                           style: const TextStyle(
                             fontSize: 16,
@@ -299,24 +296,24 @@ class _AppointmentBookingScreenState
                         ),
                 ),
               ),
-
               const SizedBox(height: 14),
               Center(
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                      style:
-                          TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                      children: [
-                        const TextSpan(
-                            text: "By confirming, you agree to our "),
-                        TextSpan(
-                            text: "Terms & Conditions",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: lightPurpleColor2,
-                                fontWeight: FontWeight.bold))
-                      ]),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                    children: [
+                      const TextSpan(text: "By confirming, you agree to our "),
+                      TextSpan(
+                        text: "Terms & Conditions",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: lightPurpleColor2,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -326,8 +323,6 @@ class _AppointmentBookingScreenState
     );
   }
 }
-
-// ── Stripe badge widget ────────────────────────────────────────────────────────
 
 class _StripeBadge extends StatelessWidget {
   @override
@@ -354,8 +349,6 @@ class _StripeBadge extends StatelessWidget {
     );
   }
 }
-
-// ── Unchanged widgets below ────────────────────────────────────────────────────
 
 class _SectionLabel extends StatelessWidget {
   final String label;
