@@ -107,7 +107,7 @@ class AppointmentSingleScreen extends ConsumerWidget {
                 ),
                 if (apt.notes != null && apt.notes!.isNotEmpty)
                   _DetailRow(
-                    icon: Icons.note_outlined,
+                    icon: Icons.notes_outlined,
                     label: 'Notes',
                     value: apt.notes!,
                   ),

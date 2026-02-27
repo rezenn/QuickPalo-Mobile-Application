@@ -56,7 +56,7 @@ class _UserAppointmentsScreenState extends ConsumerState<UserAppointmentsScreen>
       backgroundColor: const Color(0xFFF5F4FF),
       appBar: AppBar(
         title: const Text(
-          'My Appointments',
+          'Appointment History',
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         backgroundColor: Colors.white,
