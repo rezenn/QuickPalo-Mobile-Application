@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/app/theme/app_colors.dart';
+import 'package:quickpalo/core/services/payment.dart';
 import 'package:quickpalo/core/services/storage/user_session_service.dart';
 import 'package:quickpalo/features/appointment/domain/entities/appointment_entity.dart';
 import 'package:quickpalo/features/appointment/presentation/pages/appointment_success_screen.dart';
@@ -17,7 +18,7 @@ class AppointmentBookingScreen extends ConsumerStatefulWidget {
   final DateTime selectedDate;
   final appointment.TimeSlotEntity timeslot;
 
-  const AppointmentBookingScreen({
+  const AppointmentBookingScreen({  
     super.key,
     required this.organization,
     required this.selectedDepartment,
@@ -39,11 +40,11 @@ class _AppointmentBookingScreenState
   final _phoneController = TextEditingController();
   final _noteController = TextEditingController();
   String _paymentMethod = 'online';
+  bool _isProcessingPayment = false;
 
   @override
   void initState() {
     super.initState();
-    // Pre-fill from session
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final session = ref.read(userSessionServiceProvider);
       _nameController.text = session.getuserFullName() ?? '';
@@ -80,18 +81,54 @@ class _AppointmentBookingScreenState
           : PaymentMethod.cash,
     );
 
+    // ── Handle Stripe for online payments ──────────────────────────────────
+    if (_paymentMethod == 'online' && widget.organization.fees > 0) {
+      setState(() => _isProcessingPayment = true);
+
+      try {
+        final paymentSuccess =
+            await ref.read(paymentServiceProvider).processPayment(
+                  amount: widget.organization.fees.toDouble(),
+                  merchantName: widget.organization.organizationName,
+                  currency: 'usd', // change to 'npr' etc. if needed
+                );
+
+        if (!paymentSuccess) {
+          // User cancelled the payment sheet — stop silently
+          setState(() => _isProcessingPayment = false);
+          return;
+        }
+      } catch (e) {
+        setState(() => _isProcessingPayment = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString().replaceAll('Exception: ', '')),
+              backgroundColor: Colors.red.shade600,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+          );
+        }
+        return;
+      } finally {
+        if (mounted) setState(() => _isProcessingPayment = false);
+      }
+    }
+
+    // ── Payment succeeded (or cash) → create appointment ──────────────────
     final success = await ref
         .read(appointmentViewModelProvider.notifier)
         .createAppointment(params);
 
     if (success && mounted) {
-      final appointment =
-          ref.read(appointmentViewModelProvider).selectedAppointment;
+      final apt = ref.read(appointmentViewModelProvider).selectedAppointment;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (_) => AppointmentSuccessScreen(
-            appointment: appointment!,
+            appointment: apt!,
             organizationName: widget.organization.organizationName,
           ),
         ),
@@ -103,7 +140,8 @@ class _AppointmentBookingScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(appointmentViewModelProvider);
-    final isLoading = state.status == AppointmentScreenStatus.creating;
+    final isCreating = state.status == AppointmentScreenStatus.creating;
+    final isLoading = isCreating || _isProcessingPayment;
 
     ref.listen(appointmentViewModelProvider, (prev, next) {
       if (next.errorMessage != null &&
@@ -120,6 +158,11 @@ class _AppointmentBookingScreenState
         ref.read(appointmentViewModelProvider.notifier).clearError();
       }
     });
+
+    // Button label changes to reflect which step we're on
+    String buttonLabel = 'Confirm Appointment';
+    if (_isProcessingPayment) buttonLabel = 'Processing Payment...';
+    if (isCreating) buttonLabel = 'Booking...';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F4FF),
@@ -199,6 +242,12 @@ class _AppointmentBookingScreenState
                 onChanged: (v) => setState(() => _paymentMethod = v),
               ),
 
+              // Stripe badge — shown only when online is selected
+              if (_paymentMethod == 'online') ...[
+                const SizedBox(height: 12),
+                _StripeBadge(),
+              ],
+
               const SizedBox(height: 30),
 
               // Submit Button
@@ -216,17 +265,33 @@ class _AppointmentBookingScreenState
                   ),
                   onPressed: isLoading ? null : _submit,
                   child: isLoading
-                      ? const SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.5,
-                          ),
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.5,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              buttonLabel,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         )
-                      : const Text(
-                          'Confirm Appointment',
-                          style: TextStyle(
+                      : Text(
+                          _paymentMethod == 'online' &&
+                                  widget.organization.fees > 0
+                              ? 'Pay Rs ${widget.organization.fees} & Confirm'
+                              : 'Confirm Appointment',
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 0.3,
@@ -243,7 +308,8 @@ class _AppointmentBookingScreenState
                       style:
                           TextStyle(fontSize: 12, color: Colors.grey.shade600),
                       children: [
-                        TextSpan(text: "By confirming, you agree to our "),
+                        const TextSpan(
+                            text: "By confirming, you agree to our "),
                         TextSpan(
                             text: "Terms & Conditions",
                             style: TextStyle(
@@ -260,6 +326,36 @@ class _AppointmentBookingScreenState
     );
   }
 }
+
+// ── Stripe badge widget ────────────────────────────────────────────────────────
+
+class _StripeBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.blue.shade100),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.lock_outline, size: 16, color: Colors.blue.shade700),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Payments are secured by Stripe. Your card details are never stored on our servers.',
+              style: TextStyle(fontSize: 12, color: Colors.blue.shade700),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Unchanged widgets below ────────────────────────────────────────────────────
 
 class _SectionLabel extends StatelessWidget {
   final String label;
@@ -438,7 +534,7 @@ class _PaymentSelector extends StatelessWidget {
             groupValue: selected,
             icon: Icons.credit_card_outlined,
             title: 'Online Payment',
-            subtitle: 'Credit / Debit Card',
+            subtitle: 'Credit / Debit Card via Stripe  •  Rs $fees',
             onChanged: onChanged,
           ),
           Divider(height: 1, color: Colors.grey.shade200),
@@ -462,7 +558,6 @@ class _PaymentTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-
   final ValueChanged<String> onChanged;
 
   const _PaymentTile({
@@ -496,19 +591,15 @@ class _PaymentTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: isSelected
-                              ? const Color.fromARGB(210, 182, 27, 225)
-                              : const Color(0xFF2D3436),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: isSelected
+                          ? const Color.fromARGB(210, 182, 27, 225)
+                          : const Color(0xFF2D3436),
+                      fontSize: 14,
+                    ),
                   ),
                   Text(
                     subtitle,

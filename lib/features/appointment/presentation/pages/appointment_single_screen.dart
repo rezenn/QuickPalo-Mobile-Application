@@ -91,11 +91,6 @@ class AppointmentSingleScreen extends ConsumerWidget {
                   value: _formatDate(apt.date),
                 ),
                 _DetailRow(
-                  icon: Icons.calendar_month_outlined,
-                  label: 'Date',
-                  value: _formatDate(apt.date),
-                ),
-                _DetailRow(
                   icon: Icons.access_time_outlined,
                   label: 'Time',
                   value: apt.timeslot.displayTime,

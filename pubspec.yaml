@@ -98,6 +98,7 @@ dependencies:
   table_calendar: ^3.2.0
   stream_chat_flutter_core: ^9.23.0
   stream_chat: ^9.23.0
+  flutter_stripe: ^12.3.0
 
 dev_dependencies:
   flutter_test:
