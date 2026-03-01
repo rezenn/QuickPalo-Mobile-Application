@@ -60,6 +60,8 @@ class ApiEndpoints {
   static const String login = '/auth/login';
   static const String register = '/auth/register';
   static String userById(String id) => '/auth/$id';
+  static const String requestPasswordReset = '/auth/request-password-reset';
+  static String resetPassword(String token) => '/auth/reset-password/$token';
 
   static const String googleAuth = '/api/auth/google';
 
