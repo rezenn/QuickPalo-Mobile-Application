@@ -367,8 +367,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (_) => const CalendarScreen()),
+                          MaterialPageRoute(builder: (_) => CalendarScreen()),
                         );
                       },
                     ),

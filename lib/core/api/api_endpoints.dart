@@ -7,7 +7,7 @@ class ApiEndpoints {
   // MUST be true for physical device
   static const bool isPhysicalDevice = true;
 
-  static const String computerIpAddress = "192.168.101.8";
+  static const String computerIpAddress = "192.168.101.10";
 
   static const int port = 5050;
 
@@ -60,6 +60,8 @@ class ApiEndpoints {
   static const String login = '/auth/login';
   static const String register = '/auth/register';
   static String userById(String id) => '/auth/$id';
+
+  static const String googleAuth = '/api/auth/google';
 
   // Profile
   static const String profiles = '/profiles';

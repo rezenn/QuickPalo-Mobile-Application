@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.only(bottom: 80),
+          padding: EdgeInsets.only(bottom: 0),
           child: PageView(
             controller: controller,
             onPageChanged: (value) {
@@ -218,8 +218,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 minimumSize: const Size.fromHeight(80),
               ),
               onPressed: () async {
-                // final prefs = await SharedPreferences.getInstance();
-                // await prefs.setBool('showLogin', true);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginScreen()),

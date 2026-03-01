@@ -292,8 +292,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 onPressed: _isLoading ? null : _handleLogin,
                                 text: 'Login',
                               ),
-
-                              // ── Biometric button ─────────────────────────
                               if (_biometricAvailable && _biometricEnabled) ...[
                                 const SizedBox(height: 12),
                                 OutlinedButton.icon(
@@ -303,19 +301,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       color: lightPurpleColor3),
                                   label: Text(
                                     'Login with $_biometricLabel',
-                                    style: TextStyle(color: lightPurpleColor3),
+                                    style: TextStyle(
+                                        color: lightPurpleColor3, fontSize: 16),
                                   ),
                                   style: OutlinedButton.styleFrom(
                                     minimumSize:
                                         const Size(double.infinity, 48),
-                                    side: BorderSide(color: lightPurpleColor3),
+                                    side: BorderSide(color: Colors.white),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
                                 ),
                               ],
-
                               const SizedBox(height: 8),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

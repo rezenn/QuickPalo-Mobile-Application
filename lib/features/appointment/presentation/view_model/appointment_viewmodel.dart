@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickpalo/core/error/failures.dart';
-import 'package:quickpalo/features/appointment/domain/usecases/cancel_appointmnet_usecase.dart';
+import 'package:quickpalo/features/appointment/domain/usecases/cancel_appointment_usecase.dart';
 import 'package:quickpalo/features/appointment/domain/usecases/check_availability_usecase.dart';
 import 'package:quickpalo/features/appointment/domain/usecases/create_appointment_usecase.dart';
 import 'package:quickpalo/features/appointment/domain/usecases/get_appointment_by_id_usecase.dart';
